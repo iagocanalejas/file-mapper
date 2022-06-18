@@ -1,0 +1,2 @@
+class UnsupportedMediaType(Exception):
+    pass

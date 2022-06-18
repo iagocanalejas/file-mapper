@@ -1,0 +1,47 @@
+#### Ignore all .idea files
+.idea/**
+
+#### Except:
+# Version Control configurations
+# How IDEA should treat the text files in your project
+# Automatic code formatting
+# Project specifics
+
+!.idea/vcs.xml
+!.idea/encodings.xml
+!.idea/codeStyleSettings.xml
+!.idea/dictionaries
+!.idea/copyrights
+!.idea/misc.xml
+!.idea/sqldialects.xml
+
+#### Python
+MANIFEST
+*.pot
+.tox/
+__pycache__
+dist/
+build/
+docs/_build/
+docs/locale/
+node_modules/
+venv/
+
+#### Coverage
+test/coverage_html/
+test/.coverage
+test/report/
+/htmlcov/*
+/.coverage
+
+#### Environments
+.env
+.env.*
+
+#### Media & Logs
+*.log
+logs/emails/*
+*.prof
+
+# Exception for media module
+!/apps/modules/media/

@@ -1,0 +1,87 @@
+{
+  "data": [
+    {
+      "node": {
+        "id": 37403,
+        "title": "Ahiru no Sora",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/1975/108030.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/1975/108030l.jpg"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 34088,
+        "title": "Chiruran: Nibun no Ichi",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/6/82948.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/6/82948l.jpg"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 10080,
+        "title": "Kami nomi zo Shiru Sekai II",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/11/30030.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/11/30030l.jpg"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 39569,
+        "title": "Sora no Aosa wo Shiru Hito yo",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/1468/102527.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/1468/102527l.jpg"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 35410,
+        "title": "Ahiru no Ko",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/7/85275.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/7/85275l.jpg"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 16706,
+        "title": "Kami nomi zo Shiru Sekai: Megami-hen",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/6/51949.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/6/51949l.jpg"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 6852,
+        "title": "Ahiru no Otegara",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/8/15856.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/8/15856l.jpg"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 23209,
+        "title": "Sora no Method",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/10/62485.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/10/62485l.jpg"
+        }
+      }
+    }
+  ],
+  "paging": {
+    "next": "https://api.myanimelist.net/v2/anime?offset=10&q=+Ahiru+no+Sora+"
+  }
+}
