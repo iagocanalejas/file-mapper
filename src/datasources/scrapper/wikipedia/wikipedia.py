@@ -5,7 +5,7 @@ from src.datasources.exceptions import NotFound
 from src.datasources.scrapper.wikipedia.pages import WikipediaEpisodePage, WikipediaMainPage, WikipediaPage
 from src.models import Episode, Season, Show
 from src.parsers import Parser
-from src.utils.string import generic_clean
+from src.utils.strings import generic_clean
 
 logger = logging.getLogger()
 

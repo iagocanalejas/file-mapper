@@ -4,7 +4,7 @@ from typing import List
 
 from src.core import MediaType
 from src.parsers._parser import Parser
-from src.utils.string import clean_strings, remove_tracker, remove_parenthesis, RomanNumbers, apply_clean, \
+from src.utils.strings import remove_tracker, remove_parenthesis, RomanNumbers, apply_clean, \
     generic_clean, remove_extension
 
 logger = logging.getLogger()
@@ -28,9 +28,9 @@ class AnimeParser(Parser, media_type=MediaType.ANIME):
         return ' '.join(final)
 
     @staticmethod
-    @clean_strings
+    @apply_clean(clean_functions=[generic_clean, remove_tracker, remove_parenthesis, remove_extension])
     def media_name(word: str) -> str:
-        return remove_parenthesis(remove_tracker(word)).strip()
+        return word
 
     @staticmethod
     @apply_clean(clean_functions=[generic_clean, remove_tracker, remove_parenthesis, remove_extension])
@@ -43,21 +43,20 @@ class AnimeParser(Parser, media_type=MediaType.ANIME):
             # Matches S1E1
             return int(re.findall(r'\d+', match.group(0))[1])
 
-        match = re.search(r'E\d -', word, re.IGNORECASE)
+        match = re.search(r'E\d+', word, re.IGNORECASE)
         if match is not None:
             # Matches E1 -
             return int(re.findall(r'\d+', match.group(0))[0])
-
         # Returns first number found
         return int(re.findall(r'\d+', word)[-1])
 
+    @apply_clean(clean_functions=[generic_clean])
     def matches(self, name: str, **kwargs) -> bool:
         """
        Checks if the stream is an anime show
        """
         return self.__full_match(name) or self.__partial_match(name)
 
-    @clean_strings
     def __full_match(self, name: str) -> bool:
         try:
             re.search(
@@ -71,7 +70,6 @@ class AnimeParser(Parser, media_type=MediaType.ANIME):
         except AttributeError:
             return False
 
-    @clean_strings
     def __partial_match(self, name: str) -> bool:
         try:
             re.search(r'(^\[(\w+(\s?|-|.?))+])', name, re.IGNORECASE).group(0)

@@ -3,6 +3,7 @@ from typing import List
 from unittest import mock
 
 from src.core import MediaType
+from src.models import Episode
 from tests.media.mocks import EpisodeContainer, ExpectedEpisode
 from tests.test import CommonTest
 
@@ -46,7 +47,7 @@ class TestEpisode(CommonTest):
             )
         ),
         EpisodeContainer(
-            item_name='[Anipakku] Overlord 01.mkv',
+            item_name='[Anipakku] Overlord E01.mkv',
             title='Overlord',
             episode_name='A Parting in the Snow',
             expected=ExpectedEpisode(
@@ -58,6 +59,12 @@ class TestEpisode(CommonTest):
             )
         ),
     ]
+
+    def test_is_valid(self):
+        self.assertFalse(Episode.is_valid_file('[Anipakku] Overlord 01.exe'))
+        self.assertFalse(Episode.is_valid_file('[Anipakku] Overlord 01.txt'))
+
+        self.assertTrue(Episode.is_valid_file('[Anipakku] Overlord 01.mkv'))
 
     def test_anime_file(self):
         for item in self.files:

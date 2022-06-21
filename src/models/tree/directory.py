@@ -9,7 +9,7 @@ from src.models.media.season import Season
 from src.models.media.show import Show
 from src.models.tree.file import File
 from src.parsers import Parser
-from src.utils.string import apply_clean, generic_clean, remove_tracker, remove_parenthesis, remove_extension
+from src.utils.strings import apply_clean, generic_clean, remove_tracker, remove_parenthesis, remove_extension
 
 
 @dataclass
@@ -17,7 +17,7 @@ class Directory(Item):
     items: List[Item] = field(default_factory=list)
     depth: int = 0
 
-    def __str__(self):
+    def __str__(self):  # pragma: no cover
         tab = '   '
         st = f"{tab * (self.depth - 1)}{super().__str__()}\n" if self.depth > 0 else f""
         for i in self.items:

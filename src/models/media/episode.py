@@ -3,6 +3,7 @@ from dataclasses import dataclass
 
 import settings
 from src.core import MediaType
+from src.core.exceptions import UnsupportedMediaType
 from src.models.item import MediaItem
 from src.models.metadata import AnimeMetadata
 
@@ -24,10 +25,10 @@ class Episode(MediaItem):
     @property
     def episode_name(self) -> str:
         if self.media_type == MediaType.ANIME:
-            metadata: AnimeMetadata = self.metadata  # We know metadata is an AnimeMetadata for ANIME
-            return metadata.episode_name
+            assert isinstance(self._metadata, AnimeMetadata)
+            return self._metadata.episode_name
 
-        raise NotImplementedError(f'{self}:: unsupported media type {self.media_type}')
+        raise UnsupportedMediaType(f'{self}')
 
     @property
     def extension(self) -> str:
@@ -36,11 +37,13 @@ class Episode(MediaItem):
     @property
     def new_name(self) -> str:
         if self.media_type == MediaType.ANIME:
-            metadata: AnimeMetadata = self.metadata  # We know metadata is an AnimeMetadata for ANIME
-            title = metadata.title.replace('Season ', 'S')
-            return f'{self._parser.titlecase(title)} - {self.episode:02d} - {self._parser.titlecase(metadata.episode_name)}.{self.extension}'
+            assert isinstance(self._metadata, AnimeMetadata)
 
-        raise NotImplementedError(f'{self}:: unsupported media type {self.media_type}')
+            title = self._parser.titlecase(self._metadata.title.replace('Season ', 'S'))
+            episode_name = self._parser.titlecase(self._metadata.episode_name)
+            return f'{title} - {self.episode:02d} - {episode_name}.{self.extension}'
+
+        raise UnsupportedMediaType(f'{self}')
 
     def rename(self):
         if not settings.MOCK_RENAME:

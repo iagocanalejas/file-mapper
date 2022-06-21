@@ -3,7 +3,7 @@ import re
 
 from src.core import MediaType
 from src.parsers._parser import Parser
-from src.utils.string import clean_strings
+from src.utils.strings import generic_clean, apply_clean
 
 logger = logging.getLogger()
 
@@ -28,13 +28,13 @@ class FilmParser(Parser, media_type=MediaType.FILM):
     def episode(word) -> int:
         raise NotImplementedError
 
+    @apply_clean(clean_functions=[generic_clean])
     def matches(self, name: str, **kwargs) -> bool:
         """
        Checks if the stream is a film
        """
         return self.__matches(name)
 
-    @clean_strings
     def __matches(self, name: str) -> bool:
         try:
             re.search(

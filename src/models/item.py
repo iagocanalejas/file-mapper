@@ -17,7 +17,7 @@ class Item(ABC):
     base_path: str
     item_name: str
 
-    def __str__(self):
+    def __str__(self):  # pragma: no cover
         return f'{self.full_path}'
 
     @property
@@ -39,7 +39,7 @@ class MediaItem(Item, ABC):
     _parser: Parser = Parser
     _metadata: Optional[Metadata] = None
 
-    def __str__(self):
+    def __str__(self):  # pragma: no cover
         return f'{self.media_type.name}: {super().__str__()}'
 
     @property
@@ -61,12 +61,13 @@ class MediaItem(Item, ABC):
 
     @property
     def media_name(self) -> str:
-        if self.metadata is None:
+        if self.metadata is None:  # pragma: no cover
+            # Return a cleaned (by the parser) version of the item name
             return self._parser.media_name(self.item_name)
 
         if self.media_type == MediaType.ANIME:
-            metadata: AnimeMetadata = self.metadata  # We know metadata is an AnimeMetadata for ANIME
-            return metadata.media_name
+            assert isinstance(self._metadata, AnimeMetadata)
+            return self._metadata.media_name
 
         raise UnsupportedMediaType(f'{self}')
 

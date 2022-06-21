@@ -3,7 +3,8 @@ from abc import ABC, abstractmethod
 from typing import Optional
 
 from src.core import MediaType
-from src.utils.string import clean_strings, RomanNumbers
+from src.utils.strings import RomanNumbers, apply_clean, generic_clean, remove_tracker, \
+    remove_parenthesis, remove_extension
 
 
 class Parser(ABC):
@@ -57,7 +58,7 @@ class Parser(ABC):
         return self.__class__.__name__
 
     @staticmethod
-    @clean_strings
+    @apply_clean(clean_functions=[generic_clean, remove_tracker, remove_parenthesis, remove_extension])
     def season(word: str) -> int:
         match = re.search(r'Season \d+', word, re.IGNORECASE)
         if match is not None:
@@ -69,7 +70,7 @@ class Parser(ABC):
             # Matches S1E1
             return int(re.findall(r'\d+', match.group(0))[0])
 
-        match = re.search(r'S\d -', word, re.IGNORECASE)
+        match = re.search(r'S\d+ -', word, re.IGNORECASE)
         if match is not None:
             # Matches S1 -
             return int(re.findall(r'\d+', match.group(0))[0])
@@ -82,7 +83,7 @@ class Parser(ABC):
         return 1
 
     @staticmethod
-    @clean_strings
+    @apply_clean(clean_functions=[generic_clean, remove_tracker, remove_parenthesis, remove_extension])
     def season_text(word: str) -> Optional[str]:
         match = re.search(r'Season \d+', word, re.IGNORECASE)
         if match is not None:
@@ -94,7 +95,7 @@ class Parser(ABC):
             # Matches S1E1
             return re.findall(r'\d+', match.group(0))[0]
 
-        match = re.search(r'S\d -', word, re.IGNORECASE)
+        match = re.search(r'S\d+ -', word, re.IGNORECASE)
         if match is not None:
             # Matches S1 -
             return re.findall(r'\d+', match.group(0))[0]
@@ -115,8 +116,6 @@ class Parser(ABC):
         pass
 
     @staticmethod
-    @clean_strings
+    @apply_clean(clean_functions=[generic_clean])
     def extension(word: str) -> str:
         return word.split('.')[-1]
-
-

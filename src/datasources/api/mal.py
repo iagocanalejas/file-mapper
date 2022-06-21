@@ -10,6 +10,7 @@ import settings
 from src.datasources._datasource import API
 from src.datasources.exceptions import InvalidConfiguration
 from src.models.metadata import AnimeMetadata
+from src.utils.strings import levenshtein_distance
 
 logger = logging.getLogger()
 
@@ -80,30 +81,11 @@ class MalAPI(API):
         return f'{item.media_name} Season {season}' if season > 1 else f'{item.media_name}'
 
     @staticmethod
-    def __levenshtein_distance(s1, s2):
-        # This function has already been implemented for you.
-        # Source of the implementation:
-        # https://stackoverflow.com/questions/2460177/edit-distance-in-python
-        if len(s1) > len(s2):
-            s1, s2 = s2, s1
-
-        distances = range(len(s1) + 1)
-        for i2, c2 in enumerate(s2):
-            distances_ = [i2 + 1]
-            for i1, c1 in enumerate(s1):
-                if c1 == c2:
-                    distances_.append(distances[i1])
-                else:
-                    distances_.append(1 + min((distances[i1], distances[i1 + 1],
-                                               distances_[-1])))
-            distances = distances_
-        return distances[-1]
-
-    def __get_closest_result(self, keyword: str, elements: List[Any]) -> Any:
-        best_distance = self.__levenshtein_distance(keyword, elements[0]['node']['title'])
+    def __get_closest_result(keyword: str, elements: List[Any]) -> Any:
+        best_distance = levenshtein_distance(keyword, elements[0]['node']['title'])
         best_word = elements[0]
         for w in elements:
-            d = self.__levenshtein_distance(keyword, w['node']['title'])
+            d = levenshtein_distance(keyword, w['node']['title'])
             if d < best_distance:
                 best_distance = d
                 best_word = w

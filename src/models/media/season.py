@@ -5,9 +5,10 @@ from typing import List
 
 import settings
 from src.core import MediaType
+from src.core.exceptions import UnsupportedMediaType
 from src.models.item import MediaItem
 from src.models.media.episode import Episode
-from src.models.metadata import Metadata
+from src.models.metadata import Metadata, AnimeMetadata
 
 
 @dataclass
@@ -33,8 +34,10 @@ class Season(MediaItem):
     @property
     def new_name(self) -> str:
         if self.media_type == MediaType.ANIME:
-            return f'{self.metadata.title}'
-        return ''
+            assert isinstance(self._metadata, AnimeMetadata)
+            return f'{self._metadata.title}'
+
+        raise UnsupportedMediaType(f'{self}')
 
     def rename(self):
         for f in self.episodes:

@@ -5,7 +5,7 @@ from typing import Callable
 
 
 class RomanNumbers(Enum):
-    I = 1
+    I = 1  # noqa
     II = 2
     III = 3
     IV = 4
@@ -37,22 +37,24 @@ def remove_extension(word: str) -> str:
     return ' '.join(word.split('.')[:-1]).strip()
 
 
-def __clean_arg(arg: Iterable[str] | str):
-    if type(arg) == str:
-        return generic_clean(arg)
-    if isinstance(arg, Iterable):
-        return [__clean_arg(a) for a in arg]
-    return arg
+def levenshtein_distance(s1, s2):
+    # This function has already been implemented for you.
+    # Source of the implementation:
+    # https://stackoverflow.com/questions/2460177/edit-distance-in-python
+    if len(s1) > len(s2):
+        s1, s2 = s2, s1
 
-
-# decorator
-def clean_strings(func):
-    def wrapper(*args, **kwargs):
-        args = [__clean_arg(arg) for arg in args]
-        kwargs = {key: __clean_arg(value) for key, value in kwargs.items()}
-        return func(*args, **kwargs)
-
-    return wrapper
+    distances = range(len(s1) + 1)
+    for i2, c2 in enumerate(s2):
+        distances_ = [i2 + 1]
+        for i1, c1 in enumerate(s1):
+            if c1 == c2:
+                distances_.append(distances[i1])
+            else:
+                distances_.append(1 + min((distances[i1], distances[i1 + 1],
+                                           distances_[-1])))
+        distances = distances_
+    return distances[-1]
 
 
 def __apply(functions: Iterable[Callable[[str], str]], arg: Iterable[str] | str):

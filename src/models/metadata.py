@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Optional, Dict
 
-from src.utils.string import generic_clean
+from src.utils.strings import generic_clean
 
 
 @dataclass
