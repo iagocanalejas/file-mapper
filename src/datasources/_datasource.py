@@ -1,15 +1,12 @@
-from abc import ABC, abstractmethod
+from abc import ABC
+
+from src.core.types import Object
+from src.parsers import Parser
 
 
-class Datasource(ABC):
-    @property
-    def _class_name(self):
-        return self.__class__.__name__
-
-    @staticmethod
-    @abstractmethod
-    def build_search_keyword(item) -> str:
-        pass
+class Datasource(ABC, Object):
+    def __init__(self, parser: Parser):
+        self.parser = parser
 
 
 class API(Datasource, ABC):

@@ -1,15 +1,15 @@
-from src.core import MediaType
 from src.core.exceptions import UnsupportedMediaType
-from src.models import Episode, Season, Show
+from src.core.models import Episode, Season, Show, MediaItem
 from src.processors import Processor
+from src.matchers import MediaType
 
 
-class GenericProcessor(Processor, media_type=MediaType.UNKNOWN):
+class UnknownProcessor(Processor, media_type=MediaType.UNKNOWN):
     _instance = None
 
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
-            cls._instance = super().__new__(cls, *args, media_type=MediaType.UNKNOWN, **kwargs)
+            cls._instance = super().__new__(cls, *args, **kwargs)
         return cls._instance
 
     def process_episode(self, episode: Episode):
@@ -20,3 +20,10 @@ class GenericProcessor(Processor, media_type=MediaType.UNKNOWN):
 
     def process_show(self, show: Show):
         raise UnsupportedMediaType()
+
+    def rename(self, item: MediaItem):
+        raise UnsupportedMediaType()
+
+    @classmethod
+    def matches(cls, name: str, **kwargs) -> bool:
+        return False

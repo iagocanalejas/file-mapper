@@ -1,11 +1,11 @@
 import logging
+from typing import List, Callable
 
+from src.core.models import Episode, Season, Show, MediaItem
 from src.datasources._datasource import Scrapper
 from src.datasources.exceptions import NotFound
 from src.datasources.scrapper.wikipedia.pages import WikipediaEpisodePage, WikipediaMainPage, WikipediaPage
-from src.models import Episode, Season, Show
 from src.parsers import Parser
-from src.utils.strings import generic_clean
 
 logger = logging.getLogger()
 
@@ -21,25 +21,18 @@ class WikipediaScrapper(Scrapper):
         'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
     }
 
+    def __init__(self, parser: Parser, keyword_fn: Callable[[MediaItem], str]):
+        super(WikipediaScrapper, self).__init__(parser)
+        self.keyword_fn = keyword_fn
+
     def fill_show_names(self, show: Show) -> Show:
-        logger.info(f'{self._class_name}:: searching for show :: {self.build_search_keyword(show)}')
+        logger.info(f'{self._class}:: searching for show :: {self.keyword_fn(show)}')
 
-        page = self.__load_page(show)
+        page = self.__load_page(self.keyword_fn(show))
         season_files = [f for s in [s.episodes for s in show.seasons] for f in s]
-        not_found = []
+        self.__fill_episodes(page, show.episodes + season_files)
+        self.__fill_seasons(page, show.seasons)
 
-        for file in show.files + season_files:
-            episode_name = page.episode_name(file.season, file.episode)
-            if episode_name is None:
-                not_found.append(file)
-
-            file.metadata.episode_name = episode_name
-
-        if not_found:
-            logger.error(f'{self._class_name}:: not found show episodes :: {not_found}')
-            raise NotFound(f"{self._class_name}:: matching names :: {not_found}")
-
-        logger.info(f'{self._class_name}:: found')
         return show
 
     def fill_season_names(self, season: Season) -> Season:
@@ -49,23 +42,12 @@ class WikipediaScrapper(Scrapper):
         :return: The season with the updated files
         """
 
-        logger.info(f'{self._class_name}:: searching for season :: {self.build_search_keyword(season)}')
+        logger.info(f'{self._class}:: searching for season :: {self.keyword_fn(season)}')
 
-        page = self.__load_page(season)
-        not_found = []
+        page = self.__load_page(self.keyword_fn(season))
+        self.__fill_episodes(page, season.episodes)
+        self.__fill_seasons(page, [season])
 
-        for file in season.episodes:
-            episode_name = page.episode_name(file.season, file.episode)
-            if episode_name is None:
-                not_found.append(file)
-
-            file.metadata.episode_name = episode_name
-
-        if not_found:
-            logger.error(f'{self._class_name}:: not found season episodes :: {not_found}')
-            raise NotFound(f"{self._class_name}:: matching names :: {not_found}")
-
-        logger.info(f'{self._class_name}:: found')
         return season
 
     def fill_episode_name(self, file: Episode) -> Episode:
@@ -75,30 +57,41 @@ class WikipediaScrapper(Scrapper):
         :return: Returns the file with the new episode name
         """
 
-        logger.info(f'{self._class_name}:: searching for episode :: {self.build_search_keyword(file)}')
+        logger.info(f'{self._class}:: searching for episode :: {self.keyword_fn(file)}')
 
-        page = self.__load_page(file)
-        episode_name = page.episode_name(file.season, file.episode)
-        if episode_name is None:
-            raise NotFound(f"{self._class_name}:: matching names :: {[file]}")
+        page = self.__load_page(self.keyword_fn(file))
+        self.__fill_episodes(page, [file])
 
-        file.metadata.episode_name = episode_name
-
-        logger.info(f'{self._class_name}:: found match')
         return file
 
-    @staticmethod
-    def build_search_keyword(item) -> str:
-        keyword = item.media_name
-        season = Parser.season_text(keyword)
-        if season is not None:
-            keyword = keyword.split(season)[0]
-        return generic_clean(keyword).replace(' ', '_')
-
-    def __load_page(self, item) -> WikipediaPage:
-        page = WikipediaEpisodePage(self.build_search_keyword(item))
+    def __load_page(self, search_keyword: str) -> WikipediaPage:
+        page = WikipediaEpisodePage(search_keyword)
         if not page.is_valid:
-            page = WikipediaMainPage(self.build_search_keyword(item))
+            page = WikipediaMainPage(search_keyword)
         if not page.is_valid:
-            raise NotFound(f"{self._class_name}:: matching page for :: {self.build_search_keyword(item)}")
+            raise NotFound(f"{self._class}:: matching page for :: {search_keyword}")
         return page
+
+    def __fill_episodes(self, page: WikipediaPage, episodes: List[Episode]):
+        not_found = []
+
+        for episode in episodes:
+            episode_name = page.episode_name(self.parser.season(episode), self.parser.episode(episode))
+            if episode_name is None:
+                not_found.append(episode)
+
+            episode.metadata.episode_name = episode_name
+
+        logger.info(f'{self._class}:: NOT FOUND :: episode names :: {[s.item_name for s in not_found]}')
+
+    def __fill_seasons(self, page: WikipediaPage, seasons: List[Season]):
+        not_found = []
+
+        for season in seasons:
+            season_name = page.season_name(self.parser.season(season))
+            if season_name is None:
+                not_found.append(season)
+
+            season.metadata.season_name = season_name
+
+        logger.info(f'{self._class}:: NOT FOUND :: season names :: {[s.item_name for s in not_found]}')

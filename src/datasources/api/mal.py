@@ -1,5 +1,6 @@
 import json
 import logging
+import re
 from pprint import pformat
 from typing import Any, List
 
@@ -7,9 +8,10 @@ import requests
 from requests import RequestException
 
 import settings
+from src.core.models.metadata import AnimeMetadata
 from src.datasources._datasource import API
 from src.datasources.exceptions import InvalidConfiguration
-from src.models.metadata import AnimeMetadata
+from src.parsers import Parser
 from src.utils.strings import levenshtein_distance
 
 logger = logging.getLogger()
@@ -27,8 +29,8 @@ class MalAPI(API):
         'X-MAL-CLIENT-ID': settings.MAL_CLIENT_ID,
     }
 
-    def __init__(self):
-        super(MalAPI, self).__init__()
+    def __init__(self, parser: Parser):
+        super(MalAPI, self).__init__(parser)
         if settings.MAL_CLIENT_ID is None:
             raise InvalidConfiguration('MAL_CLIENT_ID')
 
@@ -40,15 +42,15 @@ class MalAPI(API):
         """
         url = f'{self.BASE_URL}/anime?q={keyword}'
         response = requests.get(url, headers=self.HEADERS)
-        logger.info(f'{self._class_name}:: searching for :: {url}')
+        logger.info(f'{self._class}:: searching for :: {url}')
 
         if response.status_code == 200:
             # data format: [{'node': {'id': int, 'main_picture': {'large': 'str', 'medium': 'str'}, 'title': 'str'}}]
             data = json.loads(response.content)['data']
             if settings.LOG_HTTP:
-                logger.debug(f'{self._class_name}: {pformat(data)}')
+                logger.debug(f'{self._class}: {pformat(data)}')
             closest_result = self.__get_closest_result(keyword, data)
-            logger.info(f'{self._class_name}:: closest result :: {pformat(closest_result)}')
+            logger.info(f'{self._class}:: closest result :: {pformat(closest_result)}')
             return closest_result['node']['id']
 
         raise RequestException(response=response)
@@ -65,20 +67,15 @@ class MalAPI(API):
         if response.status_code == 200:
             # data format: {'alternative_titles': {'en': '', 'ja': ''}, 'id': int, 'media_type': 'tv', 'title': 'str'}
             data = json.loads(response.content)
-            logger.info(f'{self._class_name}:: found details :: {pformat(data)}')
+            logger.info(f'{self._class}:: found details :: {pformat(data)}')
             return AnimeMetadata(
                 mal_id=data['id'],
-                title=data['title'],
+                title=self.__clean_title(data['title']),
                 media_type=data['media_type'],
                 alternative_titles=data['alternative_titles']
             )
 
         raise RequestException(response=response)
-
-    @staticmethod
-    def build_search_keyword(item) -> str:
-        season = item.season if hasattr(item, 'season') else 0
-        return f'{item.media_name} Season {season}' if season > 1 else f'{item.media_name}'
 
     @staticmethod
     def __get_closest_result(keyword: str, elements: List[Any]) -> Any:
@@ -91,3 +88,8 @@ class MalAPI(API):
                 best_word = w
 
         return best_word
+
+    @staticmethod
+    def __clean_title(title: str) -> str:
+        s_re = re.compile(r'season ', re.IGNORECASE)
+        return s_re.sub('S', title)

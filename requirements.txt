@@ -5,3 +5,4 @@ responses==0.21.0
 yapf==0.32.0
 environs==9.5.0
 coverage==6.4.1
+factory-boy==3.2.1

@@ -7,11 +7,12 @@ import requests
 from bs4 import BeautifulSoup, Tag
 
 import settings
+from src.core.types import Object
 
 logger = logging.getLogger()
 
 
-class WikipediaPage(ABC):
+class WikipediaPage(ABC, Object):
     BASE_URL: str
     HEADERS = {
         'Access-Control-Allow-Origin': '*',
@@ -27,10 +28,6 @@ class WikipediaPage(ABC):
         self.soup = self.__load_soup()
 
     @property
-    def name(self):
-        return self.__class__.__name__
-
-    @property
     def url(self):
         return self.BASE_URL.format(self.keyword)
 
@@ -43,10 +40,15 @@ class WikipediaPage(ABC):
         episode_name = self._retrieve_episode_name(season_table, episode)
 
         if episode_name is not None:
-            logger.debug(f'{self.name}:: found :: {episode_name}')
+            logger.debug(f'{self._class}:: found :: {episode_name}')
             return episode_name
 
-        logger.error(f'{self.name}:: not found')
+        logger.info(f'{self._class}:: not found episode name')
+        return None
+
+    @abstractmethod
+    def season_name(self, season: int) -> Optional[str]:
+        pass
 
     @abstractmethod
     def _retrieve_season_table(self, season: int) -> Tag:
@@ -60,11 +62,11 @@ class WikipediaPage(ABC):
             episode_row = season_table.find_all('tr', {"class": "vevent"})[episode - 1]
             episode_row_data = episode_row.find("td", {"class": "summary"}).text
 
-        logger.debug(f'{self.name}:: episode row :: {episode_row_data}')
+        logger.debug(f'{self._class}:: episode row :: {episode_row_data}')
         return re.search(r'\"(.*?)\"', episode_row_data).group(1)
 
     def __load_soup(self) -> Optional[BeautifulSoup]:
-        logger.info(f'{self.name}:: trying :: {self.url}')
+        logger.info(f'{self._class}:: trying :: {self.url}')
 
         response = requests.get(self.url, self.HEADERS)
         if response.status_code == 404:
@@ -73,6 +75,6 @@ class WikipediaPage(ABC):
         soup = BeautifulSoup(response.content, 'html5lib')
 
         if settings.LOG_HTTP:
-            logger.debug(f'{self.name}: {soup.prettify()}')
+            logger.debug(f'{self._class}: {soup.prettify()}')
 
         return soup

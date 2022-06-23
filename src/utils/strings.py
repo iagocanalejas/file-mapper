@@ -1,7 +1,7 @@
 import re
 from collections.abc import Iterable
 from enum import Enum
-from typing import Callable
+from typing import Callable, Optional
 
 
 class RomanNumbers(Enum):
@@ -19,6 +19,7 @@ class RomanNumbers(Enum):
 def generic_clean(word: str) -> str:
     word = word.replace('_', ' ')
     word = word.replace(' (1)', '')  # remove ' (1)' for copied files
+    word = word.replace(' (TV)', '')  # remove ' (TV)' for some season names
     return re.sub(r' +', ' ', word).strip()
 
 
@@ -30,11 +31,18 @@ def remove_parenthesis(word: str) -> str:
     return re.sub(r'\([\w\d\-_ +]*\)', '', word).strip()
 
 
+def remove_episode(word: str) -> str:
+    return re.sub(r'- S?\d+E?\d+', '', word).strip()
+
+
 def remove_extension(word: str) -> str:
-    parts = word.split('.')
-    if len(parts) == 1:
-        return parts[0].strip()
-    return ' '.join(word.split('.')[:-1]).strip()
+    return re.sub(r'\.[\w\d]{3}', '', word).strip()
+
+
+def retrieve_extension(word: str) -> Optional[str]:
+    match = re.search(r'\.[\w\d]{3}$', word, re.IGNORECASE)
+    if match is not None:
+        return match.group(0)[1:]
 
 
 def levenshtein_distance(s1, s2):
@@ -57,13 +65,13 @@ def levenshtein_distance(s1, s2):
     return distances[-1]
 
 
-def __apply(functions: Iterable[Callable[[str], str]], arg: Iterable[str] | str):
+def apply(functions: Iterable[Callable[[str], str]], arg: Iterable[str] | str):
     if type(arg) == str:
         for f in functions:
             arg = f(arg)
         return arg
     if isinstance(arg, Iterable):
-        return [__apply(functions, a) for a in arg]
+        return [apply(functions, a) for a in arg]
     return arg
 
 
@@ -71,8 +79,8 @@ def __apply(functions: Iterable[Callable[[str], str]], arg: Iterable[str] | str)
 def apply_clean(clean_functions: Iterable[Callable[[str], str]]):
     def decorator(func):
         def wrapper(*args, **kwargs):
-            args = [__apply(clean_functions, arg) for arg in args]
-            kwargs = {key: __apply(clean_functions, value) for key, value in kwargs.items()}
+            args = [apply(clean_functions, arg) for arg in args]
+            kwargs = {key: apply(clean_functions, value) for key, value in kwargs.items()}
             return func(*args, **kwargs)
 
         return wrapper
