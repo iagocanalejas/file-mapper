@@ -15,7 +15,7 @@ class Metadata:
 
 @dataclass
 class AnimeMetadata(Metadata):
-    mal_id: int
+    datasource_id: int
     media_type: str
     alternative_titles: Dict[str, str]
     season_name: Optional[str] = None

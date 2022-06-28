@@ -15,7 +15,7 @@ class AnimeMetadataFactory(factory.Factory):
     class Meta:
         model = metadata.AnimeMetadata
 
-    mal_id = factory.Sequence(lambda n: n)
+    datasource_id = factory.Sequence(lambda n: n)
     media_type = 'tv'
     title = factory.Sequence(lambda n: f"item_{n}")
     alternative_titles = {}

@@ -69,7 +69,7 @@ class MalAPI(API):
             data = json.loads(response.content)
             logger.info(f'{self._class}:: found details :: {pformat(data)}')
             return AnimeMetadata(
-                mal_id=data['id'],
+                datasource_id=data['id'],
                 title=self.__clean_title(data['title']),
                 media_type=data['media_type'],
                 alternative_titles=data['alternative_titles']
