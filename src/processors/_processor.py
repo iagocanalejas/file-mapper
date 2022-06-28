@@ -13,22 +13,34 @@ logger = logging.getLogger()
 class Processor(ABC, Object):
     _registry = {}
 
-    media_type: MediaType
-    parser: Parser
-    formatter: Formatter
+    _media_type: MediaType
+    _parser: Parser
+    _formatter: Formatter
+
+    @property
+    def media_type(self) -> MediaType:
+        return self._media_type
+
+    @property
+    def parser(self) -> Parser:
+        return self._parser
+
+    @property
+    def formatter(self) -> Formatter:
+        return self._formatter
 
     def __init_subclass__(cls, **kwargs):
         media_type = kwargs.pop('media_type')
         super().__init_subclass__(**kwargs)
-        cls.media_type = media_type
+        cls._media_type = media_type
         cls._registry[media_type] = cls
 
     def __new__(cls, media_type: MediaType, **kwargs):
         subclass = cls._registry[media_type]
         final_obj = object.__new__(subclass)
-        final_obj.media_type = media_type
-        final_obj.parser = Parser(media_type=media_type)
-        final_obj.formatter = Formatter(media_type=media_type)
+        final_obj._media_type = media_type
+        final_obj._parser = Parser(media_type=media_type)
+        final_obj._formatter = Formatter(media_type=media_type)
 
         return final_obj
 
