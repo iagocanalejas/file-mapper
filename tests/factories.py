@@ -2,6 +2,7 @@ import factory
 
 from src.core import models
 from src.core.models import metadata
+from src.core.types import DatasourceName
 
 
 class MetadataFactory(factory.Factory):
@@ -16,7 +17,7 @@ class AnimeMetadataFactory(factory.Factory):
         model = metadata.AnimeMetadata
 
     datasource_id = factory.Sequence(lambda n: n)
-    media_type = 'tv'
+    datasource = DatasourceName.MAL,
     title = factory.Sequence(lambda n: f"item_{n}")
     alternative_titles = {}
 

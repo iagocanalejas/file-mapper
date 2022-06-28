@@ -72,5 +72,5 @@ class Processor(ABC, Object):
     @abstractmethod
     def rename(self, item: MediaItem):
         logger.info(f'{self._class}:: renamed from :: \'{item.path}\'')
-        item.item_name = self.formatter.new_name(self.parser, item)
+        item.item_name = self.formatter.new_name(item, self.parser)
         logger.info(f'{self._class}:: renamed to :: \'{item.path}\'\n')

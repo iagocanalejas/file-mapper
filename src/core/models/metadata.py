@@ -1,6 +1,7 @@
 from dataclasses import dataclass
-from typing import Optional, Dict
+from typing import Optional, Dict, List
 
+from src.core.types import DatasourceName
 from src.utils.strings import generic_clean
 
 
@@ -15,13 +16,11 @@ class Metadata:
 
 @dataclass
 class AnimeMetadata(Metadata):
-    datasource_id: int
-    media_type: str
+    datasource_id: List[int] | int
+    datasource: List[DatasourceName] | DatasourceName
     alternative_titles: Dict[str, str]
     season_name: Optional[str] = None
     episode_name: Optional[str] = None
-
-    seasoned: bool = False  # Whether the 'media_name' will contain the season
 
     def media_name(self, lang: str = 'en') -> str:
         if lang == 'ja':

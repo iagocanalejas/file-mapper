@@ -21,46 +21,38 @@ class TestAnimeSeasonParser(CommonTest):
             ('Kobayashi-san Chi no Maid Dragon [v3][1080]', 1),
             ('Great Pretender', 1),
             ('Seikon no Qwaser II', 2),
+            ('[Judas] Tate no Yuusha no Noriagari (The Rising of the Shield Hero) (Season 2) [1080p][HEVC x265 10bit][Multi-Subs]', 2)
         ]
         for name, expected in pairs:
             with self.subTest(name=f'season:: {name}'):
                 season = SeasonFactory(item_name=name)
-                self.assertEqual(self.parser.season(season), expected)
+                self.assertEqual(expected, self.parser.season(season))
 
     def test_season_name_no_metadata(self):
         pairs: List[Tuple[str, Optional[str]]] = [
             ('Kobayashi-san Chi no Maid Dragon [v3][1080]', None),
             ('Great Pretender', None),
             ('Seikon no Qwaser II', 'II'),
+            ('[Judas] Tate no Yuusha no Noriagari (The Rising of the Shield Hero) (Season 2) [1080p][HEVC x265 10bit][Multi-Subs]', 'S2')
         ]
         for name, expected in pairs:
             with self.subTest(name=f'season_name:: {name}'):
                 self.season.item_name = name
                 self.season._metadata = None
-                self.assertEqual(self.parser.season_name(self.season), expected)
+                self.assertEqual(expected, self.parser.season_name(self.season))
 
-    def test_media_name_no_metadata(self):
+    def test_media_title_no_metadata(self):
         pairs: List[Tuple[str, str]] = [
             ('Kobayashi-san Chi no Maid Dragon [v3][1080]', 'Kobayashi-san Chi no Maid Dragon'),
             ('Great Pretender', 'Great Pretender'),
-            ('Seikon no Qwaser II', 'Seikon no Qwaser II'),
+            ('Seikon no Qwaser II', 'Seikon no Qwaser'),
+            ('[Judas] Tate no Yuusha no Noriagari (The Rising of the Shield Hero) (Season 2) [1080p][HEVC x265 10bit][Multi-Subs]', 'Tate no Yuusha no Noriagari')
         ]
         for name, expected in pairs:
-            with self.subTest(name=f'media_name:: {name}'):
+            with self.subTest(name=f'media_title:: {name}'):
                 self.season.item_name = name
                 self.season._metadata = None
-                self.assertEqual(self.parser.media_name(self.season), expected)
-
-    def test_is_seasoned(self):
-        pairs: List[Tuple[str, bool]] = [
-            ('Kobayashi-san Chi no Maid Dragon', False),
-            ('Great Pretender', False),
-            ('Seikon no Qwaser II', True),
-        ]
-        for name, expected in pairs:
-            with self.subTest(name=f'season:: {name}'):
-                self.season.metadata.title = name
-                self.assertEqual(self.parser.is_seasoned_media_name(self.season), expected)
+                self.assertEqual(expected, self.parser.media_title(self.season))
 
 
 if __name__ == '__main__':

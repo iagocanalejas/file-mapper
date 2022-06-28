@@ -39,8 +39,8 @@ class TestMalAPI(CommonTest):
 
         self.assertEqual(MalAPI(mock_parser).get_anime_details(anime_id), AnimeMetadata(
             datasource_id=anime_id,
+            datasource=MalAPI.DATASOURCE,
             title=anime_name,
-            media_type=data['media_type'],
             alternative_titles=data['alternative_titles']
         ))
 

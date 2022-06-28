@@ -1,7 +1,7 @@
 import re
 from collections.abc import Iterable
 from enum import Enum
-from typing import Callable, Optional
+from typing import Callable, Optional, List
 
 
 class RomanNumbers(Enum):
@@ -32,15 +32,25 @@ def remove_parenthesis(word: str) -> str:
 
 
 def remove_episode(word: str) -> str:
-    return re.sub(r'- S?\d+E?\d+', '', word).strip()
+    match = re.search(r'( - )?e(pisode )?\d+| - \d+', word, re.IGNORECASE)
+    return word.replace(match.group(0), '').strip() if match is not None else word
+
+
+def remove_season(word: str) -> str:
+    match = re.search(r's(eason )?\d+', word, re.IGNORECASE)
+    return word.replace(match.group(0), '').strip() if match is not None else word
 
 
 def remove_extension(word: str) -> str:
-    return re.sub(r'\.[\w\d]{3}', '', word).strip()
+    return re.sub(r'\.[\w\d]{3,4}', '', word).strip()
+
+
+def remove_trailing_hyphen(word: str) -> str:
+    return re.sub(r'- ?$', '', word).strip()
 
 
 def retrieve_extension(word: str) -> Optional[str]:
-    match = re.search(r'\.[\w\d]{3}$', word, re.IGNORECASE)
+    match = re.search(r'\.[\w\d]{3,4}$', word, re.IGNORECASE)
     if match is not None:
         return match.group(0)[1:]
 
@@ -63,6 +73,18 @@ def levenshtein_distance(s1, s2):
                                            distances_[-1])))
         distances = distances_
     return distances[-1]
+
+
+def closest_result(keyword: str, elements: List[str]) -> str:
+    best_distance = levenshtein_distance(keyword, elements[0])
+    best_word = elements[0]
+    for w in elements:
+        d = levenshtein_distance(keyword, w)
+        if d < best_distance:
+            best_distance = d
+            best_word = w
+
+    return best_word
 
 
 def apply(functions: Iterable[Callable[[str], str]], arg: Iterable[str] | str):

@@ -27,7 +27,7 @@ class Parser(ABC, Object):
         pass
 
     @abstractmethod
-    def episode_name(self, item: MediaItem) -> Optional[str]:
+    def episode_name(self, item: MediaItem, use_metadata: bool = True) -> Optional[str]:
         pass
 
     @abstractmethod
@@ -35,15 +35,23 @@ class Parser(ABC, Object):
         pass
 
     @abstractmethod
-    def season_name(self, item: MediaItem) -> Optional[str]:
+    def season_name(self, item: MediaItem, use_metadata: bool = True) -> Optional[str]:
+        pass
+
+    @abstractmethod
+    def media_title(self, item: MediaItem, lang: str = 'en') -> Optional[str]:
+        """
+        Will try to return only the name of the media_file, without episode or season present
+        :return: Seikon no Qwaser
+        """
         pass
 
     @abstractmethod
     def media_name(self, item: MediaItem, lang: str = 'en') -> str:
-        pass
-
-    @abstractmethod
-    def is_seasoned_media_name(self, item: MediaItem) -> bool:
+        """
+        Will return the name of the media file
+        :return: Seikon no Qwaser II
+        """
         pass
 
     @staticmethod

@@ -1,6 +1,7 @@
 import re
 from typing import List, Optional
 
+from src.core.exceptions import MediaTypeException
 from src.core.models import MediaItem, Episode, Season, Show
 from src.core.models.metadata import AnimeMetadata
 from src.formatter._formatter import Formatter
@@ -26,46 +27,52 @@ class AnimeFormatter(Formatter, media_type=MediaType.ANIME):
             final.append(word if word in exceptions else word.capitalize())
         return ' '.join(final)
 
-    def new_name(self, parser: Parser, item: MediaItem) -> str:
+    def new_name(self, item: MediaItem, parser: Parser) -> str:
         match item:
             case Episode():
                 assert isinstance(item, Episode)
-                return self.__episode_new_name(parser, item)
-            case Season():
-                assert isinstance(item, Season)
-                return self.__season_new_name(parser, item)
-            case Show():
-                title = self.titlecase(parser.media_name(item, lang='ja'))
-                return f'{title}'
+                return self.__episode_new_name(item, parser)
+            case Season() | Show():
+                return self.titlecase(parser.media_name(item, lang='ja'))
 
-    def __episode_new_name(self, parser: Parser, item: Episode) -> str:
+    def format(self, item: MediaItem, parser: Parser, pattern: str, lang: str = 'en') -> str:
+        if '{season}' in pattern and isinstance(item, Show):
+            raise MediaTypeException(f'item {item} can\'t have season')
+        if '{episode}' in pattern and (isinstance(item, Show) or isinstance(item, Season)):
+            raise MediaTypeException(f'item {item} can\'t have episode')
+
+        if parser.season(item) <= 1:
+            pattern = re.sub(r' S(eason)? ?{season(_name)?} ?', '', pattern).strip()
+            pattern = re.sub(r' +', ' ', pattern).strip()
+
+        media_name = episode = episode_name = season = season_name = None
+        if '{media_name}' in pattern:
+            media_name = parser.media_name(item, lang=lang),
+        if '{episode}' in pattern:
+            episode = parser.episode(item)
+        if '{episode_name}' in pattern:
+            episode_name = parser.episode_name(item)
+        if '{season}' in pattern:
+            season = parser.season(item)
+        if '{season_name}' in pattern:
+            season_name = parser.season_name(item)
+
+        return pattern.format(
+            media_name=media_name,
+            media_title=parser.media_title(item, lang=lang),
+            season=season,
+            season_name=season_name,
+            episode=episode,
+            episode_name=episode_name,
+            extension=parser.extension(item),
+        )
+
+    def __episode_new_name(self, item: Episode, parser: Parser) -> str:
         title = self.titlecase(parser.media_name(item, lang='ja'))
         episode = parser.episode(item)
         episode_name = self.titlecase(parser.episode_name(item))
         extension = parser.extension(item)
-        if not self.__metadata(item).seasoned:
-            season = self.__get_season(parser, item)
-            if season is not None:
-                return f'{title} {season} - {episode:02d} - {episode_name}.{extension}'
         return f'{title} - {episode:02d} - {episode_name}.{extension}'
-
-    def __season_new_name(self, parser: Parser, item: Season) -> str:
-        title = self.titlecase(parser.media_name(item, lang='ja'))
-        if not self.__metadata(item).seasoned:
-            season = self.__get_season(parser, item)
-            if season is not None:
-                return f'{title} {season}'
-        return f'{title}'
-
-    def __get_season(self, parser: Parser, item: MediaItem) -> Optional[str]:
-        season = parser.season(item)
-        if season == 1:
-            return None
-
-        season_name = parser.season_name(item)
-        if season_name is None:
-            season_name = f'S{season}'
-        return self.titlecase(season_name)
 
     @staticmethod
     def __metadata(item: MediaItem) -> AnimeMetadata:

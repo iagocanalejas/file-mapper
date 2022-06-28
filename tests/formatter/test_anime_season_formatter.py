@@ -20,20 +20,19 @@ class TestAnimeSeasonFormatter(CommonTest):
         pairs: List[Tuple[SeasonFactory, str]] = [
             (self.__create_factory('Kobayashi-san Chi no Maid Dragon [v3][1080]', 'Kobayashi-san Chi no Maid Dragon'), 'Kobayashi-san Chi no Maid Dragon'),
             (self.__create_factory('Great Pretender', 'Great Pretender'), 'Great Pretender'),
-            (self.__create_factory('Seikon no Qwaser II', 'Seikon no Qwaser II', True), 'Seikon no Qwaser II'),
+            (self.__create_factory('Seikon no Qwaser II', 'Seikon no Qwaser II'), 'Seikon no Qwaser II'),
         ]
         for season, expected in pairs:
             with self.subTest(name=f'season:: {season.item_name}'):
                 assert isinstance(season, Season)
-                self.assertEqual(self.formatter.new_name(self.parser, season), expected)
+                self.assertEqual(self.formatter.new_name(season, self.parser), expected)
 
     @staticmethod
-    def __create_factory(item_name: str, title: str, seasoned: bool = False) -> SeasonFactory:
+    def __create_factory(item_name: str, title: str) -> SeasonFactory:
         return SeasonFactory.create(
             item_name=item_name,
             _metadata=AnimeMetadataFactory.create(
                 title=title,
-                seasoned=seasoned,
             )
         )
 

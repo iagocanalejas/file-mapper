@@ -26,5 +26,9 @@ class Formatter(ABC, Object):
         return word.title()
 
     @abstractmethod
-    def new_name(self, parser: Parser, item: MediaItem) -> str:
+    def new_name(self, item: MediaItem, parser: Parser) -> str:
+        pass
+
+    @abstractmethod
+    def format(self, item: MediaItem, parser: Parser, pattern: str, lang: str = 'en') -> str:
         pass

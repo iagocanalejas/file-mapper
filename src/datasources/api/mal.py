@@ -1,6 +1,5 @@
 import json
 import logging
-import re
 from pprint import pformat
 from typing import Any, List
 
@@ -9,7 +8,8 @@ from requests import RequestException
 
 import settings
 from src.core.models.metadata import AnimeMetadata
-from src.datasources._datasource import API
+from src.core.types import DatasourceName
+from src.datasources.datasource import API
 from src.datasources.exceptions import InvalidConfiguration
 from src.parsers import Parser
 from src.utils.strings import levenshtein_distance
@@ -18,7 +18,8 @@ logger = logging.getLogger()
 
 
 # https://myanimelist.net/apiconfig/references/api/v2
-class MalAPI(API):
+class MalAPI(API[int, AnimeMetadata]):
+    DATASOURCE = DatasourceName.MAL
     BASE_URL = 'https://api.myanimelist.net/v2'
     HEADERS = {
         'Access-Control-Allow-Origin': '*',
@@ -70,8 +71,8 @@ class MalAPI(API):
             logger.info(f'{self._class}:: found details :: {pformat(data)}')
             return AnimeMetadata(
                 datasource_id=data['id'],
-                title=self.__clean_title(data['title']),
-                media_type=data['media_type'],
+                datasource=self.DATASOURCE,
+                title=data['title'],
                 alternative_titles=data['alternative_titles']
             )
 
@@ -88,8 +89,3 @@ class MalAPI(API):
                 best_word = w
 
         return best_word
-
-    @staticmethod
-    def __clean_title(title: str) -> str:
-        s_re = re.compile(r'season ', re.IGNORECASE)
-        return s_re.sub('S', title)

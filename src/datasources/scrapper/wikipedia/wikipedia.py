@@ -2,7 +2,8 @@ import logging
 from typing import List, Protocol
 
 from src.core.models import Episode, Season, Show, MediaItem
-from src.datasources._datasource import Scrapper
+from src.core.types import DatasourceName
+from src.datasources.datasource import Scrapper
 from src.datasources.exceptions import NotFound
 from src.datasources.scrapper.wikipedia.pages import WikipediaEpisodePage, WikipediaMainPage, WikipediaPage
 from src.parsers import Parser
@@ -16,8 +17,7 @@ class KeywordFn(Protocol):
 
 
 class WikipediaScrapper(Scrapper):
-    BASE_EPISODE_URL = 'https://en.wikipedia.org/wiki/List_of_{}_episodes'
-    BASE_MAIN_URL = 'https://en.wikipedia.org/wiki/{}#Episode_list'
+    DATASOURCE = DatasourceName.WIKIPEDIA
     HEADERS = {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET',

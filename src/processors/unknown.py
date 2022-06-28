@@ -23,7 +23,3 @@ class UnknownProcessor(Processor, media_type=MediaType.UNKNOWN):
 
     def rename(self, item: MediaItem):
         raise UnsupportedMediaType()
-
-    @classmethod
-    def matches(cls, name: str, **kwargs) -> bool:
-        return False
