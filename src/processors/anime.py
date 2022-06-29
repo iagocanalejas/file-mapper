@@ -75,8 +75,8 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
         season = self.parser.season_name(item)
         return f'{media_name} {season}' if season and season not in media_name else f'{media_name}'
 
-    def __wikipedia_search_keyword(self, item: MediaItem) -> str:
-        media_name = self.parser.media_name(item)
+    def __wikipedia_search_keyword(self, item: MediaItem, lang: str = 'en') -> str:
+        media_name = self.parser.media_name(item, lang=lang)
         if 'season' in media_name.lower():
             s_re = re.compile(r'season \d+', re.IGNORECASE)
             media_name = generic_clean(s_re.sub('', media_name))

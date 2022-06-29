@@ -1,5 +1,6 @@
 import itertools
 import os
+import re
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from difflib import SequenceMatcher
@@ -85,10 +86,10 @@ class Directory(Item):
     @apply_clean(clean_functions=[generic_clean, remove_tracker, remove_parenthesis, remove_extension])
     def __items_can_share_season(items: Iterable[str]) -> bool:
         """
-        Check if all files share enough similarity to be considered of the same season
+        Check if all files share enough similarity to be considered of the same season or all strings match 'S1E01'
         :param items: list of files to check
         :return: bool expressing if the list can be considered a season
         """
-
         ratios = [SequenceMatcher(None, i[0], i[1]).ratio() for i in itertools.permutations(items, 2)]
-        return all(r > settings.SIMILARITY_THRESHOLD for r in ratios)
+        se = re.compile(r'^S\d+E\d+$|^E\d+$')  # probably a limit case
+        return all(r > settings.SIMILARITY_THRESHOLD for r in ratios) or all(se.match(s) for s in items)

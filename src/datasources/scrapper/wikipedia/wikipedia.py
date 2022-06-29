@@ -1,5 +1,5 @@
 import logging
-from typing import List, Callable
+from typing import List, Protocol
 
 from src.core.models import Episode, Season, Show, MediaItem
 from src.datasources._datasource import Scrapper
@@ -8,6 +8,11 @@ from src.datasources.scrapper.wikipedia.pages import WikipediaEpisodePage, Wikip
 from src.parsers import Parser
 
 logger = logging.getLogger()
+
+
+class KeywordFn(Protocol):
+    def __call__(self, item: MediaItem, lang: str = 'en') -> str:
+        pass
 
 
 class WikipediaScrapper(Scrapper):
@@ -21,14 +26,12 @@ class WikipediaScrapper(Scrapper):
         'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
     }
 
-    def __init__(self, parser: Parser, keyword_fn: Callable[[MediaItem], str]):
+    def __init__(self, parser: Parser, keyword_fn: KeywordFn):
         super(WikipediaScrapper, self).__init__(parser)
         self.keyword_fn = keyword_fn
 
     def fill_show_names(self, show: Show) -> Show:
-        logger.info(f'{self._class}:: searching for show :: {self.keyword_fn(show)}')
-
-        page = self.__load_page(self.keyword_fn(show))
+        page = self.__load_page(show)
         season_files = [f for s in [s.episodes for s in show.seasons] for f in s]
         self.__fill_episodes(page, show.episodes + season_files)
         self.__fill_seasons(page, show.seasons)
@@ -42,34 +45,34 @@ class WikipediaScrapper(Scrapper):
         :return: The season with the updated files
         """
 
-        logger.info(f'{self._class}:: searching for season :: {self.keyword_fn(season)}')
-
-        page = self.__load_page(self.keyword_fn(season))
+        page = self.__load_page(season)
         self.__fill_episodes(page, season.episodes)
         self.__fill_seasons(page, [season])
 
         return season
 
-    def fill_episode_name(self, file: Episode) -> Episode:
+    def fill_episode_name(self, episode: Episode) -> Episode:
         """
         Retrieves the episode name for the given file.
-        :param file: to fill episode name
+        :param episode: to fill episode name
         :return: Returns the file with the new episode name
         """
 
-        logger.info(f'{self._class}:: searching for episode :: {self.keyword_fn(file)}')
+        page = self.__load_page(episode)
+        self.__fill_episodes(page, [episode])
 
-        page = self.__load_page(self.keyword_fn(file))
-        self.__fill_episodes(page, [file])
+        return episode
 
-        return file
-
-    def __load_page(self, search_keyword: str) -> WikipediaPage:
-        page = WikipediaEpisodePage(search_keyword)
+    def __load_page(self, item: MediaItem, lang: str = 'en') -> WikipediaPage:
+        keyword = self.keyword_fn(item, lang=lang)
+        logger.info(f'{self._class}:: searching for :: {keyword}')
+        page = WikipediaEpisodePage(keyword)
         if not page.is_valid:
-            page = WikipediaMainPage(search_keyword)
+            page = WikipediaMainPage(keyword)
         if not page.is_valid:
-            raise NotFound(f"{self._class}:: matching page for :: {search_keyword}")
+            if lang == 'ja':
+                raise NotFound(f"{self._class}:: matching page for :: {keyword}")
+            return self.__load_page(item, lang='ja')
         return page
 
     def __fill_episodes(self, page: WikipediaPage, episodes: List[Episode]):

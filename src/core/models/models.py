@@ -47,28 +47,35 @@ class MediaItem(ABC, Object):
 
 @dataclass
 class Episode(MediaItem):
+    season: Optional['Season'] = None
+    show: Optional['Show'] = None
 
     @classmethod
-    def from_file(cls, file: File, media_type: MediaType) -> 'Episode':
+    def from_file(cls, file: File, media_type: MediaType, season: 'Season' = None, show: 'Show' = None) -> 'Episode':
         obj = object.__new__(cls)
         obj.base_path = file.base_path
         obj.item_name = file.name
+        obj.season = season
+        obj.show = show
         obj._media_type = media_type
         return obj
 
 
 @dataclass
 class Season(MediaItem):
+    show: Optional['Show'] = None
     episodes: List[Episode] = field(default_factory=list)
 
     @classmethod
-    def from_directory(cls, directory: Directory, media_type: MediaType) -> 'Season':
+    def from_directory(cls, directory: Directory, media_type: MediaType, show: 'Show' = None) -> 'Season':
         obj = object.__new__(cls)
         obj._media_type = media_type
         obj.base_path = directory.base_path
         obj.item_name = directory.name
+        obj.show = show
         obj.episodes = [
-            Episode.from_file(f, media_type) for f in directory.childs if isinstance(f, File) and f.is_valid
+            Episode.from_file(f, media_type, season=obj, show=show)
+            for f in directory.childs if isinstance(f, File) and f.is_valid
         ]
         return obj
 
@@ -97,14 +104,14 @@ class Show(MediaItem):
         obj.base_path = directory.base_path
         obj.item_name = directory.name
         obj.episodes = [
-            Episode.from_file(f, media_type) for f in directory.childs if isinstance(f, File) and f.is_valid
+            Episode.from_file(f, media_type, show=obj) for f in directory.childs if isinstance(f, File) and f.is_valid
         ]
 
         seasons: List[Season] = []
         for subdirectory in [d for d in directory.childs if isinstance(d, Directory) and d.is_valid]:
             if not subdirectory.has_only_files():
                 raise ValueError(f'{obj}')
-            seasons.append(Season.from_directory(subdirectory, media_type))
+            seasons.append(Season.from_directory(subdirectory, media_type, show=obj))
 
         obj.seasons = seasons
         return obj

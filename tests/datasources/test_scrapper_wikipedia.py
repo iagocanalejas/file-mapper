@@ -69,7 +69,7 @@ class TestWikipediaScrapper(CommonTest):
         assert isinstance(metadata, AnimeMetadata)
         self.assertEqual(metadata.episode_name, 'The Location of the Magdalene')
 
-    def __wikipedia_search_keyword(self, item: MediaItem) -> str:
+    def __wikipedia_search_keyword(self, item: MediaItem, lang: str = None) -> str:
         return self.parser.media_name(item).replace(' ', '_')
 
 

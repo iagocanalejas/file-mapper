@@ -33,7 +33,10 @@ class WikipediaPage(ABC, Object):
 
     @property
     def is_valid(self) -> bool:
-        return self.soup is not None
+        return (
+                self.soup is not None
+                and self.soup.find('span', {'id': 'Episode_list'}) is not None
+        )
 
     def episode_name(self, season: int, episode: int) -> Optional[str]:
         season_table = self._retrieve_season_table(season)

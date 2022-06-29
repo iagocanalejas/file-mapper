@@ -69,8 +69,9 @@ class FilmTypeMatcher(TypeMatcher):
 
     def __matches(self, name: str) -> bool:
         try:
+            # (?:19|20|21)\d{2}(?!p): matches a year between 1900 and 2199 and avoid matching the quality XXXXp
             re.search(
-                r'(.*)(([1-2])([890])(\d{2}))(?!p)',
+                r'(.*)(?:19|20|21)\d{2}(?!p)',
                 name,
                 re.IGNORECASE
             ).group(0)

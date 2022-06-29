@@ -4,8 +4,8 @@ from typing import Optional
 
 from src.core.models import MediaItem, Show, Season
 from src.core.models.metadata import AnimeMetadata
-from src.parsers._parser import Parser
 from src.matchers import MediaType
+from src.parsers._parser import Parser
 from src.utils.strings import remove_tracker, remove_parenthesis, RomanNumbers, apply_clean, \
     generic_clean, remove_extension, apply, remove_episode
 
@@ -92,7 +92,8 @@ class AnimeParser(Parser, media_type=MediaType.ANIME):
         match = re.search(r'Season \d+', word, re.IGNORECASE)
         if match is not None:
             # Matches Season 1
-            return int(match.group(0).replace('Season ', ''))
+            s_re = re.compile(r'season ', re.IGNORECASE)
+            return int(s_re.sub('', match.group(0)))
 
         match = re.search(r'S\d+E\d+', word, re.IGNORECASE)
         if match is not None:

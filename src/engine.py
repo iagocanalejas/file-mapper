@@ -78,6 +78,7 @@ class Engine(Object):
             return
 
         # Handle independent files
+        logger.info(f'{self._class}:: as separated files')
         [self.handle_file(item) for item in directory.childs if isinstance(item, File) and item.is_valid]
 
     def run(self):
