@@ -15,9 +15,8 @@ TEST_OBJECTS: List[TestObject] = [
         fixtures=[
             (r're:.*myanimelist.*anime\?q=Ahiru%20no%20Sora', f"json:{os.path.join(MAL_FIXTURES_DIR, 'ahiru_no_sora.json')}"),
             (r're:.*myanimelist.*anime\/37403', f"json:{os.path.join(MAL_FIXTURES_DIR, 'ahiru_no_sora_details.json')}"),
-            ('anilist:get_anime', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'ahiru_no_sora_details.json')}"),
-            ('anilist:get_anime_id', 'int:101239'),
-            ('anilist:get_anime_with_id', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'ahiru_no_sora_details.json')}"),
+            (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'ahiru_no_sora_details.json')}"),
+            (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'ahiru_no_sora_details.json')}"),
             (r're:.*wikipedia.*\/List_of_Ahiru_no_Sora_episodes', None),  # Requires an empty response to use main_page load
             (r're:.*wikipedia.*\/Ahiru_no_Sora#Episode_list', f"html:{os.path.join(WIKIPEDIA_FIXTURES_DIR, 'main_page_ahiru_no_sora.html')}"),
         ],
@@ -29,9 +28,8 @@ TEST_OBJECTS: List[TestObject] = [
         fixtures=[
             (r're:.*myanimelist.*anime\?q=Great%20Pretender', f"json:{os.path.join(MAL_FIXTURES_DIR, 'great_pretender.json')}"),
             (r're:.*myanimelist.*anime\/40052', f"json:{os.path.join(MAL_FIXTURES_DIR, 'great_pretender_details.json')}"),
-            ('anilist:get_anime', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'great_pretender_details.json')}"),
-            ('anilist:get_anime_id', 'int:110349'),
-            ('anilist:get_anime_with_id', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'great_pretender_details.json')}"),
+            (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'great_pretender_details.json')}"),
+            (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'great_pretender_details.json')}"),
             (r're:.*wikipedia.*\/List_of_Great_Pretender_episodes', f"html:{os.path.join(WIKIPEDIA_FIXTURES_DIR, 'episode_page_great_pretender.html')}"),
         ],
     ),
@@ -42,9 +40,8 @@ TEST_OBJECTS: List[TestObject] = [
         fixtures=[
             (r're:.*myanimelist.*anime\?q=Tate%20no%20Yuusha%20no%20Nariagari', f"json:{os.path.join(MAL_FIXTURES_DIR, 'tate_no_yuusha.json')}"),
             (r're:.*myanimelist.*anime\/40356', f"json:{os.path.join(MAL_FIXTURES_DIR, 'tate_no_yuusha_details.json')}"),
-            ('anilist:get_anime', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'tate_no_yuusha_details.json')}"),
-            ('anilist:get_anime_id', 'int:111321'),
-            ('anilist:get_anime_with_id', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'tate_no_yuusha_details.json')}"),
+            (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'tate_no_yuusha_details.json')}"),
+            (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'tate_no_yuusha_details.json')}"),
             (r're:.*wikipedia.*\/List_of_The_Rising_of_the_Shield_Hero_episodes', f"html:{os.path.join(WIKIPEDIA_FIXTURES_DIR, 'episode_page_tate_no_yuusha.html')}"),
         ],
     ),
@@ -55,9 +52,8 @@ TEST_OBJECTS: List[TestObject] = [
         fixtures=[
             (r're:.*myanimelist.*anime\?q=Seikon%20no%20Qwaser', f"json:{os.path.join(MAL_FIXTURES_DIR, 'seikon_no_qwaser.json')}"),
             (r're:.*myanimelist.*anime\/10073', f"json:{os.path.join(MAL_FIXTURES_DIR, 'seikon_no_qwaser_details.json')}"),
-            ('anilist:get_anime', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'seikon_no_qwaser_details.json')}"),
-            ('anilist:get_anime_id', 'int:10073'),
-            ('anilist:get_anime_with_id', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'seikon_no_qwaser_details.json')}"),
+            (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'seikon_no_qwaser_details.json')}"),
+            (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'seikon_no_qwaser_details.json')}"),
             (r're:.*wikipedia.*\/List_of_The_Qwaser_of_Stigmata_episodes', f"html:{os.path.join(WIKIPEDIA_FIXTURES_DIR, 'episode_page_seikon_no_qwaser.html')}"),
         ],
     ),
@@ -100,9 +96,8 @@ TEST_OBJECTS: List[TestObject] = [
         fixtures=[
             (r're:.*myanimelist.*anime\?q=Ahiru%20no%20Sora', f"json:{os.path.join(MAL_FIXTURES_DIR, 'ahiru_no_sora.json')}"),
             (r're:.*myanimelist.*anime\/37403', f"json:{os.path.join(MAL_FIXTURES_DIR, 'ahiru_no_sora_details.json')}"),
-            ('anilist:get_anime', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'ahiru_no_sora_details.json')}"),
-            ('anilist:get_anime_id', 'int:101239'),
-            ('anilist:get_anime_with_id', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'ahiru_no_sora_details.json')}"),
+            (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'ahiru_no_sora_details.json')}"),
+            (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'ahiru_no_sora_details.json')}"),
             (r're:.*wikipedia.*\/List_of_Ahiru_no_Sora_episodes', None),  # Requires an empty response to use main_page load
             (r're:.*wikipedia.*\/Ahiru_no_Sora#Episode_list', f"html:{os.path.join(WIKIPEDIA_FIXTURES_DIR, 'main_page_ahiru_no_sora.html')}"),
         ],
@@ -138,9 +133,8 @@ TEST_OBJECTS: List[TestObject] = [
         fixtures=[
             (r're:.*myanimelist.*anime\?q=Hajime%20no%20Ippo', f"json:{os.path.join(MAL_FIXTURES_DIR, 'hajime_no_ippo.json')}"),
             (r're:.*myanimelist.*anime\/263', f"json:{os.path.join(MAL_FIXTURES_DIR, 'hajime_no_ippo_details.json')}"),
-            ('anilist:get_anime', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'hajime_no_ippo_details.json')}"),
-            ('anilist:get_anime_id', 'int:19647'),
-            ('anilist:get_anime_with_id', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'hajime_no_ippo_details.json')}"),
+            (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'hajime_no_ippo_details.json')}"),
+            (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'hajime_no_ippo_details.json')}"),
             (r're:.*wikipedia.*', None),  # Requires an empty response to use main_page load
             (r're:.*wikipedia.*', None),  # Requires an empty response to use japanese load
             (r're:.*wikipedia.*\/List_of_Hajime_no_Ippo_episodes', f"html:{os.path.join(WIKIPEDIA_FIXTURES_DIR, 'episode_page_hajime_no_ippo.html')}"),

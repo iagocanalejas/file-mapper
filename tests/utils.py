@@ -2,7 +2,7 @@ import json
 import re
 from dataclasses import dataclass
 from pydoc import locate
-from typing import List, Optional, Tuple, Any, Dict
+from typing import List, Optional, Tuple
 
 from responses import RequestsMock
 
@@ -18,23 +18,21 @@ class TestObject:
     fixtures: List[Tuple[str, Optional[str]]]
 
 
-def configure_test(test_object: TestObject, responses: RequestsMock, mocks: Dict[str, Any]):
+def configure_test(test_object: TestObject, responses: RequestsMock):
     for key, value in test_object.fixtures:
         mock_name, key = key.split(':')
         ttype, parsed_value = __process_fixture(value)
+        method = responses.POST if 'graphql' in key else responses.GET
         if mock_name == 're':
             if ttype == 'json':
-                responses.add(responses.GET, url=re.compile(key), json=parsed_value)
+                responses.add(method, url=re.compile(key), json=parsed_value)
                 continue
             if ttype == 'html':
-                responses.add(responses.GET, url=re.compile(key), body=parsed_value)
+                responses.add(method, url=re.compile(key), body=parsed_value)
                 continue
             if ttype is None:
-                responses.add(responses.GET, url=re.compile(key), status=404)
+                responses.add(method, url=re.compile(key), status=404)
                 continue
-
-        # Configure mock functions
-        getattr(mocks[mock_name], key).return_value = parsed_value
 
 
 def load_page(path: str):

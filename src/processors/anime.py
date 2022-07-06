@@ -30,7 +30,7 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
         super(AnimeProcessor, self).__init__()
         self._finders = [
             (MalAPI(parser=self.parser), self.__format),
-            (AnilistAPI(parser=self.parser), self.__anilist_search_keyword),
+            (AnilistAPI(parser=self.parser), self.__format),
         ]
 
     def process_episode(self, episode: Episode):
@@ -78,9 +78,6 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
 
     def __format(self, item: MediaItem):
         return self.formatter.format(item, self.parser, pattern='{media_title}')
-
-    def __anilist_search_keyword(self, item: MediaItem) -> str:
-        return self.formatter.format(item, self.parser, pattern='{media_title} {season_name}')
 
     ########################
     #     First Level      #

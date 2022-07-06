@@ -36,9 +36,8 @@ class MalAPI(API[int, AnimeMetadata]):
 
     def search_anime(self, keyword: str) -> List[Tuple[str, int]]:
         """
-        Find the closest parsers anime from MAL searching using 'keyword'
-        :param keyword: used to search
-        :return: anime matches
+        Find top MAL matches using 'keyword'
+        :return: tuple containing MAL name and MAL id
         """
         url = f'{self.BASE_URL}/anime?q={keyword}'
         response = requests.get(url, headers=self.HEADERS)
@@ -50,7 +49,7 @@ class MalAPI(API[int, AnimeMetadata]):
             if settings.LOG_HTTP:
                 logger.debug(f'{self._class}: {pformat(data)}')
             found = [(r['node']['title'], r['node']['id']) for r in data]
-            logger.info(f'{self._class}:: closest result :: {found}')
+            logger.info(f'{self._class}:: found results :: {found}')
             return found
 
         raise RequestException(response=response)
@@ -58,8 +57,7 @@ class MalAPI(API[int, AnimeMetadata]):
     def get_anime_details(self, anime_id: int) -> AnimeMetadata:
         """
         Get the MAL anime details using 'anime_id'
-        :param anime_id: used to retrieve the details
-        :return: the retrieved MAL data
+        :return: MAL data parsed into AnimeMetadata
         """
         url = f'{self.BASE_URL}/anime/{anime_id}?fields=id,title,alternative_titles,media_type'
         response = requests.get(url, headers=self.HEADERS)

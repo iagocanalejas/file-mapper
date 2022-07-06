@@ -1,19 +1,63 @@
 {
-  "name_romaji": "Hajime no Ippo: Rising",
-  "name_english": "Fighting Spirit: Rising",
-  "starting_time": "10/6/2013",
-  "ending_time": "3/29/2014",
-  "cover_image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx19647-cIy7ShTL6e9h.jpg",
-  "banner_image": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/19647-yJfiQb4GchCg.jpg",
-  "airing_format": "TV",
-  "airing_status": "FINISHED",
-  "airing_episodes": 25,
-  "season": "FALL",
-  "desc": "Ippo continues to defend his Japanese Featherweight title from an ever stronger pool of challengers. Meanwhile, Takamura challenges for his second WBC title in the middleweight class, and Aoki challenges for the Japanese Lightweight title.",
-  "average_score": 84,
-  "genres": [
-    "Comedy",
-    "Drama",
-    "Sports"
-  ]
+  "data": {
+    "Page": {
+      "pageInfo": {
+        "total": 7,
+        "currentPage": 1,
+        "lastPage": 1,
+        "hasNextPage": false
+      },
+      "media": [
+        {
+          "id": 19647,
+          "title": {
+            "romaji": "Hajime no Ippo: Rising"
+          }
+        },
+        {
+          "id": 5258,
+          "title": {
+            "romaji": "Hajime no Ippo: New Challenger"
+          }
+        },
+        {
+          "id": 147928,
+          "title": {
+            "romaji": "Komaneko: Hajime no Ippo"
+          }
+        },
+        {
+          "id": 263,
+          "title": {
+            "romaji": "Hajime no Ippo: THE FIGHTING!"
+          }
+        },
+        {
+          "id": 12069,
+          "title": {
+            "romaji": "Hajime no Ippo: THE FIGHTING! Boxer no Kobushi"
+          }
+        },
+        {
+          "id": 264,
+          "title": {
+            "romaji": "Hajime no Ippo: Champion Road"
+          }
+        },
+        {
+          "id": 265,
+          "title": {
+            "romaji": "Hajime no Ippo: Mashiba vs Kimura - Shikei Shikkou"
+          }
+        }
+      ]
+    },
+    "Media": {
+      "id": 263,
+      "title": {
+        "romaji": "Hajime no Ippo: THE FIGHTING!",
+        "english": "Fighting Spirit"
+      }
+    }
+  }
 }

@@ -1,19 +1,27 @@
 {
-  "name_romaji": "GREAT PRETENDER",
-  "name_english": "Great Pretender",
-  "starting_time": "6/2/2020",
-  "ending_time": "9/21/2020",
-  "cover_image": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx110349-59hhZ9CNHVdk.png",
-  "banner_image": "https://s4.anilist.co/file/anilistcdn/media/anime/banner/110349-bGG1E4uunLoq.jpg",
-  "airing_format": "ONA",
-  "airing_status": "FINISHED",
-  "airing_episodes": 23,
-  "season": "SPRING",
-  "average_score": 82,
-  "genres": [
-    "Action",
-    "Comedy",
-    "Drama",
-    "Thriller"
-  ]
+  "data": {
+    "Page": {
+      "pageInfo": {
+        "total": 1,
+        "currentPage": 1,
+        "lastPage": 1,
+        "hasNextPage": false
+      },
+      "media": [
+        {
+          "id": 110349,
+          "title": {
+            "romaji": "GREAT PRETENDER"
+          }
+        }
+      ]
+    },
+    "Media": {
+      "id": 110349,
+      "title": {
+        "romaji": "GREAT PRETENDER",
+        "english": "Great Pretender"
+      }
+    }
+  }
 }

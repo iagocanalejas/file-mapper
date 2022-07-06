@@ -4,7 +4,6 @@ from unittest import mock
 import responses
 
 from src.core.models import Episode, Season, Show
-from src.core.types import DatasourceName
 from src.matchers import MediaType
 from src.processors import Processor
 from tests.integration.setup import TEST_OBJECTS
@@ -23,12 +22,10 @@ class TestAnimeProcessor(unittest.TestCase):
         self.responses.start()
 
     @mock.patch('os.rename')
-    @mock.patch('src.datasources.api.anilist.AnilistAPI')
-    def test_process_episodes(self, mock_anilist, mock_rename):
+    def test_process_episodes(self, mock_rename):
         mock_rename.return_value = None
         for test_object in [t for t in TEST_OBJECTS if t.media_type == MediaType.ANIME and isinstance(t.item, Episode)]:
-            configure_test(test_object, self.responses, {'anilist': mock_anilist})
-            self.__configure_anilist_mock(mock_anilist)
+            configure_test(test_object, self.responses)
 
             with self.subTest(name=f'testing:: {test_object.item.item_name}'):
                 assert isinstance(test_object.item, Episode)
@@ -39,12 +36,10 @@ class TestAnimeProcessor(unittest.TestCase):
             self.responses.reset()
 
     @mock.patch('os.rename')
-    @mock.patch('src.datasources.api.anilist.AnilistAPI')
-    def test_process_seasons(self, mock_anilist, mock_rename):
+    def test_process_seasons(self, mock_rename):
         mock_rename.return_value = None
         for test_object in [t for t in TEST_OBJECTS if t.media_type == MediaType.ANIME and isinstance(t.item, Season)]:
-            configure_test(test_object, self.responses, {'anilist': mock_anilist})
-            self.__configure_anilist_mock(mock_anilist)
+            configure_test(test_object, self.responses)
 
             with self.subTest(name=f'testing:: {test_object.item.item_name}'):
                 assert isinstance(test_object.item, Season)
@@ -57,12 +52,10 @@ class TestAnimeProcessor(unittest.TestCase):
             self.responses.reset()
 
     @mock.patch('os.rename')
-    @mock.patch('src.datasources.api.anilist.AnilistAPI')
-    def test_process_shows(self, mock_anilist, mock_rename):
+    def test_process_shows(self, mock_rename):
         mock_rename.return_value = None
         for test_object in [t for t in TEST_OBJECTS if t.media_type == MediaType.ANIME and isinstance(t.item, Show)]:
-            configure_test(test_object, self.responses, {'anilist': mock_anilist})
-            self.__configure_anilist_mock(mock_anilist)
+            configure_test(test_object, self.responses)
 
             with self.subTest(name=f'testing:: {test_object.item.item_name}'):
                 assert isinstance(test_object.item, Show)
@@ -79,11 +72,6 @@ class TestAnimeProcessor(unittest.TestCase):
                         counter += 1
 
             self.responses.reset()
-
-    def __configure_anilist_mock(self, mock_anilist):
-        for finder, _ in self.processor._finders:
-            if finder.DATASOURCE == DatasourceName.ANILIST:
-                finder._anilist = mock_anilist
 
 
 if __name__ == '__main__':
