@@ -5,7 +5,7 @@ env.read_env()
 
 # Testing flags
 ENABLE_PROFILE = True
-LOG_HTTP = False
+LOG_HTTP = True
 MOCK_RENAME = False
 
 # Application configurations

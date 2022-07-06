@@ -18,13 +18,6 @@ class KeywordFn(Protocol):
 
 class WikipediaScrapper(Scrapper):
     DATASOURCE = DatasourceName.WIKIPEDIA
-    HEADERS = {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Max-Age': '3600',
-        'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
-    }
 
     def __init__(self, parser: Parser, keyword_fn: KeywordFn):
         super(WikipediaScrapper, self).__init__(parser)
@@ -63,6 +56,7 @@ class WikipediaScrapper(Scrapper):
 
         return episode
 
+    # TODO: do this as an async call
     def __load_page(self, item: MediaItem, lang: str = 'en') -> WikipediaPage:
         keyword = self.keyword_fn(item, lang=lang)
         logger.info(f'{self._class}:: searching for :: {keyword}')

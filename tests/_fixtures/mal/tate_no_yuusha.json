@@ -1,0 +1,97 @@
+{
+    "data": [
+        {
+            "node": {
+                "id": 40356,
+                "title": "Tate no Yuusha no Nariagari Season 2",
+                "main_picture": {
+                    "medium": "https://api-cdn.myanimelist.net/images/anime/1143/121873.jpg",
+                    "large": "https://api-cdn.myanimelist.net/images/anime/1143/121873l.jpg"
+                }
+            }
+        },
+        {
+            "node": {
+                "id": 35790,
+                "title": "Tate no Yuusha no Nariagari",
+                "main_picture": {
+                    "medium": "https://api-cdn.myanimelist.net/images/anime/1490/101365.jpg",
+                    "large": "https://api-cdn.myanimelist.net/images/anime/1490/101365l.jpg"
+                }
+            }
+        },
+        {
+            "node": {
+                "id": 40357,
+                "title": "Tate no Yuusha no Nariagari Season 3",
+                "main_picture": {
+                    "medium": "https://api-cdn.myanimelist.net/images/anime/1406/104631.jpg",
+                    "large": "https://api-cdn.myanimelist.net/images/anime/1406/104631l.jpg"
+                }
+            }
+        },
+        {
+            "node": {
+                "id": 51222,
+                "title": "5-fun de Wakaru! Tate no Yuusha no Nariagari",
+                "main_picture": {
+                    "medium": "https://api-cdn.myanimelist.net/images/anime/1018/121465.jpg",
+                    "large": "https://api-cdn.myanimelist.net/images/anime/1018/121465l.jpg"
+                }
+            }
+        },
+        {
+            "node": {
+                "id": 6956,
+                "title": "Working!!",
+                "main_picture": {
+                    "medium": "https://api-cdn.myanimelist.net/images/anime/10/75262.jpg",
+                    "large": "https://api-cdn.myanimelist.net/images/anime/10/75262l.jpg"
+                }
+            }
+        },
+        {
+            "node": {
+                "id": 25879,
+                "title": "Working!!!",
+                "main_picture": {
+                    "medium": "https://api-cdn.myanimelist.net/images/anime/7/73886.jpg",
+                    "large": "https://api-cdn.myanimelist.net/images/anime/7/73886l.jpg"
+                }
+            }
+        },
+        {
+            "node": {
+                "id": 33094,
+                "title": "WWW.Working!!",
+                "main_picture": {
+                    "medium": "https://api-cdn.myanimelist.net/images/anime/11/82287.jpg",
+                    "large": "https://api-cdn.myanimelist.net/images/anime/11/82287l.jpg"
+                }
+            }
+        },
+        {
+            "node": {
+                "id": 33394,
+                "title": "Mahou Shoujo? Naria☆Girls",
+                "main_picture": {
+                    "medium": "https://api-cdn.myanimelist.net/images/anime/9/80373.jpg",
+                    "large": "https://api-cdn.myanimelist.net/images/anime/9/80373l.jpg"
+                }
+            }
+        },
+        {
+            "node": {
+                "id": 25519,
+                "title": "Yuuki Yuuna wa Yuusha de Aru",
+                "main_picture": {
+                    "medium": "https://api-cdn.myanimelist.net/images/anime/8/77057.jpg",
+                    "large": "https://api-cdn.myanimelist.net/images/anime/8/77057l.jpg"
+                }
+            }
+        }
+    ],
+    "paging": {
+        "next": "https://api.myanimelist.net/v2/anime?offset=10&q=Tate+no+Yuusha+no+Nariagari+S2"
+    }
+}

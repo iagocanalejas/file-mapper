@@ -19,7 +19,7 @@ class AnimeMetadata(Metadata):
     datasource_id: List[int] | int
     datasource: List[DatasourceName] | DatasourceName
     alternative_titles: Dict[str, str]
-    season_name: Optional[str] = None
+    season_name: Optional[str] = None  # TODO: should try to retrieve the season name in the scrappers
     episode_name: Optional[str] = None
 
     def media_name(self, lang: str = 'en') -> str:

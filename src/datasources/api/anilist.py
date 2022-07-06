@@ -1,4 +1,5 @@
 import logging
+from typing import Tuple, List
 
 from AnilistPython import Anilist
 
@@ -10,6 +11,7 @@ from src.parsers import Parser
 logger = logging.getLogger()
 
 
+# TODO: refactor to directly use the API instead of the library
 # https://github.com/ReZeroE/AnilistPython/wiki/Anime
 class AnilistAPI(API[int, AnimeMetadata]):
     DATASOURCE = DatasourceName.ANILIST
@@ -18,12 +20,16 @@ class AnilistAPI(API[int, AnimeMetadata]):
         super(AnilistAPI, self).__init__(parser)
         self._anilist = Anilist()
 
-    def find_anime(self, keyword: str) -> int:
-        # Prefers Season 2 better than S2
+    def __find_anime_id(self, keyword: str) -> int:
+        return self._anilist.get_anime_id(keyword)
+
+    def search_anime(self, keyword: str) -> List[Tuple[str, int]]:
         logger.info(f'{self._class}:: searching for :: {keyword}')
-        found_anime = self._anilist.get_anime_id(keyword)
+        found_anime = self._anilist.get_anime(keyword)
+        anime_id = self.__find_anime_id(found_anime['name_romaji'])
         logger.info(f'{self._class}:: retrieved :: {found_anime}')
-        return found_anime
+        logger.info(f'{self._class}:: with id :: {anime_id}')
+        return [(found_anime['name_romaji'], anime_id)]
 
     def get_anime_details(self, anime_id: int) -> AnimeMetadata:
         anime_dict = self._anilist.get_anime_with_id(anime_id)

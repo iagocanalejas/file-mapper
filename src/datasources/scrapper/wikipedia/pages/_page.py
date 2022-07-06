@@ -33,9 +33,13 @@ class WikipediaPage(ABC, Object):
 
     @property
     def is_valid(self) -> bool:
+        re_el = re.compile('episode.list', re.IGNORECASE)
         return (
                 self.soup is not None
-                and self.soup.find('span', {'id': 'Episode_list'}) is not None
+                and (
+                    self.soup.find('span', {'id': 'Episode_list'}, recursive=True) is not None
+                    or self.soup.find('span', string=re_el, recursive=True) is not None
+                )
         )
 
     def episode_name(self, season: int, episode: int) -> Optional[str]:
@@ -71,7 +75,7 @@ class WikipediaPage(ABC, Object):
     def __load_soup(self) -> Optional[BeautifulSoup]:
         logger.info(f'{self._class}:: trying :: {self.url}')
 
-        response = requests.get(self.url, self.HEADERS)
+        response = requests.get(self.url, headers=self.HEADERS)
         if response.status_code == 404:
             return None
 

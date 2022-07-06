@@ -1,0 +1,97 @@
+{
+  "data": [
+    {
+      "node": {
+        "id": 40052,
+        "main_picture": {
+          "large": "https://api-cdn.myanimelist.net/images/anime/1418/107954l.jpg",
+          "medium": "https://api-cdn.myanimelist.net/images/anime/1418/107954.jpg"
+        },
+        "title": "Great Pretender"
+      }
+    },
+    {
+      "node": {
+        "id": 32948,
+        "main_picture": {
+          "large": "https://api-cdn.myanimelist.net/images/anime/5/81624l.jpg",
+          "medium": "https://api-cdn.myanimelist.net/images/anime/5/81624.jpg"
+        },
+        "title": "Fune wo Amu"
+      }
+    },
+    {
+      "node": {
+        "id": 5333,
+        "main_picture": {
+          "large": "https://api-cdn.myanimelist.net/images/anime/12/10756l.jpg",
+          "medium": "https://api-cdn.myanimelist.net/images/anime/12/10756.jpg"
+        },
+        "title": "Ikkitousen: Great Guardians Specials"
+      }
+    },
+    {
+      "node": {
+        "id": 868,
+        "main_picture": {
+          "large": "https://api-cdn.myanimelist.net/images/anime/4/13097l.jpg",
+          "medium": "https://api-cdn.myanimelist.net/images/anime/4/13097.jpg"
+        },
+        "title": "Slayers Great"
+      }
+    },
+    {
+      "node": {
+        "id": 1248,
+        "main_picture": {
+          "large": "https://api-cdn.myanimelist.net/images/anime/1236/91066l.jpg",
+          "medium": "https://api-cdn.myanimelist.net/images/anime/1236/91066.jpg"
+        },
+        "title": "Zone of the Enders: 2167 Idolo"
+      }
+    },
+    {
+      "node": {
+        "id": 21821,
+        "main_picture": {
+          "large": "https://api-cdn.myanimelist.net/images/anime/7/60333l.jpg",
+          "medium": "https://api-cdn.myanimelist.net/images/anime/7/60333.jpg"
+        },
+        "title": "Fuuun Ishin Dai☆Shogun"
+      }
+    },
+    {
+      "node": {
+        "id": 26349,
+        "main_picture": {
+          "large": "https://api-cdn.myanimelist.net/images/anime/7/75287l.jpg",
+          "medium": "https://api-cdn.myanimelist.net/images/anime/7/75287.jpg"
+        },
+        "title": "Danna ga Nani wo Itteiru ka Wakaranai Ken"
+      }
+    },
+    {
+      "node": {
+        "id": 1589,
+        "main_picture": {
+          "large": "https://api-cdn.myanimelist.net/images/anime/13/67397l.jpg",
+          "medium": "https://api-cdn.myanimelist.net/images/anime/13/67397.jpg"
+        },
+        "title": "Bartender"
+      }
+    },
+    {
+      "node": {
+        "id": 4387,
+        "main_picture": {
+          "large": "https://api-cdn.myanimelist.net/images/anime/1592/99764l.jpg",
+          "medium": "https://api-cdn.myanimelist.net/images/anime/1592/99764.jpg"
+        },
+        "title": "UFO Robo Grendizer tai Great Mazinger"
+      }
+    }
+  ],
+  "paging": {
+    "next": "https://api.myanimelist.net/v2/anime?offset=10&q=+Ahiru+no+Sora+"
+  }
+}

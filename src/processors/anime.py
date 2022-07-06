@@ -1,11 +1,12 @@
 import logging
 import os
 import re
-from typing import List, Tuple, Callable
+from typing import List, Tuple, Callable, Dict, Any
 
 import settings
 from src.core.models import Show, Season, Episode, MediaItem
 from src.core.models.metadata import AnimeMetadata
+from src.core.types import DatasourceName
 from src.datasources.api import MalAPI, AnilistAPI
 from src.datasources.datasource import API
 from src.datasources.scrapper import WikipediaScrapper
@@ -28,16 +29,14 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
     def __init__(self, **_):
         super(AnimeProcessor, self).__init__()
         self._finders = [
-            (MalAPI(parser=self.parser), self.__mal_search_keyword),
+            (MalAPI(parser=self.parser), self.__format),
             (AnilistAPI(parser=self.parser), self.__anilist_search_keyword),
         ]
 
     def process_episode(self, episode: Episode):
         super(AnimeProcessor, self).process_episode(episode)
 
-        metadata = [finder.get_anime_details(anime_id=finder.find_anime(fn(episode))) for finder, fn in self._finders]
-        episode.metadata = self.__aggregate_metadata(episode, metadata)
-
+        self.__fill_metadata(episode)
         WikipediaScrapper(parser=self.parser, keyword_fn=self.__wikipedia_search_keyword).fill_episode_name(episode)
 
         self.rename(episode)
@@ -45,9 +44,7 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
     def process_season(self, season: Season):
         super(AnimeProcessor, self).process_season(season)
 
-        metadata = [finder.get_anime_details(anime_id=finder.find_anime(fn(season))) for finder, fn in self._finders]
-        season.metadata = self.__aggregate_metadata(season, metadata)
-
+        self.__fill_metadata(season)
         WikipediaScrapper(parser=self.parser, keyword_fn=self.__wikipedia_search_keyword).fill_season_names(season)
 
         self.rename(season)
@@ -55,9 +52,7 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
     def process_show(self, show: Show):
         super(AnimeProcessor, self).process_show(show)
 
-        metadata = [finder.get_anime_details(anime_id=finder.find_anime(fn(show))) for finder, fn in self._finders]
-        show.metadata = self.__aggregate_metadata(show, metadata)
-
+        self.__fill_metadata(show)
         WikipediaScrapper(parser=self.parser, keyword_fn=self.__wikipedia_search_keyword).fill_show_names(show)
 
         self.rename(show)
@@ -78,49 +73,74 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
         super(AnimeProcessor, self).rename(item)
 
     ########################
-    #     First Level      #
-    ########################
-    # parser.media_name should be none
+    #    Search Format     #
     ########################
 
+    def __format(self, item: MediaItem):
+        return self.formatter.format(item, self.parser, pattern='{media_title}')
+
+    def __anilist_search_keyword(self, item: MediaItem) -> str:
+        return self.formatter.format(item, self.parser, pattern='{media_title} {season_name}')
+
+    ########################
+    #     First Level      #
+    ########################
+
+    def __fill_metadata(self, item: MediaItem):
+        results = self.__filter_results(
+            item, [(finder.DATASOURCE, finder.search_anime(fn(item))) for finder, fn in self._finders]
+        )
+        metadata = [finder.get_anime_details(anime_id=results[finder.DATASOURCE]) for finder, _ in self._finders]
+        metadata = self.__aggregate_metadata(item, metadata)
+        logger.info(f'{self._class}:: aggregated metadata :: {metadata}')
+        item.metadata = metadata
+
+    def __filter_results(
+            self, item: MediaItem, results: List[Tuple[DatasourceName, List[Tuple[str, Any]]]]
+    ) -> Dict[DatasourceName, Any]:
+        best_results = {}
+        for datasource, result in results:
+            valid_results = result
+            if not isinstance(item, Show):
+                valid_results = [(name, anime_id) for name, anime_id in result if self.__match_season(item, name)]
+            closest_name = closest_result(
+                keyword=self.formatter.format(item, self.parser, pattern='{media_title} {season_name}'),
+                elements=[name for name, _ in valid_results],
+            )
+            anime_id = [anime_id for name, anime_id in result if name == closest_name][0]  # should always be one result
+            best_results[datasource] = anime_id
+
+        return best_results
+
+    def __match_season(self, item: MediaItem, name: str) -> bool:
+        if self.parser.season(item) > 1:
+            return self.parser.season_name(item) in name \
+                   or re.search(r's(eason )?\d+', name, re.IGNORECASE) is not None
+        return re.search(r's(eason )?\d+', name, re.IGNORECASE) is None  # simple no season check
+
     def __aggregate_metadata(self, item: MediaItem, metadata: List[AnimeMetadata]) -> AnimeMetadata:
-        pattern = '{media_title} Season {season}'
-        if isinstance(item, Show):
-            pattern = '{media_title}'
-        media_name = self.formatter.format(item, self.parser, pattern=pattern)
+        media_name = self.formatter.format(item, self.parser, pattern='{media_title} {season_name}')
 
         return AnimeMetadata(
             datasource_id=[m.datasource_id for m in metadata],
             datasource=[m.datasource for m in metadata],
             title=closest_result(media_name, [m.title for m in metadata]),
-            alternative_titles={k: v for m in metadata for k, v in m.alternative_titles.items()},
-            season_name=next((s for s in [m.season_name for m in metadata] if s is not None), None),
-            episode_name=next((s for s in [m.episode_name for m in metadata] if s is not None), None),
+            alternative_titles={k: v for m in metadata for k, v in m.alternative_titles.items() if v},
+            season_name=next((s for s in [m.season_name for m in metadata] if s), None),
+            episode_name=next((s for s in [m.episode_name for m in metadata] if s), None),
         )
-
-    def __mal_search_keyword(self, item: MediaItem) -> str:
-        pattern = '{media_title} S{season}'
-        if isinstance(item, Show):
-            pattern = '{media_title}'
-        return self.formatter.format(item, self.parser, pattern=pattern)
-
-    def __anilist_search_keyword(self, item: MediaItem) -> str:
-        pattern = '{media_title} Season {season}'
-        if isinstance(item, Show):
-            pattern = '{media_title}'
-        return self.formatter.format(item, self.parser, pattern=pattern)
 
     ########################
     #     Second Level     #
     ########################
-    # parser.media_name should be used
-    ########################
 
     def __wikipedia_search_keyword(self, item: MediaItem, lang: str = 'en') -> str:
+        # TODO: should titlecase the keyword ignoring some words
         media_name = self.parser.media_name(item, lang=lang)
-        media_name = remove_season(media_name)  # This removes S2, Season 2
+        media_name = re.sub(r'[_!]+', '', media_name)
+        media_name = remove_season(media_name)  # this removes S2, Season 2
         if not isinstance(item, Show):
             season_name = self.parser.season_name(item)
             if season_name is not None:
-                media_name = media_name.replace(season_name, '').strip()
+                media_name = media_name.replace(season_name, '').strip()  # this removes the season name
         return re.sub(r"\s", "_", media_name)

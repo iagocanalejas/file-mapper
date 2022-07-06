@@ -40,3 +40,6 @@ coverage run -m unittest discover
 
 Seikon no Qwaser -> Seikon no Qwaser II
 ```
+
+
+SpyXFamily

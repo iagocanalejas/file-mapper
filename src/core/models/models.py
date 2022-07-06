@@ -51,7 +51,9 @@ class Episode(MediaItem):
     show: Optional['Show'] = None
 
     @classmethod
-    def from_file(cls, file: File, media_type: MediaType, season: 'Season' = None, show: 'Show' = None) -> 'Episode':
+    def from_file(
+            cls, file: File, media_type: MediaType, season: 'Season' = None, show: 'Show' = None
+    ) -> 'Episode':  # pragma: no cover
         obj = object.__new__(cls)
         obj.base_path = file.base_path
         obj.item_name = file.name
@@ -67,7 +69,9 @@ class Season(MediaItem):
     episodes: List[Episode] = field(default_factory=list)
 
     @classmethod
-    def from_directory(cls, directory: Directory, media_type: MediaType, show: 'Show' = None) -> 'Season':
+    def from_directory(
+            cls, directory: Directory, media_type: MediaType, show: 'Show' = None
+    ) -> 'Season':  # pragma: no cover
         obj = object.__new__(cls)
         obj._media_type = media_type
         obj.base_path = directory.base_path
@@ -98,7 +102,7 @@ class Show(MediaItem):
     episodes: List[Episode] = field(default_factory=list)
 
     @classmethod
-    def from_directory(cls, directory: Directory, media_type: MediaType) -> 'Show':
+    def from_directory(cls, directory: Directory, media_type: MediaType) -> 'Show':  # pragma: no cover
         obj = object.__new__(cls)
         obj._media_type = media_type
         obj.base_path = directory.base_path

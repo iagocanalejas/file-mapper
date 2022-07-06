@@ -1,3 +1,4 @@
+import os
 import re
 import unittest
 from unittest import mock
@@ -9,11 +10,12 @@ from src.core.models.metadata import AnimeMetadata
 from src.datasources.scrapper import WikipediaScrapper
 from src.parsers import Parser
 from src.matchers import MediaType
-from tests.factories import MediaItemFactory
-from tests.test import CommonTest
+from tests import settings
+from tests.factories import MediaItemFactory, AnimeMetadataFactory
+from tests.utils import load_page
 
 
-class TestWikipediaScrapper(CommonTest):
+class TestWikipediaScrapper(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
@@ -24,11 +26,11 @@ class TestWikipediaScrapper(CommonTest):
         self.responses = responses.RequestsMock()
         self.responses.start()
 
-        self.file = MediaItemFactory()
+        self.file = MediaItemFactory.create(item_name='', _metadata=AnimeMetadataFactory())
 
     @mock.patch('src.parsers.anime.AnimeParser')
     def test_load_from_episode_page(self, mock_parser):
-        data = self._load_page('wikipedia_episode_page_great_pretender.html')
+        data = load_page(os.path.join(settings.WIKIPEDIA_FIXTURES_DIR, 'episode_page_great_pretender.html'))
         self.responses.add(responses.GET, url=re.compile('.*'), body=data)
 
         mock_parser.episode.return_value = 1
@@ -42,7 +44,7 @@ class TestWikipediaScrapper(CommonTest):
 
     @mock.patch('src.parsers.anime.AnimeParser')
     def test_load_from_main_page(self, mock_parser):
-        data = self._load_page('wikipedia_main_page_ahiru_no_sora.html')
+        data = load_page(os.path.join(settings.WIKIPEDIA_FIXTURES_DIR, 'main_page_ahiru_no_sora.html'))
         self.responses.add(responses.GET, url=re.compile('.*'), status=404)
         self.responses.add(responses.GET, url=re.compile('.*'), body=data)
 
@@ -57,7 +59,7 @@ class TestWikipediaScrapper(CommonTest):
 
     @mock.patch('src.parsers.anime.AnimeParser')
     def test_load_from_episode_page_2(self, mock_parser):
-        data = self._load_page('wikipedia_episode_page_seikon_no_qwaser.html')
+        data = load_page(os.path.join(settings.WIKIPEDIA_FIXTURES_DIR, 'episode_page_seikon_no_qwaser.html'))
         self.responses.add(responses.GET, url=re.compile('.*'), body=data)
 
         mock_parser.episode.return_value = 2

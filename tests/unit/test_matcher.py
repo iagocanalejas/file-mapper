@@ -2,10 +2,9 @@ import unittest
 from typing import List, Tuple
 
 from src.matchers import AnimeTypeMatcher, FilmTypeMatcher
-from tests.test import CommonTest
 
 
-class TestAnimeMatcher(CommonTest):
+class TestAnimeMatcher(unittest.TestCase):
     files: List[Tuple[str, bool]] = [
         ('[Cleo]Great_Pretender_-_02_(Dual Audio_10bit_1080p_x265).mkv', True),
         ('[Judas] Ahiru no Sora - S01E02.mkv', True),
@@ -19,7 +18,7 @@ class TestAnimeMatcher(CommonTest):
                 self.assertEqual(AnimeTypeMatcher().matches(file_name), should_pass)
 
 
-class TestFilmMatcher(CommonTest):
+class TestFilmMatcher(unittest.TestCase):
     files: List[Tuple[str, bool]] = [
         ('Nobody.2021.2160p.BluRay.x265.10bit.SDR.DTS-HD.MA.TrueHD.7.1.Atmos-SWTYBLZ.mkv', True),
         ('[Cleo]Great_Pretender_-_02_(Dual Audio_10bit_1080p_x265).mkv', False),

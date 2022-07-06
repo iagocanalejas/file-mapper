@@ -1,0 +1,97 @@
+{
+    "data": [
+        {
+            "node": {
+                "id": 19647,
+                "title": "Hajime no Ippo: Rising",
+                "main_picture": {
+                    "medium": "https://api-cdn.myanimelist.net/images/anime/6/56147.jpg",
+                    "large": "https://api-cdn.myanimelist.net/images/anime/6/56147l.jpg"
+                }
+            }
+        },
+        {
+            "node": {
+                "id": 5258,
+                "title": "Hajime no Ippo: New Challenger",
+                "main_picture": {
+                    "medium": "https://api-cdn.myanimelist.net/images/anime/8/56617.jpg",
+                    "large": "https://api-cdn.myanimelist.net/images/anime/8/56617l.jpg"
+                }
+            }
+        },
+        {
+            "node": {
+                "id": 263,
+                "title": "Hajime no Ippo",
+                "main_picture": {
+                    "medium": "https://api-cdn.myanimelist.net/images/anime/4/86334.jpg",
+                    "large": "https://api-cdn.myanimelist.net/images/anime/4/86334l.jpg"
+                }
+            }
+        },
+        {
+            "node": {
+                "id": 264,
+                "title": "Hajime no Ippo: Champion Road",
+                "main_picture": {
+                    "medium": "https://api-cdn.myanimelist.net/images/anime/9/2361.jpg",
+                    "large": "https://api-cdn.myanimelist.net/images/anime/9/2361l.jpg"
+                }
+            }
+        },
+        {
+            "node": {
+                "id": 12069,
+                "title": "Hajime no Ippo: Boxer no Kobushi",
+                "main_picture": {
+                    "medium": "https://api-cdn.myanimelist.net/images/anime/2/84664.jpg",
+                    "large": "https://api-cdn.myanimelist.net/images/anime/2/84664l.jpg"
+                }
+            }
+        },
+        {
+            "node": {
+                "id": 265,
+                "title": "Hajime no Ippo: Mashiba vs. Kimura",
+                "main_picture": {
+                    "medium": "https://api-cdn.myanimelist.net/images/anime/4/64737.jpg",
+                    "large": "https://api-cdn.myanimelist.net/images/anime/4/64737l.jpg"
+                }
+            }
+        },
+        {
+            "node": {
+                "id": 25681,
+                "title": "Kamisama Hajimemashita◎",
+                "main_picture": {
+                    "medium": "https://api-cdn.myanimelist.net/images/anime/8/69187.jpg",
+                    "large": "https://api-cdn.myanimelist.net/images/anime/8/69187l.jpg"
+                }
+            }
+        },
+        {
+            "node": {
+                "id": 34176,
+                "title": "Zero kara Hajimeru Mahou no Sho",
+                "main_picture": {
+                    "medium": "https://api-cdn.myanimelist.net/images/anime/5/85224.jpg",
+                    "large": "https://api-cdn.myanimelist.net/images/anime/5/85224l.jpg"
+                }
+            }
+        },
+        {
+            "node": {
+                "id": 31240,
+                "title": "Re:Zero kara Hajimeru Isekai Seikatsu",
+                "main_picture": {
+                    "medium": "https://api-cdn.myanimelist.net/images/anime/11/79410.jpg",
+                    "large": "https://api-cdn.myanimelist.net/images/anime/11/79410l.jpg"
+                }
+            }
+        }
+    ],
+    "paging": {
+        "next": "https://api.myanimelist.net/v2/anime?offset=10&q=Hajime+no+ippo"
+    }
+}

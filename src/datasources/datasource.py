@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any, Generic, TypeVar
+from typing import Any, Generic, TypeVar, Tuple, List
 
 from src.core.models.metadata import Metadata
 from src.core.types import Object, DatasourceName
@@ -19,7 +19,7 @@ M = TypeVar("M", bound=Metadata)
 
 class API(Datasource, ABC, Generic[K, M]):
     @abstractmethod
-    def find_anime(self, keyword: str) -> K:
+    def search_anime(self, keyword: str) -> List[Tuple[str, K]]:
         pass
 
     @abstractmethod
