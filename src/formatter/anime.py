@@ -31,6 +31,7 @@ class AnimeFormatter(Formatter, media_type=MediaType.ANIME):
     def new_name(self, item: MediaItem, parser: Parser) -> str:
         match item:
             case Episode():
+                # TODO: should contain season
                 pattern = '{media_name} - {episode:02d} - {episode_name}.{extension}'
                 return self.titlecase(self.format(item, parser, pattern=pattern, lang='ja'))
             case Season():

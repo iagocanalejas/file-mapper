@@ -126,8 +126,8 @@ TEST_OBJECTS: List[TestObject] = [
             'Hajime no Ippo',
             'Hajime no Ippo - 01 - The First Step.mkv',
             'Hajime no Ippo - 02 - Fruits of Labor.mkv',
-            'Hajime no Ippo Season 2: New Challenger (2009)',
-            'Hajime no Ippo - 01 - The New Step.mkv',  # TODO: should contain season
+            'Hajime no Ippo Season 2: New Challenger',
+            'Hajime no Ippo - 01 - The New Step.mkv',
             'Hajime no Ippo - 02 - Bloody Cross.mkv',
         ],
         fixtures=[

@@ -54,6 +54,10 @@ class WikipediaPage(ABC, Object):
         return None
 
     @abstractmethod
+    def title(self) -> Optional[str]:
+        pass
+
+    @abstractmethod
     def season_name(self, season: int) -> Optional[str]:
         pass
 

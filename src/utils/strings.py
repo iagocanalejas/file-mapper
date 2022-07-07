@@ -28,7 +28,7 @@ def remove_tracker(word: str) -> str:
 
 
 def remove_parenthesis(word: str) -> str:
-    return re.sub(r'\([\w\d\-_ +]*\)', '', word).strip()
+    return re.sub(r'\([\w\d\-_− +]*\)', '', word).strip()
 
 
 def remove_episode(word: str) -> str:

@@ -12,6 +12,10 @@ logger = logging.getLogger()
 class WikipediaEpisodePage(WikipediaPage):
     BASE_URL = 'https://en.wikipedia.org/wiki/List_of_{}_episodes'
 
+    def title(self) -> Optional[str]:
+        title = self.soup.find('h1', {'id': 'firstHeading'}).text
+        return title.replace('List of', '').replace('episodes', '').strip()
+
     def season_name(self, season: int) -> Optional[str]:
         if self.__has_toc():
             season_re = re.compile(f'Season {season}.*')
@@ -23,7 +27,7 @@ class WikipediaEpisodePage(WikipediaPage):
                 seasons_li = self.soup.find_all("span", {'class': 'toctext'}, text=episode_list_re)[0].parent.parent
                 season_spans = seasons_li.find('ul').find_all("span", {"class": "toctext"})
                 # Some TOCs have OVA seasons between normal seasons...
-                return [s for s in season_spans if 'ova' not in s.text.lower()][season - 1].text
+                return [s for s in season_spans if not re.search(r'ova', s.text, re.IGNORECASE)][season - 1].text
         return None
 
     def _retrieve_season_table(self, season: int) -> Tag:
@@ -36,3 +40,9 @@ class WikipediaEpisodePage(WikipediaPage):
 
     def __has_toc(self) -> bool:
         return self.soup.find('div', {'id': 'toc'}) is not None
+
+    def __patch_season_name(self, season_name: str) -> str:
+        match = re.match(self.title(), season_name, re.IGNORECASE)
+        if match is not None:
+            return season_name.replace(match.group(0), '').strip()
+        return season_name

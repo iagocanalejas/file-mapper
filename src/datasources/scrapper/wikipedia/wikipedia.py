@@ -1,4 +1,5 @@
 import logging
+import re
 from typing import List, Protocol
 
 from src.core.models import Episode, Season, Show, MediaItem
@@ -7,6 +8,7 @@ from src.datasources.datasource import Scrapper
 from src.datasources.exceptions import NotFound
 from src.datasources.scrapper.wikipedia.pages import WikipediaEpisodePage, WikipediaMainPage, WikipediaPage
 from src.parsers import Parser
+from src.utils.strings import remove_parenthesis
 
 logger = logging.getLogger()
 
@@ -76,6 +78,7 @@ class WikipediaScrapper(Scrapper):
             episode_name = page.episode_name(self.parser.season(episode), self.parser.episode(episode))
             if episode_name is None:
                 not_found.append(episode)
+                continue
 
             episode.metadata.episode_name = episode_name
 
@@ -88,7 +91,15 @@ class WikipediaScrapper(Scrapper):
             season_name = page.season_name(self.parser.season(season))
             if season_name is None:
                 not_found.append(season)
+                continue
 
-            season.metadata.season_name = season_name
+            season.metadata.season_name = self.__patch_season_name(page, remove_parenthesis(season_name))
 
         logger.info(f'{self._class}:: NOT FOUND :: season names :: {[s.item_name for s in not_found]}')
+
+    @staticmethod
+    def __patch_season_name(page: WikipediaPage, season_name: str) -> str:
+        match = re.match(page.title(), season_name, re.IGNORECASE)
+        if match is not None:
+            return season_name.replace(match.group(0), '').strip()
+        return season_name

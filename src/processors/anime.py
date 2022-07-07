@@ -132,7 +132,7 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
     ########################
 
     def __wikipedia_search_keyword(self, item: MediaItem, lang: str = 'en') -> str:
-        # TODO: should titlecase the keyword ignoring some words
+        # TODO: should titlecase the keyword ignoring some words. The 'Yuri on Ice' problem
         media_name = self.parser.media_name(item, lang=lang)
         media_name = re.sub(r'[_!]+', '', media_name)
         media_name = remove_season(media_name)  # this removes S2, Season 2
