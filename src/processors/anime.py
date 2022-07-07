@@ -62,10 +62,10 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
             for f in item.episodes:
                 self.rename(f)
         if isinstance(item, Show):
-            for f in item.episodes:
-                self.rename(f)
             for s in item.seasons:
                 self.rename(s)
+            for f in item.episodes:
+                self.rename(f)
 
         if not settings.MOCK_RENAME:
             os.rename(item.path, os.path.join(item.base_path, self.formatter.new_name(item, self.parser)))
@@ -123,8 +123,8 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
             datasource=[m.datasource for m in metadata],
             title=closest_result(media_name, [m.title for m in metadata]),
             alternative_titles={k: v for m in metadata for k, v in m.alternative_titles.items() if v},
-            season_name=next((s for s in [m.season_name for m in metadata] if s), None),
-            episode_name=next((s for s in [m.episode_name for m in metadata] if s), None),
+            season_name=next(iter([m.season_name for m in metadata]), None),
+            episode_name=next(iter([m.episode_name for m in metadata]), None),
         )
 
     ########################

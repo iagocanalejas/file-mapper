@@ -3,7 +3,7 @@ import re
 from typing import Optional
 
 from src.core.exceptions import MediaTypeException
-from src.core.models import MediaItem, Show, Season
+from src.core.models import MediaItem, Show, Season, Episode
 from src.core.models.metadata import AnimeMetadata
 from src.matchers import MediaType
 from src.parsers._parser import Parser
@@ -51,6 +51,8 @@ class AnimeParser(Parser, media_type=MediaType.ANIME):
         if use_metadata and item.metadata is not None:
             metadata = item.metadata
             assert isinstance(metadata, AnimeMetadata)
+            if metadata.season_name is None and isinstance(item, Episode) and item.season is not None:
+                metadata = item.season.metadata
             if metadata.season_name is not None:
                 return metadata.season_name
         return self._parse_season_name(item.item_name)

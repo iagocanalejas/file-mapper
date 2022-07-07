@@ -31,8 +31,7 @@ class AnimeFormatter(Formatter, media_type=MediaType.ANIME):
     def new_name(self, item: MediaItem, parser: Parser) -> str:
         match item:
             case Episode():
-                # TODO: should contain season
-                pattern = '{media_name} - {episode:02d} - {episode_name}.{extension}'
+                pattern = '{media_name} {season_name} - {episode:02d} - {episode_name}.{extension}'
                 return self.titlecase(self.format(item, parser, pattern=pattern, lang='ja'))
             case Season():
                 return self.titlecase(self.format(item, parser, pattern='{media_name} {season_name}', lang='ja'))
@@ -69,16 +68,29 @@ class AnimeFormatter(Formatter, media_type=MediaType.ANIME):
     def __remove_season_if_required(
             item: MediaItem, parser: Parser, season_name: str, pattern: str, lang: str = 'en'
     ) -> str:
-        if isinstance(item, Show) or parser.season(item) <= 1 or not season_name \
-                or ('{media_name}' in pattern and season_name in parser.media_name(item, lang=lang)):
-            pattern = re.sub(r'( S(eason)?)? ?{season(_name)?} ?', '', pattern).strip()
+        season = parser.season(item) if not isinstance(item, Show) else None
+        should_remove_season = False
+        if not season or not season_name:
+            should_remove_season = True
+        elif season <= 1 and re.match(r'^S(eason )?\d+$', season_name, re.IGNORECASE):
+            # No meaningful season name for season 1
+            should_remove_season = True
+        elif '{media_name}' in pattern:
+            media_name = parser.media_name(item, lang=lang)
+            re_se = f'S(eason )?{season}'
+            if re.search(re_se, media_name, re.IGNORECASE) or re.search(season_name, media_name, re.IGNORECASE):
+                # Season name is already contained in the media_name
+                should_remove_season = True
+
+        if should_remove_season:
+            pattern = re.sub(r'( S(eason)?)? ?{season(_name)?}', '', pattern).strip()
             pattern = re.sub(r' +', ' ', pattern).strip()
         return pattern
 
     @staticmethod
     def __remove_episode_if_required(item: MediaItem, pattern: str) -> str:
         if isinstance(item, Show) or isinstance(item, Season):
-            pattern = re.sub(r'( E(pisode)?)? ?{episode(_name)?(:\d+d)?} ?', '', pattern).strip()
+            pattern = re.sub(r'( E(pisode)?)? ?{episode(_name)?(:\d+d)?}', '', pattern).strip()
             pattern = re.sub(r' +', ' ', pattern).strip()
         return pattern
 

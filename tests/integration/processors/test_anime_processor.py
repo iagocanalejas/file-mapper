@@ -17,6 +17,17 @@ class TestAnimeProcessor(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.processor = Processor(media_type=MediaType.ANIME)
 
+        for to in TEST_OBJECTS:
+            if isinstance(to.item, Season) or isinstance(to.item, Show):
+                for episode in to.item.episodes:
+                    episode.season = to.item
+            if isinstance(to.item, Show):
+                for season in to.item.seasons:
+                    season.show = to.item
+                    for episode in season.episodes:
+                        episode.season = season
+                        episode.show = to.item
+
     def setUp(self) -> None:
         self.responses = responses.RequestsMock()
         self.responses.start()
