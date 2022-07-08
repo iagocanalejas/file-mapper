@@ -11,29 +11,25 @@
         {
           "id": 99263,
           "title": {
-            "romaji": "Tate no Yuusha no Nariagari"
+            "romaji": "Tate no Yuusha no Nariagari",
+            "english": "The Rising of the Shield Hero"
           }
         },
         {
           "id": 111321,
           "title": {
-            "romaji": "Tate no Yuusha no Nariagari Season 2"
+            "romaji": "Tate no Yuusha no Nariagari Season 2",
+            "english": "The Rising of the Shield Hero Season 2"
           }
         },
         {
           "id": 111322,
           "title": {
-            "romaji": "Tate no Yuusha no Nariagari Season 3"
+            "romaji": "Tate no Yuusha no Nariagari Season 3",
+            "english": null
           }
         }
       ]
-    },
-    "Media": {
-      "id": 111321,
-      "title": {
-        "romaji": "Tate no Yuusha no Nariagari Season 2",
-        "english": "The Rising of the Shield Hero Season 2"
-      }
     }
   }
 }

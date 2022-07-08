@@ -11,17 +11,11 @@
         {
           "id": 110349,
           "title": {
-            "romaji": "GREAT PRETENDER"
+            "romaji": "GREAT PRETENDER",
+            "english": "Great Pretender"
           }
         }
       ]
-    },
-    "Media": {
-      "id": 110349,
-      "title": {
-        "romaji": "GREAT PRETENDER",
-        "english": "Great Pretender"
-      }
     }
   }
 }

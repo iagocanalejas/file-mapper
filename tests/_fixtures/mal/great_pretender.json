@@ -3,95 +3,150 @@
     {
       "node": {
         "id": 40052,
+        "title": "Great Pretender",
         "main_picture": {
-          "large": "https://api-cdn.myanimelist.net/images/anime/1418/107954l.jpg",
-          "medium": "https://api-cdn.myanimelist.net/images/anime/1418/107954.jpg"
+          "medium": "https://api-cdn.myanimelist.net/images/anime/1418/107954.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/1418/107954l.jpg"
         },
-        "title": "Great Pretender"
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "",
+          "ja": ""
+        }
       }
     },
     {
       "node": {
         "id": 32948,
+        "title": "Fune wo Amu",
         "main_picture": {
-          "large": "https://api-cdn.myanimelist.net/images/anime/5/81624l.jpg",
-          "medium": "https://api-cdn.myanimelist.net/images/anime/5/81624.jpg"
+          "medium": "https://api-cdn.myanimelist.net/images/anime/5/81624.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/5/81624l.jpg"
         },
-        "title": "Fune wo Amu"
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "The Great Passage",
+          "ja": "舟を編む"
+        }
       }
     },
     {
       "node": {
         "id": 5333,
+        "title": "Ikkitousen: Great Guardians Specials",
         "main_picture": {
-          "large": "https://api-cdn.myanimelist.net/images/anime/12/10756l.jpg",
-          "medium": "https://api-cdn.myanimelist.net/images/anime/12/10756.jpg"
+          "medium": "https://api-cdn.myanimelist.net/images/anime/12/10756.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/12/10756l.jpg"
         },
-        "title": "Ikkitousen: Great Guardians Specials"
+        "alternative_titles": {
+          "synonyms": [
+            "Ikkitousen: Great Guardians OVA"
+          ],
+          "en": "",
+          "ja": "一騎当千: Great Guardians"
+        }
       }
     },
     {
       "node": {
         "id": 868,
+        "title": "Slayers Great",
         "main_picture": {
-          "large": "https://api-cdn.myanimelist.net/images/anime/4/13097l.jpg",
-          "medium": "https://api-cdn.myanimelist.net/images/anime/4/13097.jpg"
+          "medium": "https://api-cdn.myanimelist.net/images/anime/4/13097.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/4/13097l.jpg"
         },
-        "title": "Slayers Great"
+        "alternative_titles": {
+          "synonyms": [
+            "Slayers Movie 3"
+          ],
+          "en": "Slayers Great",
+          "ja": "スレーヤーズぐれえと"
+        }
       }
     },
     {
       "node": {
         "id": 1248,
+        "title": "Zone of the Enders: 2167 Idolo",
         "main_picture": {
-          "large": "https://api-cdn.myanimelist.net/images/anime/1236/91066l.jpg",
-          "medium": "https://api-cdn.myanimelist.net/images/anime/1236/91066.jpg"
+          "medium": "https://api-cdn.myanimelist.net/images/anime/1236/91066.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/1236/91066l.jpg"
         },
-        "title": "Zone of the Enders: 2167 Idolo"
+        "alternative_titles": {
+          "synonyms": [
+            "ZOE: Idolo"
+          ],
+          "en": "Z.O.E. 2167 Idolo",
+          "ja": "Z.O.E 2167 IDOLO"
+        }
       }
     },
     {
       "node": {
         "id": 21821,
+        "title": "Fuuun Ishin Dai☆Shogun",
         "main_picture": {
-          "large": "https://api-cdn.myanimelist.net/images/anime/7/60333l.jpg",
-          "medium": "https://api-cdn.myanimelist.net/images/anime/7/60333.jpg"
+          "medium": "https://api-cdn.myanimelist.net/images/anime/7/60333.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/7/60333l.jpg"
         },
-        "title": "Fuuun Ishin Dai☆Shogun"
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "Dai-Shogun: Great Revolution",
+          "ja": "風雲維新ダイ☆ショーグン"
+        }
       }
     },
     {
       "node": {
         "id": 26349,
+        "title": "Danna ga Nani wo Itteiru ka Wakaranai Ken",
         "main_picture": {
-          "large": "https://api-cdn.myanimelist.net/images/anime/7/75287l.jpg",
-          "medium": "https://api-cdn.myanimelist.net/images/anime/7/75287.jpg"
+          "medium": "https://api-cdn.myanimelist.net/images/anime/7/75287.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/7/75287l.jpg"
         },
-        "title": "Danna ga Nani wo Itteiru ka Wakaranai Ken"
+        "alternative_titles": {
+          "synonyms": [
+            "Danna ga Nani wo Itteiru ka Wakaranai Ken"
+          ],
+          "en": "I Can't Understand What My Husband Is Saying",
+          "ja": "旦那が何を言っているかわからない件"
+        }
       }
     },
     {
       "node": {
         "id": 1589,
+        "title": "Bartender",
         "main_picture": {
-          "large": "https://api-cdn.myanimelist.net/images/anime/13/67397l.jpg",
-          "medium": "https://api-cdn.myanimelist.net/images/anime/13/67397.jpg"
+          "medium": "https://api-cdn.myanimelist.net/images/anime/13/67397.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/13/67397l.jpg"
         },
-        "title": "Bartender"
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "Bartender",
+          "ja": "バーテンダー"
+        }
       }
     },
     {
       "node": {
         "id": 4387,
+        "title": "UFO Robo Grendizer tai Great Mazinger",
         "main_picture": {
-          "large": "https://api-cdn.myanimelist.net/images/anime/1592/99764l.jpg",
-          "medium": "https://api-cdn.myanimelist.net/images/anime/1592/99764.jpg"
+          "medium": "https://api-cdn.myanimelist.net/images/anime/1592/99764.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/1592/99764l.jpg"
         },
-        "title": "UFO Robo Grendizer tai Great Mazinger"
+        "alternative_titles": {
+          "synonyms": [
+            "UFO Robo Grandizer vs. Great Mazinger"
+          ],
+          "en": "",
+          "ja": "UFOロボ グレンダイザー対グレートマジンガー"
+        }
       }
     }
   ],
   "paging": {
-    "next": "https://api.myanimelist.net/v2/anime?offset=10&q=+Ahiru+no+Sora+"
+    "next": "https://api.myanimelist.net/v2/anime?offset=10&q=Great+Pretender&fields=alternative_titles"
   }
 }

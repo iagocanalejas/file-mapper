@@ -2,7 +2,7 @@
   "data": {
     "Page": {
       "pageInfo": {
-        "total": 5,
+        "total": 3,
         "currentPage": 1,
         "lastPage": 1,
         "hasNextPage": false
@@ -11,41 +11,25 @@
         {
           "id": 21709,
           "title": {
-            "romaji": "Yuuri!!! on ICE"
-          }
-        },
-        {
-          "id": 102167,
-          "title": {
-            "romaji": "Yuri Plisetsky GPF in Barcelona EX “Welcome to The Madness”"
+            "romaji": "Yuuri!!! on ICE",
+            "english": "Yuri!!! on ICE"
           }
         },
         {
           "id": 98656,
           "title": {
-            "romaji": "Yuuri!!! on ICE The Movie: ICE ADOLESCENCE"
+            "romaji": "Yuuri!!! on ICE The Movie: ICE ADOLESCENCE",
+            "english": null
           }
         },
         {
-          "id": 10058,
+          "id": 102167,
           "title": {
-            "romaji": "Sore Ike! Anpanman: Yuurei Sen wo Yattsukero!!"
-          }
-        },
-        {
-          "id": 145481,
-          "title": {
-            "romaji": "Sore Ike! Anpanman: Yuuki no Hana ga Hiraku Toki"
+            "romaji": "Yuri Plisetsky GPF in Barcelona EX “Welcome to The Madness”",
+            "english": "Yuri on Ice Side Story: Welcome to The Madness"
           }
         }
       ]
-    },
-    "Media": {
-      "id": 21709,
-      "title": {
-        "romaji": "Yuuri!!! on ICE",
-        "english": "Yuri!!! on ICE"
-      }
     }
   }
 }

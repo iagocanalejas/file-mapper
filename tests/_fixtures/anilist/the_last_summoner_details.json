@@ -1,0 +1,35 @@
+{
+  "data": {
+    "Page": {
+      "pageInfo": {
+        "total": 3,
+        "currentPage": 1,
+        "lastPage": 1,
+        "hasNextPage": false
+      },
+      "media": [
+        {
+          "id": 114108,
+          "title": {
+            "romaji": "Zuihou De Zhaohuan Shi",
+            "english": "THE LAST SUMMONER"
+          }
+        },
+        {
+          "id": 104083,
+          "title": {
+            "romaji": "Hiroshima: Natsu no Nokgori no Bara",
+            "english": "Hiroshima: The Last Summer Rose"
+          }
+        },
+        {
+          "id": 13821,
+          "title": {
+            "romaji": "Kamiusagi Rope tsuka, Natsuyasumi Rasuichi tte Maji ssuka!?",
+            "english": "Paper Rabbit Rope: Wait Last One For Summer Vacation For Real!?"
+          }
+        }
+      ]
+    }
+  }
+}

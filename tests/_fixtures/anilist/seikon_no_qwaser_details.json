@@ -11,41 +11,39 @@
         {
           "id": 6500,
           "title": {
-            "romaji": "Seikon no Qwaser"
+            "romaji": "Seikon no Qwaser",
+            "english": "The Qwaser of Stigmata"
           }
         },
         {
           "id": 10073,
           "title": {
-            "romaji": "Seikon no Qwaser II"
+            "romaji": "Seikon no Qwaser II",
+            "english": "The Qwaser of Stigmata II"
           }
         },
         {
           "id": 9202,
           "title": {
-            "romaji": "Seikon no Qwaser: Jotei no Shouzou"
+            "romaji": "Seikon no Qwaser: Jotei no Shouzou",
+            "english": null
           }
         },
         {
           "id": 8668,
           "title": {
-            "romaji": "Seikon no Qwaser Picture Drama"
+            "romaji": "Seikon no Qwaser Picture Drama",
+            "english": "The Qwaser Of Stigmata Picture Drama"
           }
         },
         {
           "id": 10920,
           "title": {
-            "romaji": "Seikon no Qwaser II Picture Drama"
+            "romaji": "Seikon no Qwaser II Picture Drama",
+            "english": "The Qwaser Of Stigmata II Picture Drama"
           }
         }
       ]
-    },
-    "Media": {
-      "id": 10073,
-      "title": {
-        "romaji": "Seikon no Qwaser II",
-        "english": "The Qwaser of Stigmata II"
-      }
     }
   }
 }

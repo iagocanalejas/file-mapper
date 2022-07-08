@@ -11,53 +11,53 @@
         {
           "id": 19647,
           "title": {
-            "romaji": "Hajime no Ippo: Rising"
+            "romaji": "Hajime no Ippo: Rising",
+            "english": "Fighting Spirit: Rising"
           }
         },
         {
           "id": 5258,
           "title": {
-            "romaji": "Hajime no Ippo: New Challenger"
+            "romaji": "Hajime no Ippo: New Challenger",
+            "english": "Fighting Spirit: New Challenger"
           }
         },
         {
           "id": 147928,
           "title": {
-            "romaji": "Komaneko: Hajime no Ippo"
+            "romaji": "Komaneko: Hajime no Ippo",
+            "english": "Komaneko: The First Step"
           }
         },
         {
           "id": 263,
           "title": {
-            "romaji": "Hajime no Ippo: THE FIGHTING!"
+            "romaji": "Hajime no Ippo: THE FIGHTING!",
+            "english": "Fighting Spirit"
           }
         },
         {
           "id": 12069,
           "title": {
-            "romaji": "Hajime no Ippo: THE FIGHTING! Boxer no Kobushi"
+            "romaji": "Hajime no Ippo: THE FIGHTING! Boxer no Kobushi",
+            "english": "Fighting Spirit Special"
           }
         },
         {
           "id": 264,
           "title": {
-            "romaji": "Hajime no Ippo: Champion Road"
+            "romaji": "Hajime no Ippo: Champion Road",
+            "english": "Fighting Spirit: Champion Road"
           }
         },
         {
           "id": 265,
           "title": {
-            "romaji": "Hajime no Ippo: Mashiba vs Kimura - Shikei Shikkou"
+            "romaji": "Hajime no Ippo: Mashiba vs Kimura - Shikei Shikkou",
+            "english": "Fighting Spirit: Mashiba vs. Kimura"
           }
         }
       ]
-    },
-    "Media": {
-      "id": 263,
-      "title": {
-        "romaji": "Hajime no Ippo: THE FIGHTING!",
-        "english": "Fighting Spirit"
-      }
     }
   }
 }

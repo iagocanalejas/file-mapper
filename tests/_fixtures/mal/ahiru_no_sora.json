@@ -7,6 +7,11 @@
         "main_picture": {
           "medium": "https://api-cdn.myanimelist.net/images/anime/1975/108030.jpg",
           "large": "https://api-cdn.myanimelist.net/images/anime/1975/108030l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "",
+          "ja": "あひるの空"
         }
       }
     },
@@ -17,6 +22,11 @@
         "main_picture": {
           "medium": "https://api-cdn.myanimelist.net/images/anime/6/82948.jpg",
           "large": "https://api-cdn.myanimelist.net/images/anime/6/82948l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "Chiruran 1/2",
+          "ja": "ちるらん にぶんの壱"
         }
       }
     },
@@ -27,6 +37,15 @@
         "main_picture": {
           "medium": "https://api-cdn.myanimelist.net/images/anime/11/30030.jpg",
           "large": "https://api-cdn.myanimelist.net/images/anime/11/30030l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Kami nomi zo Shiru Sekai 2",
+            "Kaminomi II",
+            "The World God Only Knows 2"
+          ],
+          "en": "The World God Only Knows II",
+          "ja": "神のみぞ知るセカイ II"
         }
       }
     },
@@ -37,6 +56,13 @@
         "main_picture": {
           "medium": "https://api-cdn.myanimelist.net/images/anime/1468/102527.jpg",
           "large": "https://api-cdn.myanimelist.net/images/anime/1468/102527l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "The Person Who Knows How Blue the Sky Is"
+          ],
+          "en": "Her Blue Sky",
+          "ja": "空の青さを知る人よ"
         }
       }
     },
@@ -47,26 +73,11 @@
         "main_picture": {
           "medium": "https://api-cdn.myanimelist.net/images/anime/7/85275.jpg",
           "large": "https://api-cdn.myanimelist.net/images/anime/7/85275l.jpg"
-        }
-      }
-    },
-    {
-      "node": {
-        "id": 16706,
-        "title": "Kami nomi zo Shiru Sekai: Megami-hen",
-        "main_picture": {
-          "medium": "https://api-cdn.myanimelist.net/images/anime/6/51949.jpg",
-          "large": "https://api-cdn.myanimelist.net/images/anime/6/51949l.jpg"
-        }
-      }
-    },
-    {
-      "node": {
-        "id": 6852,
-        "title": "Ahiru no Otegara",
-        "main_picture": {
-          "medium": "https://api-cdn.myanimelist.net/images/anime/8/15856.jpg",
-          "large": "https://api-cdn.myanimelist.net/images/anime/8/15856l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "The Ugly Duckling",
+          "ja": "あひるの子"
         }
       }
     },
@@ -77,11 +88,53 @@
         "main_picture": {
           "medium": "https://api-cdn.myanimelist.net/images/anime/10/62485.jpg",
           "large": "https://api-cdn.myanimelist.net/images/anime/10/62485l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "Celestial Method",
+          "ja": "天体のメソッド"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 16706,
+        "title": "Kami nomi zo Shiru Sekai: Megami-hen",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/6/51949.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/6/51949l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Kami nomi zo Shiru Sekai III",
+            "Kami nomi zo Shiru Sekai 3",
+            "Kaminomi III",
+            "Kaminomi 3",
+            "The World God Only Knows III",
+            "The World God Only Knows 3"
+          ],
+          "en": "The World God Only Knows: Goddesses",
+          "ja": "神のみぞ知るセカイ 女神篇"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 6852,
+        "title": "Ahiru no Otegara",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/8/15856.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/8/15856l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "The Duckling Saves the Day",
+          "ja": "アヒルのお手柄"
         }
       }
     }
   ],
   "paging": {
-    "next": "https://api.myanimelist.net/v2/anime?offset=10&q=+Ahiru+no+Sora+"
+    "next": "https://api.myanimelist.net/v2/anime?offset=10&q=Ahiru+no+Sora&fields=alternative_titles"
   }
 }

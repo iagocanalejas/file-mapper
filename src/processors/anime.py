@@ -1,12 +1,11 @@
 import logging
 import os
 import re
-from typing import List, Tuple, Callable, Dict, Any
+from typing import List, Tuple, Callable
 
 import settings
 from src.core.models import Show, Season, Episode, MediaItem
 from src.core.models.metadata import AnimeMetadata
-from src.core.types import DatasourceName
 from src.datasources.api import MalAPI, AnilistAPI
 from src.datasources.datasource import API
 from src.datasources.scrapper import WikipediaScrapper
@@ -84,36 +83,13 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
     ########################
 
     def __fill_metadata(self, item: MediaItem):
-        results = self.__filter_results(
-            item, [(finder.DATASOURCE, finder.search_anime(fn(item))) for finder, fn in self._finders]
-        )
-        metadata = [finder.get_anime_details(anime_id=results[finder.DATASOURCE]) for finder, _ in self._finders]
+        season = self.parser.season(item) if not isinstance(item, Show) else 0
+        season_name = self.parser.season_name(item) if not isinstance(item, Show) else None
+        metadata = [finder.search_anime(fn(item), season, season_name) for finder, fn in self._finders]
         metadata = self.__aggregate_metadata(item, metadata)
+
         logger.info(f'{self._class}:: aggregated metadata :: {metadata}')
         item.metadata = metadata
-
-    def __filter_results(
-            self, item: MediaItem, results: List[Tuple[DatasourceName, List[Tuple[str, Any]]]]
-    ) -> Dict[DatasourceName, Any]:
-        best_results = {}
-        for datasource, result in results:
-            valid_results = result
-            if not isinstance(item, Show):
-                valid_results = [(name, anime_id) for name, anime_id in result if self.__match_season(item, name)]
-            closest_name = closest_result(
-                keyword=self.formatter.format(item, self.parser, pattern='{media_title} {season_name}'),
-                elements=[name for name, _ in valid_results],
-            )
-            anime_id = [anime_id for name, anime_id in result if name == closest_name][0]  # should always be one result
-            best_results[datasource] = anime_id
-
-        return best_results
-
-    def __match_season(self, item: MediaItem, name: str) -> bool:
-        if self.parser.season(item) > 1:
-            return self.parser.season_name(item) in name \
-                   or re.search(r's(eason )?\d+', name, re.IGNORECASE) is not None
-        return re.search(r's(eason )?\d+', name, re.IGNORECASE) is None  # simple no season check
 
     def __aggregate_metadata(self, item: MediaItem, metadata: List[AnimeMetadata]) -> AnimeMetadata:
         media_name = self.formatter.format(item, self.parser, pattern='{media_title} {season_name}')

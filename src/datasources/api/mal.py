@@ -1,7 +1,8 @@
 import json
 import logging
+from dataclasses import dataclass
 from pprint import pformat
-from typing import List, Tuple
+from typing import List, Dict
 
 import requests
 from requests import RequestException
@@ -9,7 +10,7 @@ from requests import RequestException
 import settings
 from src.core.models.metadata import AnimeMetadata
 from src.core.types import DatasourceName
-from src.datasources.datasource import API
+from src.datasources.datasource import APIData, AnimeAPI
 from src.datasources.exceptions import InvalidConfiguration
 from src.parsers import Parser
 
@@ -17,9 +18,10 @@ logger = logging.getLogger()
 
 
 # https://myanimelist.net/apiconfig/references/api/v2
-class MalAPI(API[int, AnimeMetadata]):
+class MalAPI(AnimeAPI):
     DATASOURCE = DatasourceName.MAL
     BASE_URL = 'https://api.myanimelist.net/v2'
+    EXTRA_FIELDS = 'alternative_titles'
     HEADERS = {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET',
@@ -34,44 +36,35 @@ class MalAPI(API[int, AnimeMetadata]):
         if settings.MAL_CLIENT_ID is None:
             raise InvalidConfiguration('MAL_CLIENT_ID')
 
-    def search_anime(self, keyword: str) -> List[Tuple[str, int]]:
-        """
-        Find top MAL matches using 'keyword'
-        :return: tuple containing MAL name and MAL id
-        """
-        url = f'{self.BASE_URL}/anime?q={keyword}'
+    def search_anime(self, keyword: str, season: int, season_name: str) -> AnimeMetadata:
+        url = f'{self.BASE_URL}/anime?q={keyword}&fields={self.EXTRA_FIELDS}'
         response = requests.get(url, headers=self.HEADERS)
         logger.info(f'{self._class}:: searching for :: {url}')
 
         if response.status_code == 200:
-            # data format: [{'node': {'id': int, 'main_picture': {'large': 'str', 'medium': 'str'}, 'title': 'str'}}]
-            data = json.loads(response.content)['data']
+            # data format: [{'node': {'id': int, 'alternative_titles': {'en': '', 'ja': ''}, 'title': 'str'}}]
+            content = json.loads(response.content)['data']
             if settings.LOG_HTTP:
-                logger.debug(f'{self._class}: {pformat(data)}')
-            found = [(r['node']['title'], r['node']['id']) for r in data]
-            logger.info(f'{self._class}:: found results :: {found}')
-            return found
+                logger.debug(f'{self._class}: {pformat(content)}')
 
-        raise RequestException(response=response)
+            # parse data into Python objects
+            data: List[_MalData] = [_MalData(d['node']) for d in content]
+            match = self._best_match(keyword, data, season, season_name)
 
-    def get_anime_details(self, anime_id: int) -> AnimeMetadata:
-        """
-        Get the MAL anime details using 'anime_id'
-        :return: MAL data parsed into AnimeMetadata
-        """
-        url = f'{self.BASE_URL}/anime/{anime_id}?fields=id,title,alternative_titles,media_type'
-        response = requests.get(url, headers=self.HEADERS)
-        logger.info(f'{self._class}:: details for :: {url}')
-
-        if response.status_code == 200:
-            # data format: {'alternative_titles': {'en': '', 'ja': ''}, 'id': int, 'media_type': 'tv', 'title': 'str'}
-            data = json.loads(response.content)
-            logger.info(f'{self._class}:: found details :: {pformat(data)}')
+            logger.info(f'{self._class}:: matching result :: {match}')
             return AnimeMetadata(
-                datasource_id=data['id'],
+                datasource_id=match.id,
                 datasource=self.DATASOURCE,
-                title=data['title'],
-                alternative_titles=data['alternative_titles']
+                title=match.title('ja'),
+                alternative_titles=match.alternative_titles,
             )
 
         raise RequestException(response=response)
+
+
+@dataclass
+class _MalData(APIData):
+    def __init__(self, d: Dict):
+        super(_MalData, self).__init__(d)
+        self._title = d['title']
+        self.alternative_titles = d['alternative_titles']

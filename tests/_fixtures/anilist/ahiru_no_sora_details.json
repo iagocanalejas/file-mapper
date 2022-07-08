@@ -11,47 +11,46 @@
         {
           "id": 101239,
           "title": {
-            "romaji": "Ahiru no Sora"
+            "romaji": "Ahiru no Sora",
+            "english": "Ahiru no Sora"
           }
         },
         {
           "id": 108577,
           "title": {
-            "romaji": "Sora no Aosa wo Shiru Hito yo"
+            "romaji": "Sora no Aosa wo Shiru Hito yo",
+            "english": "Her Blue Sky"
           }
         },
         {
           "id": 126892,
           "title": {
-            "romaji": "Shouta no Sushi: Kokoro ni Hibiku Shari no Aji"
+            "romaji": "Shouta no Sushi: Kokoro ni Hibiku Shari no Aji",
+            "english": null
           }
         },
         {
           "id": 18753,
           "title": {
-            "romaji": "Yahari Ore no Seishun Love Come wa Machigatteiru.: Kochira to Shite mo Karera Kanojora no Yukusue ni Sachi Ookaran Koto wo Negawazaru wo Enai."
+            "romaji": "Yahari Ore no Seishun Love Come wa Machigatteiru.: Kochira to Shite mo Karera Kanojora no Yukusue ni Sachi Ookaran Koto wo Negawazaru wo Enai.",
+            "english": "My Teen Romantic Comedy SNAFU OVA"
           }
         },
         {
           "id": 21586,
           "title": {
-            "romaji": "Owari no Seraph: Kyuuketsuki Shahal"
+            "romaji": "Owari no Seraph: Kyuuketsuki Shahal",
+            "english": "Seraph of the End: Kyuuketsuki Shahal"
           }
         },
         {
           "id": 140788,
           "title": {
-            "romaji": "Taimanin Shiranui: Inyoku no Dorei Shoufu"
+            "romaji": "Taimanin Shiranui: Inyoku no Dorei Shoufu",
+            "english": null
           }
         }
       ]
-    },
-    "Media": {
-      "id": 101239,
-      "title": {
-        "romaji": "Ahiru no Sora",
-        "english": "Ahiru no Sora"
-      }
     }
   }
 }

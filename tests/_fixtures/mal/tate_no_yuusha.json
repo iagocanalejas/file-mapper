@@ -1,97 +1,159 @@
 {
-    "data": [
-        {
-            "node": {
-                "id": 40356,
-                "title": "Tate no Yuusha no Nariagari Season 2",
-                "main_picture": {
-                    "medium": "https://api-cdn.myanimelist.net/images/anime/1143/121873.jpg",
-                    "large": "https://api-cdn.myanimelist.net/images/anime/1143/121873l.jpg"
-                }
-            }
+  "data": [
+    {
+      "node": {
+        "id": 35790,
+        "title": "Tate no Yuusha no Nariagari",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/1490/101365.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/1490/101365l.jpg"
         },
-        {
-            "node": {
-                "id": 35790,
-                "title": "Tate no Yuusha no Nariagari",
-                "main_picture": {
-                    "medium": "https://api-cdn.myanimelist.net/images/anime/1490/101365.jpg",
-                    "large": "https://api-cdn.myanimelist.net/images/anime/1490/101365l.jpg"
-                }
-            }
-        },
-        {
-            "node": {
-                "id": 40357,
-                "title": "Tate no Yuusha no Nariagari Season 3",
-                "main_picture": {
-                    "medium": "https://api-cdn.myanimelist.net/images/anime/1406/104631.jpg",
-                    "large": "https://api-cdn.myanimelist.net/images/anime/1406/104631l.jpg"
-                }
-            }
-        },
-        {
-            "node": {
-                "id": 51222,
-                "title": "5-fun de Wakaru! Tate no Yuusha no Nariagari",
-                "main_picture": {
-                    "medium": "https://api-cdn.myanimelist.net/images/anime/1018/121465.jpg",
-                    "large": "https://api-cdn.myanimelist.net/images/anime/1018/121465l.jpg"
-                }
-            }
-        },
-        {
-            "node": {
-                "id": 6956,
-                "title": "Working!!",
-                "main_picture": {
-                    "medium": "https://api-cdn.myanimelist.net/images/anime/10/75262.jpg",
-                    "large": "https://api-cdn.myanimelist.net/images/anime/10/75262l.jpg"
-                }
-            }
-        },
-        {
-            "node": {
-                "id": 25879,
-                "title": "Working!!!",
-                "main_picture": {
-                    "medium": "https://api-cdn.myanimelist.net/images/anime/7/73886.jpg",
-                    "large": "https://api-cdn.myanimelist.net/images/anime/7/73886l.jpg"
-                }
-            }
-        },
-        {
-            "node": {
-                "id": 33094,
-                "title": "WWW.Working!!",
-                "main_picture": {
-                    "medium": "https://api-cdn.myanimelist.net/images/anime/11/82287.jpg",
-                    "large": "https://api-cdn.myanimelist.net/images/anime/11/82287l.jpg"
-                }
-            }
-        },
-        {
-            "node": {
-                "id": 33394,
-                "title": "Mahou Shoujo? Naria☆Girls",
-                "main_picture": {
-                    "medium": "https://api-cdn.myanimelist.net/images/anime/9/80373.jpg",
-                    "large": "https://api-cdn.myanimelist.net/images/anime/9/80373l.jpg"
-                }
-            }
-        },
-        {
-            "node": {
-                "id": 25519,
-                "title": "Yuuki Yuuna wa Yuusha de Aru",
-                "main_picture": {
-                    "medium": "https://api-cdn.myanimelist.net/images/anime/8/77057.jpg",
-                    "large": "https://api-cdn.myanimelist.net/images/anime/8/77057l.jpg"
-                }
-            }
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "The Rising of the Shield Hero",
+          "ja": "盾の勇者の成り上がり"
         }
-    ],
-    "paging": {
-        "next": "https://api.myanimelist.net/v2/anime?offset=10&q=Tate+no+Yuusha+no+Nariagari+S2"
+      }
+    },
+    {
+      "node": {
+        "id": 40357,
+        "title": "Tate no Yuusha no Nariagari Season 3",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/1406/104631.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/1406/104631l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Tate no Yuusha no Nariagari 3rd Season",
+            "The Rising of the Shield Hero 3rd Season"
+          ],
+          "en": "The Rising of the Shield Hero Season 3",
+          "ja": "盾の勇者の成り上がり"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 40356,
+        "title": "Tate no Yuusha no Nariagari Season 2",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/1143/121873.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/1143/121873l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Tate no Yuusha no Nariagari 2nd Season"
+          ],
+          "en": "The Rising of the Shield Hero Season 2",
+          "ja": "盾の勇者の成り上がり Season2"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 51222,
+        "title": "5-fun de Wakaru! Tate no Yuusha no Nariagari",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/1018/121465.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/1018/121465l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "You can see it in 5 minutes! The first cour of the TV anime \"The Rising of the Shield Hero\""
+          ],
+          "en": "",
+          "ja": "５分でわかる！TVアニメ『盾の勇者の成り上がり』第１クール"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 25519,
+        "title": "Yuuki Yuuna wa Yuusha de Aru",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/8/77057.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/8/77057l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Yuki Yuna wa Yusha de Aru",
+            "Yuuki Yuuna is a Hero",
+            "YuYuYu"
+          ],
+          "en": "Yuki Yuna is a Hero",
+          "ja": "結城友奈は勇者である"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 28497,
+        "title": "Rokka no Yuusha",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/9/74374.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/9/74374l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Rokka no Yusha"
+          ],
+          "en": "Rokka: Braves of the Six Flowers",
+          "ja": "六花の勇者"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 14833,
+        "title": "Maoyuu Maou Yuusha",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/4/46041.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/4/46041l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Maoyu Maou Yusha"
+          ],
+          "en": "Maoyu ~ Archenemy & Hero",
+          "ja": "まおゆう魔王勇者"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 34445,
+        "title": "Yuuki Yuuna wa Yuusha de Aru: Yuusha no Shou",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/8/83013.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/8/83013l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "Yuki Yuna is a Hero: The Hero Chapter",
+          "ja": "結城友奈は勇者である -勇者の章-"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 50175,
+        "title": "Yuusha, Yamemasu",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/1934/122301.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/1934/122301l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Yuuyame"
+          ],
+          "en": "I'm Quitting Heroing",
+          "ja": "勇者、辞めます"
+        }
+      }
     }
+  ],
+  "paging": {
+    "next": "https://api.myanimelist.net/v2/anime?offset=10&q=tate+no+yuusha&fields=alternative_titles"
+  }
 }

@@ -1,7 +1,8 @@
 import json
 import logging
+from dataclasses import dataclass
 from pprint import pformat
-from typing import Tuple, List
+from typing import List, Dict
 
 import requests
 from requests import RequestException
@@ -9,13 +10,13 @@ from requests import RequestException
 import settings
 from src.core.models.metadata import AnimeMetadata
 from src.core.types import DatasourceName
-from src.datasources.datasource import API
+from src.datasources.datasource import APIData, AnimeAPI
 
 logger = logging.getLogger()
 
 
 # https://anilist.gitbook.io/anilist-apiv2-docs/
-class AnilistAPI(API[int, AnimeMetadata]):
+class AnilistAPI(AnimeAPI):
     DATASOURCE = DatasourceName.ANILIST
     BASE_URL = 'https://graphql.anilist.co'
     HEADERS = {
@@ -25,17 +26,6 @@ class AnilistAPI(API[int, AnimeMetadata]):
         'Access-Control-Max-Age': '3600',
         'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0',
     }
-
-    ANIME_INFO_QUERY = """\
-        query ($id: Int) {
-            Media(id: $id, type: ANIME) {
-                id
-                title {
-                    romaji
-                    english
-                }
-            }
-        }"""
     ANIME_SEARCH_QUERY = """\
         query ($query: String) {
             Page (page: 1, perPage: 10) {
@@ -49,16 +39,13 @@ class AnilistAPI(API[int, AnimeMetadata]):
                     id
                     title {
                         romaji
+                        english
                     }
                 }
             }
         }"""
 
-    def search_anime(self, keyword: str) -> List[Tuple[str, int]]:
-        """
-        Find top ANILIST matches using 'keyword'
-        :return: tuple containing ANILIST romaji name and ANILIST id
-        """
+    def search_anime(self, keyword: str, season: int, season_name: str) -> AnimeMetadata:
         variables = {'query': keyword}
         response = requests.post(
             self.BASE_URL,
@@ -68,39 +55,29 @@ class AnilistAPI(API[int, AnimeMetadata]):
         logger.info(f'{self._class}:: searching for :: {keyword}')
 
         if response.status_code == 200:
-            # data format: [{'id': int, 'title': {'romaji': str}}
-            data = json.loads(response.content)['data']['Page']['media']
+            # data format: [{'id': int, 'title': {'romaji': str, 'english': str}}
+            content = json.loads(response.content)['data']['Page']['media']
             if settings.LOG_HTTP:
-                logger.debug(f'{self._class}: {pformat(data)}')
-            found = [(r['title']['romaji'], r['id']) for r in data]
-            logger.info(f'{self._class}:: found results :: {found}')
-            return found
+                logger.debug(f'{self._class}: {pformat(content)}')
 
-        raise RequestException(response=response)
+            # parse data into Python objects
+            data: List[_AnilistData] = [_AnilistData(d) for d in content]
+            match = self._best_match(keyword, data, season, season_name)
 
-    def get_anime_details(self, anime_id: int) -> AnimeMetadata:
-        """
-        Get the ANILIST anime details using 'anime_id'
-        :return: ANILIST data parsed into AnimeMetadata
-        """
-        variables = {'id': anime_id}
-        response = requests.post(
-            self.BASE_URL,
-            headers={},
-            json={'query': self.ANIME_INFO_QUERY, 'variables': variables}
-        )
-        logger.info(f'{self._class}:: details for :: {anime_id}')
-
-        if response.status_code == 200:
-            # data format: [{'id': int, 'title': {'romaji': str, 'english': str}}]
-            data = json.loads(response.content)['data']['Media']
-            logger.info(f'{self._class}:: found details :: {pformat(data)}')
-
+            logger.info(f'{self._class}:: matching result :: {match}')
             return AnimeMetadata(
-                datasource_id=anime_id,
+                datasource_id=match.id,
                 datasource=self.DATASOURCE,
-                title=data['title']['romaji'],
-                alternative_titles={'en': data['title']['english']}
+                title=match.title('ja'),
+                alternative_titles=match.alternative_titles
             )
 
         raise RequestException(response=response)
+
+
+@dataclass
+class _AnilistData(APIData):
+    def __init__(self, d: Dict):
+        super(_AnilistData, self).__init__(d)
+        self._title = d['title']['romaji']
+        self.alternative_titles = {'ja': d['title']['romaji'], 'en': d['title']['english']}

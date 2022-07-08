@@ -5,3 +5,9 @@ responses==0.21.0
 yapf==0.32.0
 environs==9.5.0
 Deprecated==1.2.13
+numpy==1.23.0
+# Language processing
+polyglot==16.7.4
+PyICU==2.9
+pycld2==0.41
+Morfessor==2.0.6

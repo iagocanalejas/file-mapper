@@ -1,87 +1,139 @@
 {
-    "data": [
-        {
-            "node": {
-                "id": 32995,
-                "title": "Yuri!!! on Ice",
-                "main_picture": {
-                    "medium": "https://api-cdn.myanimelist.net/images/anime/6/81149.jpg",
-                    "large": "https://api-cdn.myanimelist.net/images/anime/6/81149l.jpg"
-                }
-            }
+  "data": [
+    {
+      "node": {
+        "id": 32995,
+        "title": "Yuri!!! on Ice",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/6/81149.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/6/81149l.jpg"
         },
-        {
-            "node": {
-                "id": 35500,
-                "title": "Yuri!!! on Ice The Movie: Ice Adolescence",
-                "main_picture": {
-                    "medium": "https://api-cdn.myanimelist.net/images/anime/1225/93390.jpg",
-                    "large": "https://api-cdn.myanimelist.net/images/anime/1225/93390l.jpg"
-                }
-            }
-        },
-        {
-            "node": {
-                "id": 35382,
-                "title": "Yuri!!! on Ice: Yuri Plisetsky GPF in Barcelona EX - Welcome to The Madness",
-                "main_picture": {
-                    "medium": "https://api-cdn.myanimelist.net/images/anime/6/85548.jpg",
-                    "large": "https://api-cdn.myanimelist.net/images/anime/6/85548l.jpg"
-                }
-            }
-        },
-        {
-            "node": {
-                "id": 12403,
-                "title": "Yuru Yuri♪♪",
-                "main_picture": {
-                    "medium": "https://api-cdn.myanimelist.net/images/anime/8/75174.jpg",
-                    "large": "https://api-cdn.myanimelist.net/images/anime/8/75174l.jpg"
-                }
-            }
-        },
-        {
-            "node": {
-                "id": 30279,
-                "title": "Yuru Yuri San☆Hai!",
-                "main_picture": {
-                    "medium": "https://api-cdn.myanimelist.net/images/anime/7/76667.jpg",
-                    "large": "https://api-cdn.myanimelist.net/images/anime/7/76667l.jpg"
-                }
-            }
-        },
-        {
-            "node": {
-                "id": 3027,
-                "title": "Hokuto no Ken: Yuria-den",
-                "main_picture": {
-                    "medium": "https://api-cdn.myanimelist.net/images/anime/10/29633.jpg",
-                    "large": "https://api-cdn.myanimelist.net/images/anime/10/29633l.jpg"
-                }
-            }
-        },
-        {
-            "node": {
-                "id": 10495,
-                "title": "Yuru Yuri",
-                "main_picture": {
-                    "medium": "https://api-cdn.myanimelist.net/images/anime/12/75173.jpg",
-                    "large": "https://api-cdn.myanimelist.net/images/anime/12/75173l.jpg"
-                }
-            }
-        },
-        {
-            "node": {
-                "id": 34402,
-                "title": "Love Kome: We Love Rice",
-                "main_picture": {
-                    "medium": "https://api-cdn.myanimelist.net/images/anime/5/84377.jpg",
-                    "large": "https://api-cdn.myanimelist.net/images/anime/5/84377l.jpg"
-                }
-            }
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "Yuri!!! On ICE",
+          "ja": "ユーリ!!! on ICE"
         }
-    ],
-    "paging": {
-        "next": "https://api.myanimelist.net/v2/anime?offset=10&q=yuri+on+ice"
+      }
+    },
+    {
+      "node": {
+        "id": 35500,
+        "title": "Yuri!!! on Ice The Movie: Ice Adolescence",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/1225/93390.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/1225/93390l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "Yuri on Ice the Movie: Ice Adolescence",
+          "ja": "ユーリ!!! on ICE 劇場版 : ICE ADOLESCENCE（アイス アドレセンス）"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 35382,
+        "title": "Yuri!!! on Ice: Yuri Plisetsky GPF in Barcelona EX - Welcome to The Madness",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/6/85548.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/6/85548l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Yuri!!! on ICE Special"
+          ],
+          "en": "Yuri!!! On ICE: Yuri Plisetsky GPF in Barcelona EX \"Welcome to The Madness\"",
+          "ja": "ユーリ!!! on ICE Yuri Plisetsky GPF in Barcelona EX \"Welcome to The Madness\""
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 12403,
+        "title": "Yuru Yuri♪♪",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/8/75174.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/8/75174l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Yuru Yuri S2"
+          ],
+          "en": "YuruYuri: Happy Go Lily ♪♪",
+          "ja": "ゆるゆり♪♪"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 30279,
+        "title": "Yuru Yuri San☆Hai!",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/7/76667.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/7/76667l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Yuru Yuri 3rd Season",
+            "Yuru Yuri Third Season",
+            "Yuru Yuri-san High!: YuruYuri S3"
+          ],
+          "en": "",
+          "ja": "ゆるゆり さん☆ハイ！"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 3027,
+        "title": "Hokuto no Ken: Yuria-den",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/10/29633.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/10/29633l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Fist of the North Star: The Legend of Yuria"
+          ],
+          "en": "",
+          "ja": "真救世主伝説 北斗の拳 ユリア伝"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 10495,
+        "title": "Yuru Yuri",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/12/75173.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/12/75173l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "YRYR"
+          ],
+          "en": "YuruYuri: Happy Go Lily",
+          "ja": "ゆるゆり"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 34402,
+        "title": "Love Kome: We Love Rice",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/5/84377.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/5/84377l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "Love Rice",
+          "ja": "ラブ米 -WE LOVE RICE-"
+        }
+      }
     }
+  ],
+  "paging": {
+    "next": "https://api.myanimelist.net/v2/anime?offset=10&q=yuri+on+ice&fields=alternative_titles"
+  }
 }

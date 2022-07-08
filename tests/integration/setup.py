@@ -14,8 +14,6 @@ TEST_OBJECTS: List[TestObject] = [
         expected_names=['Ahiru no Sora - 01 - The Ugly Duckling.mkv'],
         fixtures=[
             (r're:.*myanimelist.*anime\?q=Ahiru%20no%20Sora', f"json:{os.path.join(MAL_FIXTURES_DIR, 'ahiru_no_sora.json')}"),
-            (r're:.*myanimelist.*anime\/37403', f"json:{os.path.join(MAL_FIXTURES_DIR, 'ahiru_no_sora_details.json')}"),
-            (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'ahiru_no_sora_details.json')}"),
             (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'ahiru_no_sora_details.json')}"),
             (r're:.*wikipedia.*\/List_of_Ahiru_no_Sora_episodes', None),  # Requires an empty response to use main_page load
             (r're:.*wikipedia.*\/Ahiru_no_Sora#Episode_list', f"html:{os.path.join(WIKIPEDIA_FIXTURES_DIR, 'main_page_ahiru_no_sora.html')}"),
@@ -27,8 +25,6 @@ TEST_OBJECTS: List[TestObject] = [
         expected_names=['Great Pretender - 02 - Case1_2: Los Angeles Connection.mkv'],
         fixtures=[
             (r're:.*myanimelist.*anime\?q=Great%20Pretender', f"json:{os.path.join(MAL_FIXTURES_DIR, 'great_pretender.json')}"),
-            (r're:.*myanimelist.*anime\/40052', f"json:{os.path.join(MAL_FIXTURES_DIR, 'great_pretender_details.json')}"),
-            (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'great_pretender_details.json')}"),
             (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'great_pretender_details.json')}"),
             (r're:.*wikipedia.*\/List_of_Great_Pretender_episodes', f"html:{os.path.join(WIKIPEDIA_FIXTURES_DIR, 'episode_page_great_pretender.html')}"),
         ],
@@ -39,8 +35,6 @@ TEST_OBJECTS: List[TestObject] = [
         expected_names=['Tate no Yuusha no Nariagari Season 2 - 08 - A Parting in the Snow.mkv'],
         fixtures=[
             (r're:.*myanimelist.*anime\?q=Tate%20no%20Yuusha%20no%20Nariagari', f"json:{os.path.join(MAL_FIXTURES_DIR, 'tate_no_yuusha.json')}"),
-            (r're:.*myanimelist.*anime\/40356', f"json:{os.path.join(MAL_FIXTURES_DIR, 'tate_no_yuusha_details.json')}"),
-            (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'tate_no_yuusha_details.json')}"),
             (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'tate_no_yuusha_details.json')}"),
             (r're:.*wikipedia.*\/List_of_The_Rising_of_the_Shield_Hero_episodes', f"html:{os.path.join(WIKIPEDIA_FIXTURES_DIR, 'episode_page_tate_no_yuusha.html')}"),
         ],
@@ -51,8 +45,6 @@ TEST_OBJECTS: List[TestObject] = [
         expected_names=['Seikon no Qwaser II - 01 - Silver Princess of the Lilies.mkv'],
         fixtures=[
             (r're:.*myanimelist.*anime\?q=Seikon%20no%20Qwaser', f"json:{os.path.join(MAL_FIXTURES_DIR, 'seikon_no_qwaser.json')}"),
-            (r're:.*myanimelist.*anime\/10073', f"json:{os.path.join(MAL_FIXTURES_DIR, 'seikon_no_qwaser_details.json')}"),
-            (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'seikon_no_qwaser_details.json')}"),
             (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'seikon_no_qwaser_details.json')}"),
             (r're:.*wikipedia.*\/List_of_The_Qwaser_of_Stigmata_episodes', f"html:{os.path.join(WIKIPEDIA_FIXTURES_DIR, 'episode_page_seikon_no_qwaser.html')}"),
         ],
@@ -95,13 +87,36 @@ TEST_OBJECTS: List[TestObject] = [
         ],
         fixtures=[
             (r're:.*myanimelist.*anime\?q=Ahiru%20no%20Sora', f"json:{os.path.join(MAL_FIXTURES_DIR, 'ahiru_no_sora.json')}"),
-            (r're:.*myanimelist.*anime\/37403', f"json:{os.path.join(MAL_FIXTURES_DIR, 'ahiru_no_sora_details.json')}"),
-            (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'ahiru_no_sora_details.json')}"),
             (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'ahiru_no_sora_details.json')}"),
             (r're:.*wikipedia.*\/List_of_Ahiru_no_Sora_episodes', None),  # Requires an empty response to use main_page load
             (r're:.*wikipedia.*\/Ahiru_no_Sora#Episode_list', f"html:{os.path.join(WIKIPEDIA_FIXTURES_DIR, 'main_page_ahiru_no_sora.html')}"),
         ],
     ),
+    # TestObject(
+    #     item=SeasonFactory.create(
+    #         item_name='[Judas] The Last Summoner [1080p][HEVC x265 10bit][Multi-Subs]',
+    #         episodes=[
+    #             EpisodeFactory.create(item_name='[ASW] The Last Summoner - 01 [1080p HEVC][FA34C77D].mkv'),
+    #             EpisodeFactory.create(item_name='[ASW] The Last Summoner - 02 [1080p HEVC][FA34C77D].mkv'),
+    #             EpisodeFactory.create(item_name='[ASW] The Last Summoner - 03 [1080p HEVC][FA34C77D].mkv'),
+    #             EpisodeFactory.create(item_name='[ASW] The Last Summoner - 04 [1080p HEVC][FA34C77D].mkv'),
+    #         ]
+    #     ),
+    #     media_type=MediaType.ANIME,
+    #     expected_names=[
+    #         'Zuihou de Zhaohuan Shi',
+    #         'Zuihou de Zhaohuan Shi - 01 - Awakening.mkv',
+    #         'Zuihou de Zhaohuan Shi - 02 - Flower.mkv',
+    #         'Zuihou de Zhaohuan Shi - 03 - Miaowu.mkv',
+    #         'Zuihou de Zhaohuan Shi - 04 - The Last Supper.mkv',
+    #     ],
+    #     fixtures=[
+    #         (r're:.*myanimelist.*anime\?q=The%20Last%20Summoner', f"json:{os.path.join(MAL_FIXTURES_DIR, 'the_last_summoner.json')}"),
+    #         (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'the_last_summoner_details.json')}"),
+    #         (r're:.*wikipedia.*\/List_of_The_Last_Summoner_episodes', None),  # Requires an empty response to use main_page load
+    #         # TODO: wikipedia page does not exist for this anime
+    #     ],
+    # ),
 
     ########################
     #        Shows         #
@@ -132,8 +147,6 @@ TEST_OBJECTS: List[TestObject] = [
         ],
         fixtures=[
             (r're:.*myanimelist.*anime\?q=Hajime%20no%20Ippo', f"json:{os.path.join(MAL_FIXTURES_DIR, 'hajime_no_ippo.json')}"),
-            (r're:.*myanimelist.*anime\/263', f"json:{os.path.join(MAL_FIXTURES_DIR, 'hajime_no_ippo_details.json')}"),
-            (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'hajime_no_ippo_details.json')}"),
             (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'hajime_no_ippo_details.json')}"),
             (r're:.*wikipedia.*', None),  # Requires an empty response to use main_page load
             (r're:.*wikipedia.*', None),  # Requires an empty response to use japanese load

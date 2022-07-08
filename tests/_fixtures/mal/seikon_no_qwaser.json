@@ -1,87 +1,142 @@
 {
-    "data": [
-        {
-            "node": {
-                "id": 10073,
-                "title": "Seikon no Qwaser II",
-                "main_picture": {
-                    "medium": "https://api-cdn.myanimelist.net/images/anime/2/75450.jpg",
-                    "large": "https://api-cdn.myanimelist.net/images/anime/2/75450l.jpg"
-                }
-            }
+  "data": [
+    {
+      "node": {
+        "id": 10073,
+        "title": "Seikon no Qwaser II",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/2/75450.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/2/75450l.jpg"
         },
-        {
-            "node": {
-                "id": 8668,
-                "title": "Seikon no Qwaser Picture Drama",
-                "main_picture": {
-                    "medium": "https://api-cdn.myanimelist.net/images/anime/11/23859.jpg",
-                    "large": "https://api-cdn.myanimelist.net/images/anime/11/23859l.jpg"
-                }
-            }
-        },
-        {
-            "node": {
-                "id": 10920,
-                "title": "Seikon no Qwaser II Picture Drama",
-                "main_picture": {
-                    "medium": "https://api-cdn.myanimelist.net/images/anime/3/30153.jpg",
-                    "large": "https://api-cdn.myanimelist.net/images/anime/3/30153l.jpg"
-                }
-            }
-        },
-        {
-            "node": {
-                "id": 9202,
-                "title": "Seikon no Qwaser: Jotei no Shouzou",
-                "main_picture": {
-                    "medium": "https://api-cdn.myanimelist.net/images/anime/9/27178.jpg",
-                    "large": "https://api-cdn.myanimelist.net/images/anime/9/27178l.jpg"
-                }
-            }
-        },
-        {
-            "node": {
-                "id": 124,
-                "title": "Fushigi Yuugi: Eikouden",
-                "main_picture": {
-                    "medium": "https://api-cdn.myanimelist.net/images/anime/11/67701.jpg",
-                    "large": "https://api-cdn.myanimelist.net/images/anime/11/67701l.jpg"
-                }
-            }
-        },
-        {
-            "node": {
-                "id": 21033,
-                "title": "Seikoku no Dragonar",
-                "main_picture": {
-                    "medium": "https://api-cdn.myanimelist.net/images/anime/13/56419.jpg",
-                    "large": "https://api-cdn.myanimelist.net/images/anime/13/56419l.jpg"
-                }
-            }
-        },
-        {
-            "node": {
-                "id": 1691,
-                "title": "Kaze no Stigma",
-                "main_picture": {
-                    "medium": "https://api-cdn.myanimelist.net/images/anime/12/23136.jpg",
-                    "large": "https://api-cdn.myanimelist.net/images/anime/12/23136l.jpg"
-                }
-            }
-        },
-        {
-            "node": {
-                "id": 33222,
-                "title": "Fudanshi Koukou Seikatsu",
-                "main_picture": {
-                    "medium": "https://api-cdn.myanimelist.net/images/anime/2/80966.jpg",
-                    "large": "https://api-cdn.myanimelist.net/images/anime/2/80966l.jpg"
-                }
-            }
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "The Qwaser of Stigmata II",
+          "ja": "聖痕のクェイサー II"
         }
-    ],
-    "paging": {
-        "next": "https://api.myanimelist.net/v2/anime?offset=10&q=Seikon+no+Qwaser"
+      }
+    },
+    {
+      "node": {
+        "id": 10920,
+        "title": "Seikon no Qwaser II Picture Drama",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/3/30153.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/3/30153l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Seikon no Quasar II Picture Drama"
+          ],
+          "en": "The Qwaser Of Stigmata II Picture Drama",
+          "ja": "聖痕のクェイサー II ピクチャードラマ"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 8668,
+        "title": "Seikon no Qwaser Picture Drama",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/11/23859.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/11/23859l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Seikon no Quasar Picture Drama"
+          ],
+          "en": "The Qwaser Of Stigmata Picture Drama",
+          "ja": "聖痕のクェイサー ピクチャードラマ"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 9202,
+        "title": "Seikon no Qwaser: Jotei no Shouzou",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/9/27178.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/9/27178l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Seikon no Qwaser OVA",
+            "The Qwaser Of Stigmata",
+            "Seikon no Quasar"
+          ],
+          "en": "The Qwaser of Stigmata: Portrait of the Empress",
+          "ja": "聖痕のクェイサー 女帝の肖像"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 124,
+        "title": "Fushigi Yuugi: Eikouden",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/11/67701.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/11/67701l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Fushigi Yuugi OVA 3"
+          ],
+          "en": "Mysterious Play: Eikoden",
+          "ja": "ふしぎ遊戯 -永光伝"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 21033,
+        "title": "Seikoku no Dragonar",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/13/56419.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/13/56419l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Seikoku no Ryuukishi"
+          ],
+          "en": "Dragonar Academy",
+          "ja": "星刻の竜騎士"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 1691,
+        "title": "Kaze no Stigma",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/12/23136.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/12/23136l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Kaze no Seikon",
+            "Stigma of the Wind"
+          ],
+          "en": "Kaze no Stigma",
+          "ja": "風のスティグマ"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 33222,
+        "title": "Fudanshi Koukou Seikatsu",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/2/80966.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/2/80966l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "The Highschool Life of a Fudanshi",
+          "ja": "腐男子高校生活"
+        }
+      }
     }
+  ],
+  "paging": {
+    "next": "https://api.myanimelist.net/v2/anime?offset=10&q=Seikon+no+Qwaser&fields=alternative_titles"
+  }
 }
