@@ -36,6 +36,11 @@ def remove_episode(word: str) -> str:
     return word.replace(match.group(0), '').strip() if match is not None else word
 
 
+def remove_episode_name(word: str) -> str:
+    match = re.search(r'\d+([\s-]+[\w\s]*)', word, re.IGNORECASE)
+    return word.split(match.group(1))[0].strip() if match is not None else word
+
+
 def remove_season(word: str) -> str:
     match = re.search(r's(eason )?\d+', word, re.IGNORECASE)
     return word.replace(match.group(0), '').strip() if match is not None else word

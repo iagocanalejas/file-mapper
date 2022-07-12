@@ -22,7 +22,7 @@ TEST_OBJECTS: List[TestObject] = [
     TestObject(
         item=EpisodeFactory.create(item_name='[Cleo]Great_Pretender_-_02_(Dual Audio_10bit_1080p_x265).mkv'),
         media_type=MediaType.ANIME,
-        expected_names=['Great Pretender - 02 - Case1_2: Los Angeles Connection.mkv'],
+        expected_names=['Great Pretender - 02 - CASE1_2: Los Angeles Connection.mkv'],
         fixtures=[
             (r're:.*myanimelist.*anime\?q=Great%20Pretender', f"json:{os.path.join(MAL_FIXTURES_DIR, 'great_pretender.json')}"),
             (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'great_pretender_details.json')}"),
@@ -49,20 +49,19 @@ TEST_OBJECTS: List[TestObject] = [
             (r're:.*wikipedia.*\/List_of_The_Qwaser_of_Stigmata_episodes', f"html:{os.path.join(WIKIPEDIA_FIXTURES_DIR, 'episode_page_seikon_no_qwaser.html')}"),
         ],
     ),
-    # TODO: Not working because it's searching for 'Part 2' and can't parse back d'Apchiers'
-    # TestObject(
-    #     item=EpisodeFactory.create(item_name='[Cerberus] The Case Study of Vanitas - S01E15-The d\'Apchiers\' Vampire [0114BB7B].mkv'),
-    #     media_type=MediaType.ANIME,
-    #     expected_names=['Vanitas no Karte - 15 - The d\'Apchiers\' Vampire.mkv'],
-    #     fixtures=[
-    #         (r're:.*myanimelist.*anime\?q=The%20Case%20Study%20of%20Vanitas', f"json:{os.path.join(MAL_FIXTURES_DIR, 'vanitas_no_karte.json')}"),
-    #         (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'vanitas_no_karte_details.json')}"),
-    #         (r're:.*wikipedia.*\/List_of_The_Case_Study_of_Vanitas_episodes', f"html:{os.path.join(WIKIPEDIA_FIXTURES_DIR, 'episode_page_vanitas_no_karte.html')}"),
-    #     ],
-    # ),
+    TestObject(
+        item=EpisodeFactory.create(item_name='[Cerberus] The Case Study of Vanitas - S01E15-The d\'Apchiers\' Vampire [0114BB7B].mkv'),
+        media_type=MediaType.ANIME,
+        expected_names=['Vanitas no Karte - 15 - The d\'Apchiers\' Vampire.mkv'],
+        fixtures=[
+            (r're:.*myanimelist.*anime\?q=The%20Case%20Study%20of%20Vanitas', f"json:{os.path.join(MAL_FIXTURES_DIR, 'vanitas_no_karte.json')}"),
+            (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'vanitas_no_karte_details.json')}"),
+            (r're:.*wikipedia.*\/List_of_The_Case_Study_of_Vanitas_episodes', f"html:{os.path.join(WIKIPEDIA_FIXTURES_DIR, 'episode_page_vanitas_no_karte.html')}"),
+        ],
+    ),
     # TODO: not working because we need to use 'Ice' instead of 'ICE' for wikipedia. We can't just titlecase the words because it will also break
     # TestObject(
-    #     item=EpisodeFactory.create(item_name='[PuyaSubs!] Yuri!!! On ICE - 11 [720p][663F641B].mkv'),
+    #     item=EpisodeFactory.create(item_name='[Cerberus] The Case Study of Vanitas - S01E15-The d'Apchiers' Vampire [0114BB7B].mkv'),
     #     media_type=MediaType.ANIME,
     #     expected_name=['Yuri!!! On ICE - 11 - Gotta Super-Supercharge it! Grand Prix Final Short Program.mkv'],
     #     fixtures=[

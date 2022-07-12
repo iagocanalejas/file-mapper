@@ -7,7 +7,8 @@ from src.core.models.metadata import AnimeMetadata
 from src.matchers import MediaType
 from src.parsers._parser import Parser
 from src.utils.strings import remove_tracker, remove_parenthesis, RomanNumbers, apply_clean, \
-    generic_clean, remove_extension, apply, remove_episode, remove_season, remove_trailing_hyphen, accepts
+    generic_clean, remove_extension, apply, remove_episode, remove_season, remove_trailing_hyphen, accepts, \
+    remove_episode_name
 
 logger = logging.getLogger()
 
@@ -67,7 +68,7 @@ class AnimeParser(Parser, media_type=MediaType.ANIME):
         return apply(
             functions=[
                 generic_clean, remove_tracker, remove_parenthesis,
-                remove_extension, remove_season, remove_episode,
+                remove_extension, remove_episode_name, remove_season, remove_episode,
                 remove_trailing_hyphen,
             ],
             arg=media_title
