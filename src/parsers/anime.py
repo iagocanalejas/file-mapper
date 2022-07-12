@@ -16,7 +16,7 @@ logger = logging.getLogger()
 class AnimeParser(Parser, media_type=MediaType.ANIME):
     _instance = None
 
-    def __new__(cls, *args, **kwargs):
+    def __new__(cls, *args, **kwargs):  # pragma: no cover
         if cls._instance is None:
             cls._instance = super().__new__(cls, *args, media_type=MediaType.ANIME, **kwargs)
         return cls._instance

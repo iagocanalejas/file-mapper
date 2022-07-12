@@ -35,7 +35,7 @@ class Processor(ABC, Object):
         cls._media_type = media_type
         cls._registry[media_type] = cls
 
-    def __new__(cls, media_type: MediaType, **kwargs):
+    def __new__(cls, media_type: MediaType, **kwargs):  # pragma: no cover
         subclass = cls._registry[media_type]
         final_obj = object.__new__(subclass)
         final_obj._media_type = media_type
@@ -43,16 +43,6 @@ class Processor(ABC, Object):
         final_obj._formatter = Formatter(media_type=media_type)
 
         return final_obj
-
-    @classmethod
-    def get_processor_type(cls, name: str, **kwargs) -> MediaType:
-        # Try to match the parser by name
-        for key, subclass in cls._registry.items():
-            obj = object.__new__(subclass)
-            obj.media_type = key
-            if obj.matches(name, **kwargs):
-                return subclass.media_type
-        return MediaType.UNKNOWN
 
     @abstractmethod
     def process_episode(self, episode: Episode):

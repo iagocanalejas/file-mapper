@@ -20,7 +20,7 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
     _instance = None
     _finders: List[Tuple[API, Callable[[MediaItem], str]]]
 
-    def __new__(cls, *args, **kwargs):
+    def __new__(cls, *args, **kwargs):  # pragma: no cover
         if cls._instance is None:
             cls._instance = super().__new__(cls, *args, **kwargs)
         return cls._instance

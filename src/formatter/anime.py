@@ -2,7 +2,6 @@ import re
 from typing import List
 
 from src.core.models import MediaItem, Episode, Season, Show
-from src.core.models.metadata import AnimeMetadata
 from src.formatter._formatter import Formatter
 from src.matchers import MediaType
 from src.parsers import Parser
@@ -12,7 +11,7 @@ from src.utils.strings import RomanNumbers
 class AnimeFormatter(Formatter, media_type=MediaType.ANIME):
     _instance = None
 
-    def __new__(cls, *args, **kwargs):
+    def __new__(cls, *args, **kwargs):  # pragma: no cover
         if cls._instance is None:
             cls._instance = super().__new__(cls, *args, media_type=MediaType.ANIME, **kwargs)
         return cls._instance
@@ -105,9 +104,3 @@ class AnimeFormatter(Formatter, media_type=MediaType.ANIME):
         if not isinstance(item, Episode) or parser.episode_part(item) is None:
             pattern = re.sub(r'\.\{episode_part}', '', pattern).strip()
         return pattern
-
-    @staticmethod
-    def __metadata(item: MediaItem) -> AnimeMetadata:
-        metadata = item.metadata
-        assert isinstance(metadata, AnimeMetadata)
-        return metadata

@@ -9,7 +9,7 @@ from src.tbuilder.models import Directory, File, Item
 class Tree(ABC, Object):
     _item: Item
 
-    def __new__(cls, *args, path: str, **kwargs):
+    def __new__(cls, *args, path: str, **kwargs):  # pragma: no cover
         if os.path.isfile(path):
             return object.__new__(_SimpleTree)
         return object.__new__(_Tree)

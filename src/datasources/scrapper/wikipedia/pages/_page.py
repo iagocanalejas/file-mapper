@@ -51,7 +51,6 @@ class WikipediaPage(ABC, Object):
             return episode_name
 
         logger.info(f'{self._class}:: not found episode name')
-        return None
 
     @abstractmethod
     def title(self) -> str:

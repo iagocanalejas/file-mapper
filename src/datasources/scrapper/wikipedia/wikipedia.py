@@ -13,7 +13,7 @@ from src.utils.strings import remove_parenthesis
 logger = logging.getLogger()
 
 
-class KeywordFn(Protocol):
+class KeywordFn(Protocol):  # pragma: no cover
     def __call__(self, item: MediaItem, lang: str = 'en') -> str:
         pass
 

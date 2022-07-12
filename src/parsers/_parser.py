@@ -16,7 +16,7 @@ class Parser(ABC, Object):
         super().__init_subclass__(**kwargs)
         cls._registry[media_type] = cls
 
-    def __new__(cls, *args, media_type: MediaType, **kwargs):
+    def __new__(cls, *args, media_type: MediaType, **kwargs):  # pragma: no cover
         subclass = cls._registry[media_type]
         final_obj = object.__new__(subclass)
         final_obj.media_type = media_type
