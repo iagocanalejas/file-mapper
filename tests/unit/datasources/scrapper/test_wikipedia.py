@@ -35,6 +35,7 @@ class TestWikipediaScrapper(unittest.TestCase):
         self.responses.add(responses.GET, url=re.compile('.*'), body=data)
 
         mock_parser.episode.return_value = 1
+        mock_parser.episode_part.return_value = None
         mock_parser.season.return_value = 1
 
         WikipediaScrapper(mock_parser, self.__wikipedia_search_keyword).fill_episode_name(self.episode)
@@ -50,6 +51,7 @@ class TestWikipediaScrapper(unittest.TestCase):
         self.responses.add(responses.GET, url=re.compile('.*'), body=data)
 
         mock_parser.episode.return_value = 2
+        mock_parser.episode_part.return_value = None
         mock_parser.season.return_value = 1
 
         WikipediaScrapper(mock_parser, self.__wikipedia_search_keyword).fill_episode_name(self.episode)
@@ -64,6 +66,7 @@ class TestWikipediaScrapper(unittest.TestCase):
         self.responses.add(responses.GET, url=re.compile('.*'), body=data)
 
         mock_parser.episode.return_value = 2
+        mock_parser.episode_part.return_value = None
         mock_parser.season.return_value = 2
 
         WikipediaScrapper(mock_parser, self.__wikipedia_search_keyword).fill_episode_name(self.episode)
@@ -78,6 +81,7 @@ class TestWikipediaScrapper(unittest.TestCase):
         self.responses.add(responses.GET, url=re.compile('.*'), body=data)
 
         mock_parser.episode.return_value = 1
+        mock_parser.episode_part.return_value = None
         mock_parser.season.return_value = 1
 
         WikipediaScrapper(mock_parser, self.__wikipedia_search_keyword).fill_season_names(self.season)
@@ -92,6 +96,7 @@ class TestWikipediaScrapper(unittest.TestCase):
         self.responses.add(responses.GET, url=re.compile('.*'), body=data)
 
         mock_parser.episode.return_value = 1
+        mock_parser.episode_part.return_value = None
         mock_parser.season.return_value = 2
 
         WikipediaScrapper(mock_parser, self.__wikipedia_search_keyword).fill_season_names(self.season)

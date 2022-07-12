@@ -108,3 +108,17 @@ def apply_clean(clean_functions: Iterable[Callable[[str], str]]):
         return wrapper
 
     return decorator
+
+
+def accepts(*types):
+    def check_accepts(f):
+        def new_f(*args, **kwds):
+            for (a, t) in zip(args[1:], types):
+                assert isinstance(a, t), \
+                    "arg %r does not match %s" % (a, t)
+            return f(*args, **kwds)
+
+        new_f.__name__ = f.__name__
+        return new_f
+
+    return check_accepts

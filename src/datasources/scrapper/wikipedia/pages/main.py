@@ -11,7 +11,7 @@ logger = logging.getLogger()
 class WikipediaMainPage(WikipediaPage):
     BASE_URL = 'https://en.wikipedia.org/wiki/{}#Episode_list'
 
-    def title(self) -> Optional[str]:
+    def title(self) -> str:
         return self.soup.find('h1', {'id': 'firstHeading'}).text
 
     def season_name(self, season: int) -> Optional[str]:

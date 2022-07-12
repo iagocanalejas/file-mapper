@@ -31,7 +31,7 @@ class AnimeFormatter(Formatter, media_type=MediaType.ANIME):
     def new_name(self, item: MediaItem, parser: Parser) -> str:
         match item:
             case Episode():
-                pattern = '{media_name} {season_name} - {episode:02d} - {episode_name}.{extension}'
+                pattern = '{media_name} {season_name} - {episode:02d}.{episode_part} - {episode_name}.{extension}'
                 return self.titlecase(self.format(item, parser, pattern=pattern, lang='ja'))
             case Season():
                 return self.titlecase(self.format(item, parser, pattern='{media_name} {season_name}', lang='ja'))
@@ -42,15 +42,18 @@ class AnimeFormatter(Formatter, media_type=MediaType.ANIME):
         season_name = parser.season_name(item) if not isinstance(item, Show) else None
 
         pattern = self.__remove_episode_if_required(item, pattern)
+        pattern = self.__remove_episode_part_if_required(item, parser, pattern)
         pattern = self.__remove_season_if_required(item, parser, season_name, pattern, lang=lang)
 
-        media_name = episode = episode_name = season = None
+        media_name = episode = episode_name = episode_part = season = None
         if '{media_name}' in pattern:
             media_name = parser.media_name(item, lang=lang)
         if re.search(r'\{episode(:\d+d)?}', pattern):
             episode = parser.episode(item)
         if '{episode_name}' in pattern:
             episode_name = parser.episode_name(item)
+        if '{episode_part}' in pattern:
+            episode_part = parser.episode_part(item)
         if '{season}' in pattern:
             season = parser.season(item)
 
@@ -60,6 +63,7 @@ class AnimeFormatter(Formatter, media_type=MediaType.ANIME):
             season=season,
             season_name=season_name,
             episode=episode,
+            episode_part=episode_part,
             episode_name=episode_name,
             extension=parser.extension(item),
         )
@@ -92,6 +96,12 @@ class AnimeFormatter(Formatter, media_type=MediaType.ANIME):
         if isinstance(item, Show) or isinstance(item, Season):
             pattern = re.sub(r'( E(pisode)?)? ?{episode(_name)?(:\d+d)?}', '', pattern).strip()
             pattern = re.sub(r' +', ' ', pattern).strip()
+        return pattern
+
+    @staticmethod
+    def __remove_episode_part_if_required(item: MediaItem, parser: Parser, pattern: str) -> str:
+        if not isinstance(item, Episode) or parser.episode_part(item) is None:
+            pattern = re.sub(r'\.\{episode_part}', '', pattern).strip()
         return pattern
 
     @staticmethod

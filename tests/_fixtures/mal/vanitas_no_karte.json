@@ -1,0 +1,180 @@
+{
+  "data": [
+    {
+      "node": {
+        "id": 48580,
+        "title": "Vanitas no Karte",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/1401/118483.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/1401/118483l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Vanitas no Shuki",
+            "Memoir of Vanitas",
+            "Vanitas no Carte"
+          ],
+          "en": "The Case Study of Vanitas",
+          "ja": "ヴァニタスの手記"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 49114,
+        "title": "Vanitas no Karte Part 2",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/1247/120579.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/1247/120579l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Vanitas no Shuki 2nd Season",
+            "Memoir of Vanitas 2nd Season",
+            "Vanitas no Carte 2nd Season"
+          ],
+          "en": "The Case Study of Vanitas Part 2",
+          "ja": "ヴァニタスの手記"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 50768,
+        "title": "Vanitas no Karte: En Route Pour le Gévaudan",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/1570/120423.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/1570/120423l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Vanitas no Karte Episode 12.5",
+            "Vanitas no Karte Recap",
+            "Memoir of Vanitas Recap",
+            "Vanitas no Shuki Recap"
+          ],
+          "en": "The Case Study of Vanitas Episode 12.5 – Recap",
+          "ja": "ヴァニタスの手記 2クール目放送直前特番 ～En route pour le Gévaudan～"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 50770,
+        "title": "Vanitas no Karte: Le Chemin Parcouru Depuis la Rencontre",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/1401/120422.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/1401/120422l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "The Case Study of Vanitas Recap",
+            "Vanitas no Karte Special Tokuban",
+            "Vanitas no Karte Recap",
+            "Vanitas no Carte Recap"
+          ],
+          "en": "",
+          "ja": "「ヴァニタスの手記」スペシャル特番 ～Le chemin parcouru depuis la rencontre～"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 33729,
+        "title": "Chain Chronicle: Haecceitas no Hikari Part 2",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/10/83105.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/10/83105l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "Chain Chronicle: The Light of Haecceitas Part 2",
+          "ja": "チェインクロニクル〜ヘクセイタスの閃（ひかり）〜 第２章"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 33728,
+        "title": "Chain Chronicle: Haecceitas no Hikari Part 1",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/11/82495.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/11/82495l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "Chain Chronicle: The Light of Haecceitas Part 1",
+          "ja": "チェインクロニクル〜ヘクセイタスの閃（ひかり）〜 第１章"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 10739,
+        "title": "Panty & Stocking in Sanitarybox",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/6/29589.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/6/29589l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Panty & Stocking with Garterbelt Special",
+            "Panty and Stocking with Garterbelt In Sanitary Box"
+          ],
+          "en": "",
+          "ja": "Panty & Stocking in Sanitarybox"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 10357,
+        "title": "Jinrui wa Suitai Shimashita",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/4/45704.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/4/45704l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Jintai"
+          ],
+          "en": "Humanity Has Declined",
+          "ja": "人類は衰退しました"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 33730,
+        "title": "Chain Chronicle: Haecceitas no Hikari Part 3",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/3/83828.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/3/83828l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "Chain Chronicle: The Light of Haecceitas Part 3",
+          "ja": "チェインクロニクル〜ヘクセイタスの閃（ひかり）〜 第３章"
+        }
+      }
+    },
+    {
+      "node": {
+        "id": 18669,
+        "title": "Black Jack: Karte NG Extras",
+        "main_picture": {
+          "medium": "https://api-cdn.myanimelist.net/images/anime/8/49873.jpg",
+          "large": "https://api-cdn.myanimelist.net/images/anime/8/49873l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "",
+          "ja": "ブラックジャック Karte NG集"
+        }
+      }
+    }
+  ],
+  "paging": {
+    "next": "https://api.myanimelist.net/v2/anime?offset=10&q=vanitas+no+karte&fields=alternative_titles"
+  }
+}

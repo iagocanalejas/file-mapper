@@ -91,5 +91,5 @@ class Directory(Item):
         :return: bool expressing if the list can be considered a season
         """
         ratios = [SequenceMatcher(None, i[0], i[1]).ratio() for i in itertools.permutations(items, 2)]
-        se = re.compile(r'^S\d+E\d+$|^E\d+$')  # probably a limit case
+        se = re.compile(r'^(S\d+E\d+|E\d+).*')  # probably a limit case
         return all(r > settings.SIMILARITY_THRESHOLD for r in ratios) or all(se.match(s) for s in items)

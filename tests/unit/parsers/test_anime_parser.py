@@ -20,11 +20,22 @@ class TestAnimeEpisodeParser(unittest.TestCase):
             ('[Cleo]Great_Pretender_-_02_(Dual Audio_10bit_1080p_x265).mkv', 2),
             ('[SubsPlease] Tate no Yuusha no Nariagari S2 - 08 (1080p) [1B2526A8].mkv', 8),
             ('[Anipakku] Overlord E01.mkv', 1),
+            ('The Case Study of Vanitas S01E12.5-Recap [E94DA148].mkv', 12)
         ]
         for name, expected in pairs:
             with self.subTest(name=f'episode:: {name}'):
                 episode = EpisodeFactory.create(item_name=name)
                 self.assertEqual(expected, self.parser.episode(episode))
+
+    def test_episode_part(self):
+        pairs: List[Tuple[str, int]] = [
+            ('[Anipakku] Overlord E01.mkv', None),
+            ('The Case Study of Vanitas S01E12.5-Recap [E94DA148].mkv', 5)
+        ]
+        for name, expected in pairs:
+            with self.subTest(name=f'episode:: {name}'):
+                episode = EpisodeFactory.create(item_name=name)
+                self.assertEqual(expected, self.parser.episode_part(episode))
 
     def test_episode_name_no_metadata(self):
         pairs: List[Tuple[str, int]] = [

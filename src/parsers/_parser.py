@@ -27,12 +27,21 @@ class Parser(ABC, Object):
         pass
 
     @abstractmethod
+    def episode_part(self, item: MediaItem) -> Optional[int]:
+        """
+        :return: things like .5 episodes
+        """
+        pass
+
+    @abstractmethod
     def episode_name(self, item: MediaItem, use_metadata: bool = True) -> Optional[str]:
         pass
 
     @abstractmethod
     def season(self, item: MediaItem) -> int:
         pass
+
+    # TODO: add method to parse season part
 
     @abstractmethod
     def season_name(self, item: MediaItem, use_metadata: bool = True) -> Optional[str]:

@@ -2,13 +2,12 @@ import logging
 import re
 from typing import Optional
 
-from src.core.exceptions import MediaTypeException
 from src.core.models import MediaItem, Show, Season, Episode
 from src.core.models.metadata import AnimeMetadata
 from src.matchers import MediaType
 from src.parsers._parser import Parser
 from src.utils.strings import remove_tracker, remove_parenthesis, RomanNumbers, apply_clean, \
-    generic_clean, remove_extension, apply, remove_episode, remove_season, remove_trailing_hyphen
+    generic_clean, remove_extension, apply, remove_episode, remove_season, remove_trailing_hyphen, accepts
 
 logger = logging.getLogger()
 
@@ -21,18 +20,19 @@ class AnimeParser(Parser, media_type=MediaType.ANIME):
             cls._instance = super().__new__(cls, *args, media_type=MediaType.ANIME, **kwargs)
         return cls._instance
 
+    @accepts(Episode)
     def episode(self, item: MediaItem) -> int:
-        if isinstance(item, Show):
-            raise MediaTypeException(f'show {item} can\'t have episode')
-        if isinstance(item, Season):
-            raise MediaTypeException(f'season {item} can\'t have episode')
         return self._parse_episode(item.item_name)
 
+    @accepts(Episode)
+    def episode_part(self, item: MediaItem) -> Optional[int]:
+        episode = self.episode(item)
+        match = re.search(rf'{episode}\.\d+', item.item_name)
+        if match is not None:
+            return int(match.group(0).split('.')[1])
+
+    @accepts(Episode, bool)
     def episode_name(self, item: MediaItem, use_metadata: bool = True) -> Optional[str]:
-        if isinstance(item, Show):
-            raise MediaTypeException(f'show {item} can\'t have episode')
-        if isinstance(item, Season):
-            raise MediaTypeException(f'season {item} can\'t have episode')
         if use_metadata and item.metadata is not None:
             metadata = item.metadata
             assert isinstance(metadata, AnimeMetadata)
@@ -40,14 +40,12 @@ class AnimeParser(Parser, media_type=MediaType.ANIME):
                 return metadata.episode_name
         # TODO: Try to parse an episode name from the file name
 
+    @accepts((Episode, Season))
     def season(self, item: MediaItem) -> int:
-        if isinstance(item, Show):
-            raise MediaTypeException(f'show {item} can\'t have season')
         return self._parse_season(item.item_name)
 
+    @accepts((Episode, Season), bool)
     def season_name(self, item: MediaItem, use_metadata: bool = True) -> Optional[str]:
-        if isinstance(item, Show):
-            raise MediaTypeException(f'show {item} can\'t have season')
         if use_metadata and item.metadata is not None:
             metadata = item.metadata
             assert isinstance(metadata, AnimeMetadata)
@@ -84,9 +82,6 @@ class AnimeParser(Parser, media_type=MediaType.ANIME):
     @staticmethod
     @apply_clean(clean_functions=[generic_clean, remove_tracker, remove_parenthesis, remove_extension])
     def _parse_episode(word: str) -> int:
-        if '-' in word:
-            word = word.split('-')[1].strip()
-
         match = re.search(r'S\d+E\d+', word, re.IGNORECASE)
         if match is not None:
             # Matches S1E1

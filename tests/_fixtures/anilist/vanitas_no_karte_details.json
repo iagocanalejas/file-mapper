@@ -1,0 +1,42 @@
+{
+  "data": {
+    "Page": {
+      "pageInfo": {
+        "total": 4,
+        "currentPage": 1,
+        "lastPage": 1,
+        "hasNextPage": false
+      },
+      "media": [
+        {
+          "id": 131646,
+          "title": {
+            "romaji": "Vanitas no Carte",
+            "english": "The Case Study of Vanitas"
+          }
+        },
+        {
+          "id": 135136,
+          "title": {
+            "romaji": "Vanitas no Carte Part 2",
+            "english": "The Case Study of Vanitas Part 2"
+          }
+        },
+        {
+          "id": 376,
+          "title": {
+            "romaji": "Elfen Lied: Tooriame nite - Arui wa, Shoujo wa Ikani Shite Sono Shinjou ni Itatta ka?",
+            "english": "Elfen Lied: Just How Did the Young Girl Arrive at Those Feelings?"
+          }
+        },
+        {
+          "id": 102673,
+          "title": {
+            "romaji": "Kanojo no Dokushinsha-tachi ni Yotte Hadaka ni Sareta Seifuku no Shoujo Kenkyuu",
+            "english": "The Bride Stripped Bare by Her Bachelors"
+          }
+        }
+      ]
+    }
+  }
+}

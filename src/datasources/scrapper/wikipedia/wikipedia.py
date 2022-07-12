@@ -75,7 +75,11 @@ class WikipediaScrapper(Scrapper):
         not_found = []
 
         for episode in episodes:
-            episode_name = page.episode_name(self.parser.season(episode), self.parser.episode(episode))
+            episode_name = page.episode_name(
+                self.parser.season(episode),
+                self.parser.episode(episode),
+                self.parser.episode_part(episode),
+            )
             if episode_name is None:
                 not_found.append(episode)
                 continue
