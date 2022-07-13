@@ -1,17 +1,22 @@
 import logging
 import os
-import re
-from typing import List, Tuple, Callable
+from typing import Callable
+from typing import List
+from typing import Tuple
 
 import settings
-from src.core.models import Show, Season, Episode, MediaItem
+from src.core.models import Episode
+from src.core.models import MediaItem
+from src.core.models import Season
+from src.core.models import Show
 from src.core.models.metadata import AnimeMetadata
-from src.datasources.api import MalAPI, AnilistAPI
+from src.datasources.api import AnilistAPI
+from src.datasources.api import MalAPI
 from src.datasources.datasource import API
 from src.datasources.scrapper import WikipediaScrapper
 from src.matchers import MediaType
 from src.processors import Processor
-from src.utils.strings import closest_result, remove_season
+from src.utils.strings import closest_result
 
 logger = logging.getLogger()
 
@@ -26,33 +31,33 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
         return cls._instance
 
     def __init__(self, **_):
-        super(AnimeProcessor, self).__init__()
+        super().__init__()
         self._finders = [
             (MalAPI(parser=self.parser), self.__format),
             (AnilistAPI(parser=self.parser), self.__format),
         ]
 
     def process_episode(self, episode: Episode):
-        super(AnimeProcessor, self).process_episode(episode)
+        super().process_episode(episode)
 
         self.__fill_metadata(episode)
-        WikipediaScrapper(parser=self.parser, keyword_fn=self.__wikipedia_search_keyword).fill_episode_name(episode)
+        WikipediaScrapper(parser=self.parser).fill_episode_name(episode)
 
         self.rename(episode)
 
     def process_season(self, season: Season):
-        super(AnimeProcessor, self).process_season(season)
+        super().process_season(season)
 
         self.__fill_metadata(season)
-        WikipediaScrapper(parser=self.parser, keyword_fn=self.__wikipedia_search_keyword).fill_season_names(season)
+        WikipediaScrapper(parser=self.parser).fill_season_names(season)
 
         self.rename(season)
 
     def process_show(self, show: Show):
-        super(AnimeProcessor, self).process_show(show)
+        super().process_show(show)
 
         self.__fill_metadata(show)
-        WikipediaScrapper(parser=self.parser, keyword_fn=self.__wikipedia_search_keyword).fill_show_names(show)
+        WikipediaScrapper(parser=self.parser).fill_show_names(show)
 
         self.rename(show)
 
@@ -69,7 +74,7 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
         if not settings.MOCK_RENAME:
             os.rename(item.path, os.path.join(item.base_path, self.formatter.new_name(item, self.parser)))
 
-        super(AnimeProcessor, self).rename(item)
+        super().rename(item)
 
     ########################
     #    Search Format     #
@@ -102,18 +107,3 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
             season_name=next(iter([m.season_name for m in metadata]), None),
             episode_name=next(iter([m.episode_name for m in metadata]), None),
         )
-
-    ########################
-    #     Second Level     #
-    ########################
-
-    def __wikipedia_search_keyword(self, item: MediaItem, lang: str = 'en') -> str:
-        # TODO: should titlecase the keyword ignoring some words. The 'Yuri on Ice' problem
-        media_name = self.parser.media_name(item, lang=lang)
-        media_name = re.sub(r'[_!]+', '', media_name)
-        media_name = remove_season(media_name)  # this removes S2, Season 2
-        if not isinstance(item, Show):
-            season_name = self.parser.season_name(item)
-            if season_name is not None:
-                media_name = media_name.replace(season_name, '').strip()  # this removes the season name
-        return re.sub(r"\s", "_", media_name)

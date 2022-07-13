@@ -41,8 +41,6 @@ class Parser(ABC, Object):
     def season(self, item: MediaItem) -> int:
         pass
 
-    # TODO: add method to parse season part
-
     @abstractmethod
     def season_name(self, item: MediaItem, use_metadata: bool = True) -> Optional[str]:
         pass

@@ -28,18 +28,3 @@ coverage run -m unittest discover
 ```
 
 # Known Bugs
-
-## Datasource
-
-### MAL
-
-- For some anime queries the result makes no sense
-
-```
-(examples):
-
-Seikon no Qwaser -> Seikon no Qwaser II
-```
-
-
-SpyXFamily

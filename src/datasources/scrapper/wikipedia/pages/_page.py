@@ -1,10 +1,15 @@
 import logging
 import re
-from abc import ABC, abstractmethod
-from typing import Optional, Tuple, List
+from abc import ABC
+from abc import abstractmethod
+from http.client import NOT_FOUND
+from typing import List
+from typing import Optional
+from typing import Tuple
 
-import requests
-from bs4 import BeautifulSoup, Tag
+from aiohttp import ClientSession
+from bs4 import BeautifulSoup
+from bs4 import Tag
 
 import settings
 from src.core.types import Object
@@ -24,11 +29,13 @@ class WikipediaPage(ABC, Object):
 
     def __init__(self, keyword: str):
         self.keyword = keyword
+        self.soup = None
 
-        self.soup = self.__load_soup()
+    def __str__(self):
+        return self.url
 
     @property
-    def url(self):
+    def url(self) -> str:
         return self.BASE_URL.format(self.keyword)
 
     @property
@@ -92,16 +99,17 @@ class WikipediaPage(ABC, Object):
         columns = header.find_all('th') + header.find_all('td')
         return any(re.match(r'No.*season', column.text, re.IGNORECASE) for column in columns)
 
-    def __load_soup(self) -> Optional[BeautifulSoup]:
-        logger.info(f'{self._class}:: trying :: {self.url}')
+    async def load(self, session: ClientSession) -> 'WikipediaPage':
+        logger.info(f'{self._class}:: loading page :: {self}')
 
-        response = requests.get(self.url, headers=self.HEADERS)
-        if response.status_code == 404:
-            return None
+        response = await session.get(self.url, headers=self.HEADERS)
+        if response.status == NOT_FOUND:
+            return self
 
-        soup = BeautifulSoup(response.content, 'html5lib')
+        content = await response.read()
+        self.soup = BeautifulSoup(content, 'html5lib')
 
         if settings.LOG_HTTP:
-            logger.debug(f'{self._class}: {soup.prettify()}')
+            logger.debug(f'{self._class}: {self.soup.prettify()}')
 
-        return soup
+        return self
