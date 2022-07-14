@@ -11,7 +11,7 @@ from aiohttp import ClientSession
 from bs4 import BeautifulSoup
 from bs4 import Tag
 
-import settings
+from src import settings
 from src.core.types import Object
 
 logger = logging.getLogger()

@@ -1,7 +1,10 @@
 from src.core.exceptions import UnsupportedMediaType
-from src.core.models import Episode, Season, Show, MediaItem
-from src.processors import Processor
+from src.core.models import Episode
+from src.core.models import MediaItem
+from src.core.models import Season
+from src.core.models import Show
 from src.matchers import MediaType
+from src.processors import Processor
 
 
 class UnknownProcessor(Processor, media_type=MediaType.UNKNOWN):

@@ -1,9 +1,10 @@
-from abc import ABC, abstractmethod
+from abc import ABC
+from abc import abstractmethod
 
 from src.core.models import MediaItem
 from src.core.types import Object
-from src.parsers import Parser
 from src.matchers import MediaType
+from src.parsers import Parser
 
 
 class Formatter(ABC, Object):

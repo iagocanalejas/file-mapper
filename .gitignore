@@ -45,3 +45,4 @@ logs/emails/*
 
 # Exception for media module
 !/apps/modules/media/
+/*.egg-info/

@@ -3,9 +3,9 @@ import logging
 import os
 import sys
 
-import settings
-from src.matchers import MediaType
+from src import settings
 from src.engine import Engine
+from src.matchers import MediaType
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -22,15 +22,15 @@ def main(path: str, media_type: str):
 
 def __parse_arguments():
     parser = argparse.ArgumentParser()
-    parser.add_argument("path", help='Path to be handled')
-    parser.add_argument("--type", default=None, help=f'Known type for the path {MediaType.__members__.keys()}')
-    parser.add_argument("--debug", action='store_true', default=False)
+    parser.add_argument('path', help='Path to be handled')
+    parser.add_argument('--type', default=None, help=f'Known type for the path {MediaType.__members__.keys()}')
+    parser.add_argument('--debug', action='store_true', default=False)
     return parser.parse_args()
 
 
 if __name__ == '__main__':
     args = __parse_arguments()
-    logger.info(f"{os.path.basename(__file__)}:: args -> {args.__dict__}")
+    logger.info(f'{os.path.basename(__file__)}:: args -> {args.__dict__}')
 
     if args.debug:
         settings.MOCK_RENAME = True

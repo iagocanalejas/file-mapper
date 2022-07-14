@@ -1,14 +1,22 @@
 import itertools
 import os
 import re
-from abc import ABC, abstractmethod
-from dataclasses import dataclass, field
+from abc import ABC
+from abc import abstractmethod
+from dataclasses import dataclass
+from dataclasses import field
 from difflib import SequenceMatcher
-from typing import Iterable, List, Optional
+from typing import Iterable
+from typing import List
+from typing import Optional
 
-import settings
-from src.utils.strings import apply_clean, generic_clean, remove_tracker, remove_parenthesis, remove_extension, \
-    retrieve_extension
+from src import settings
+from src.utils.strings import apply_clean
+from src.utils.strings import generic_clean
+from src.utils.strings import remove_extension
+from src.utils.strings import remove_parenthesis
+from src.utils.strings import remove_tracker
+from src.utils.strings import retrieve_extension
 
 
 @dataclass

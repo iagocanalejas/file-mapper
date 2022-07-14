@@ -5,4 +5,3 @@ from src.processors.unknown import UnknownProcessor
 __all__ = [
     Processor
 ]
-

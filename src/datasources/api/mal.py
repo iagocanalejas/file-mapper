@@ -2,15 +2,17 @@ import json
 import logging
 from dataclasses import dataclass
 from pprint import pformat
-from typing import List, Dict
+from typing import Dict
+from typing import List
 
 import requests
 from requests import RequestException
 
-import settings
+from src import settings
 from src.core.models.metadata import AnimeMetadata
 from src.core.types import DatasourceName
-from src.datasources.datasource import APIData, AnimeAPI
+from src.datasources.datasource import AnimeAPI
+from src.datasources.datasource import APIData
 from src.datasources.exceptions import InvalidConfiguration
 from src.parsers import Parser
 
@@ -32,7 +34,7 @@ class MalAPI(AnimeAPI):
     }
 
     def __init__(self, parser: Parser):
-        super(MalAPI, self).__init__(parser)
+        super().__init__(parser)
         if settings.MAL_CLIENT_ID is None:
             raise InvalidConfiguration('MAL_CLIENT_ID')
 
@@ -65,6 +67,6 @@ class MalAPI(AnimeAPI):
 @dataclass
 class _MalData(APIData):
     def __init__(self, d: Dict):
-        super(_MalData, self).__init__(d)
+        super().__init__(d)
         self._title = d['title']
         self.alternative_titles = d['alternative_titles']

@@ -1,14 +1,21 @@
 import logging
 import os
-from typing import Optional, List
+from typing import List
+from typing import Optional
 
 from src.core.exceptions import UnsupportedMediaType
-from src.core.models import Season, Show, Episode
+from src.core.models import Episode
+from src.core.models import Season
+from src.core.models import Show
 from src.core.types import Object
+from src.matchers import AnimeTypeMatcher
+from src.matchers import FilmTypeMatcher
+from src.matchers import MediaType
+from src.matchers import TypeMatcher
 from src.processors import Processor
 from src.tbuilder import Tree
-from src.tbuilder.models import File, Directory
-from src.matchers import MediaType, TypeMatcher, AnimeTypeMatcher, FilmTypeMatcher
+from src.tbuilder.models import Directory
+from src.tbuilder.models import File
 
 logger = logging.getLogger()
 

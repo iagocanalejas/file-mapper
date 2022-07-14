@@ -2,15 +2,17 @@ import json
 import logging
 from dataclasses import dataclass
 from pprint import pformat
-from typing import List, Dict
+from typing import Dict
+from typing import List
 
 import requests
 from requests import RequestException
 
-import settings
+from src import settings
 from src.core.models.metadata import AnimeMetadata
 from src.core.types import DatasourceName
-from src.datasources.datasource import APIData, AnimeAPI
+from src.datasources.datasource import AnimeAPI
+from src.datasources.datasource import APIData
 
 logger = logging.getLogger()
 
@@ -78,6 +80,6 @@ class AnilistAPI(AnimeAPI):
 @dataclass
 class _AnilistData(APIData):
     def __init__(self, d: Dict):
-        super(_AnilistData, self).__init__(d)
+        super().__init__(d)
         self._title = d['title']['romaji']
         self.alternative_titles = {'ja': d['title']['romaji'], 'en': d['title']['english']}

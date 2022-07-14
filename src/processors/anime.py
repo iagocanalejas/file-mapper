@@ -4,7 +4,7 @@ from typing import Callable
 from typing import List
 from typing import Tuple
 
-import settings
+from src import settings
 from src.core.models import Episode
 from src.core.models import MediaItem
 from src.core.models import Season

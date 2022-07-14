@@ -1,11 +1,15 @@
 import logging
-from abc import ABC, abstractmethod
+from abc import ABC
+from abc import abstractmethod
 
-from src.core.models import Episode, Season, Show, MediaItem
+from src.core.models import Episode
+from src.core.models import MediaItem
+from src.core.models import Season
+from src.core.models import Show
 from src.core.types import Object
 from src.formatter import Formatter
-from src.parsers import Parser
 from src.matchers import MediaType
+from src.parsers import Parser
 
 logger = logging.getLogger()
 

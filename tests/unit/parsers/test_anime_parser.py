@@ -1,14 +1,15 @@
 import unittest
-
-
-# noinspection LongLine
-from typing import List, Tuple, Optional
+from typing import List
+from typing import Optional
+from typing import Tuple
 
 from src.matchers import MediaType
 from src.parsers import Parser
-from tests.factories import EpisodeFactory, SeasonFactory
+from tests.factories import EpisodeFactory
+from tests.factories import SeasonFactory
 
 
+# noinspection LongLine
 class TestAnimeEpisodeParser(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
