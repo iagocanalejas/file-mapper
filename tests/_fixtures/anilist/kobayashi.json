@@ -1,0 +1,28 @@
+{
+  "data": {
+    "Page": {
+      "media": [
+        {
+          "id": 21776,
+          "title": {
+            "english": "Miss Kobayashi's Dragon Maid",
+            "romaji": "Kobayashi-san Chi no Maidragon"
+          }
+        },
+        {
+          "id": 107717,
+          "title": {
+            "english": "Miss Kobayashi's Dragon Maid S",
+            "romaji": "Kobayashi-san Chi no Maidragon S"
+          }
+        }
+      ],
+      "pageInfo": {
+        "currentPage": 1,
+        "hasNextPage": false,
+        "lastPage": 1,
+        "total": 2
+      }
+    }
+  }
+}

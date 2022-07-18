@@ -2,6 +2,7 @@ from abc import ABC
 from abc import abstractmethod
 
 from src.core.models import MediaItem
+from src.core.types import Language
 from src.core.types import Object
 from src.matchers import MediaType
 from src.parsers import Parser
@@ -31,5 +32,5 @@ class Formatter(ABC, Object):
         pass
 
     @abstractmethod
-    def format(self, item: MediaItem, parser: Parser, pattern: str, lang: str = 'en') -> str:
+    def format(self, item: MediaItem, parser: Parser, pattern: str, lang: Language = Language.EN) -> str:
         pass

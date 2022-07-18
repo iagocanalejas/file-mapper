@@ -7,6 +7,11 @@ class DatasourceName(Enum):
     ANILIST = 'ANILIST'
 
 
+class Language(Enum):
+    EN = 'en'
+    JA = 'ja'
+
+
 class Object:
     @property
     def _class(self) -> str:

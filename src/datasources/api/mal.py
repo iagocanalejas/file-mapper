@@ -11,6 +11,7 @@ from requests import RequestException
 from src import settings
 from src.core.models.metadata import AnimeMetadata
 from src.core.types import DatasourceName
+from src.core.types import Language
 from src.datasources.datasource import AnimeAPI
 from src.datasources.datasource import APIData
 from src.datasources.exceptions import InvalidConfiguration
@@ -38,7 +39,7 @@ class MalAPI(AnimeAPI):
         if settings.MAL_CLIENT_ID is None:
             raise InvalidConfiguration('MAL_CLIENT_ID')
 
-    def search_anime(self, keyword: str, season: int, season_name: str) -> AnimeMetadata:
+    def search_anime(self, keyword: str, lang: Language, season: int, season_name: str) -> AnimeMetadata:
         url = f'{self.BASE_URL}/anime?q={keyword}&fields={self.EXTRA_FIELDS}'
         response = requests.get(url, headers=self.HEADERS)
         logger.info(f'{self._class}:: searching for :: {url}')
@@ -51,13 +52,13 @@ class MalAPI(AnimeAPI):
 
             # parse data into Python objects
             data: List[_MalData] = [_MalData(d['node']) for d in content]
-            match = self._best_match(keyword, data, season, season_name)
+            match = self._best_match(keyword, lang, data, season, season_name)
 
             logger.info(f'{self._class}:: matching result :: {match}')
             return AnimeMetadata(
                 datasource_id=match.id,
                 datasource=self.DATASOURCE,
-                title=match.title('ja'),
+                title=match.title(Language.JA),
                 alternative_titles=match.alternative_titles,
             )
 

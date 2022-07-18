@@ -2,13 +2,17 @@ import logging
 import os.path
 from abc import ABC
 from copy import deepcopy
-from dataclasses import dataclass, field
-from typing import Optional, List
+from dataclasses import dataclass
+from dataclasses import field
+from typing import List
+from typing import Optional
 
 from src.core.models.metadata import Metadata
+from src.core.types import Language
 from src.core.types import Object
-from src.tbuilder.models import File, Directory
 from src.matchers import MediaType
+from src.tbuilder.models import Directory
+from src.tbuilder.models import File
 
 logger = logging.getLogger()
 
@@ -17,6 +21,7 @@ logger = logging.getLogger()
 class MediaItem(ABC, Object):
     base_path: str
     item_name: str
+    language: Language
 
     _media_type: MediaType = MediaType.UNKNOWN
     _metadata: Optional[Metadata] = None
@@ -52,14 +57,15 @@ class Episode(MediaItem):
 
     @classmethod
     def from_file(
-            cls, file: File, media_type: MediaType, season: 'Season' = None, show: 'Show' = None
+            cls, file: File, media_type: MediaType, lang: Language, season: 'Season' = None, show: 'Show' = None
     ) -> 'Episode':  # pragma: no cover
         obj = object.__new__(cls)
+        obj._media_type = media_type
+        obj.language = lang
         obj.base_path = file.base_path
         obj.item_name = file.name
         obj.season = season
         obj.show = show
-        obj._media_type = media_type
         return obj
 
 
@@ -70,15 +76,16 @@ class Season(MediaItem):
 
     @classmethod
     def from_directory(
-            cls, directory: Directory, media_type: MediaType, show: 'Show' = None
+            cls, directory: Directory, media_type: MediaType, lang: Language, show: 'Show' = None
     ) -> 'Season':  # pragma: no cover
         obj = object.__new__(cls)
         obj._media_type = media_type
+        obj.language = lang
         obj.base_path = directory.base_path
         obj.item_name = directory.name
         obj.show = show
         obj.episodes = [
-            Episode.from_file(f, media_type, season=obj, show=show)
+            Episode.from_file(f, media_type, lang, season=obj, show=show)
             for f in directory.childs if isinstance(f, File) and f.is_valid
         ]
         return obj
@@ -102,20 +109,22 @@ class Show(MediaItem):
     episodes: List[Episode] = field(default_factory=list)
 
     @classmethod
-    def from_directory(cls, directory: Directory, media_type: MediaType) -> 'Show':  # pragma: no cover
+    def from_directory(cls, directory: Directory, media_type: MediaType, lang: Language) -> 'Show':  # pragma: no cover
         obj = object.__new__(cls)
         obj._media_type = media_type
+        obj.language = lang
         obj.base_path = directory.base_path
         obj.item_name = directory.name
         obj.episodes = [
-            Episode.from_file(f, media_type, show=obj) for f in directory.childs if isinstance(f, File) and f.is_valid
+            Episode.from_file(f, media_type, lang, show=obj)
+            for f in directory.childs if isinstance(f, File) and f.is_valid
         ]
 
         seasons: List[Season] = []
         for subdirectory in [d for d in directory.childs if isinstance(d, Directory) and d.is_valid]:
             if not subdirectory.has_only_files():
                 raise ValueError(f'{obj}')
-            seasons.append(Season.from_directory(subdirectory, media_type, show=obj))
+            seasons.append(Season.from_directory(subdirectory, media_type, lang, show=obj))
 
         obj.seasons = seasons
         return obj

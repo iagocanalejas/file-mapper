@@ -10,6 +10,7 @@ from src.core.models import MediaItem
 from src.core.models import Season
 from src.core.models import Show
 from src.core.types import DatasourceName
+from src.core.types import Language
 from src.datasources.datasource import Scrapper
 from src.datasources.exceptions import NotFound
 from src.datasources.scrapper.wikipedia.pages import WikipediaEpisodePage
@@ -57,15 +58,17 @@ class WikipediaScrapper(Scrapper):
 
         return episode
 
-    async def __load_page(self, item: MediaItem, lang: str = 'en') -> WikipediaPage:
-        keyword = self.__search_keyword(item, lang=lang)
-        keyword_ja = self.__search_keyword(item, lang='ja')
+    async def __load_page(self, item: MediaItem, languages: List[Language] = None) -> WikipediaPage:
+        if languages is None:
+            languages = [Language.EN, Language.JA]
+
+        keywords = [self.__search_keyword(item, lang) for lang in languages]
         pages = [
-            WikipediaEpisodePage(keyword),
-            WikipediaMainPage(keyword),
-            WikipediaEpisodePage(keyword_ja),
-            WikipediaMainPage(keyword_ja),
+            [WikipediaEpisodePage(keyword), WikipediaMainPage(keyword)]
+            for keyword in keywords
         ]
+        pages = [x for xs in pages for x in xs]  # flatten list
+
         async with aiohttp.ClientSession() as session:
             pages = await asyncio.gather(*[page.load(session) for page in pages], return_exceptions=True)
 
@@ -74,7 +77,7 @@ class WikipediaScrapper(Scrapper):
             logger.info(f'{self._class}:: valid page :: {page}')
             return page
         except StopIteration:
-            raise NotFound(f'{self._class}:: matching page for :: {keyword}')
+            raise NotFound(f'{self._class}:: matching page for :: {keywords}')
 
     def __fill_episodes(self, page: WikipediaPage, episodes: List[Episode]):
         not_found = []
@@ -113,7 +116,7 @@ class WikipediaScrapper(Scrapper):
             return season_name.replace(match.group(0), '').strip()
         return season_name
 
-    def __search_keyword(self, item: MediaItem, lang: str = 'en') -> str:
+    def __search_keyword(self, item: MediaItem, lang: Language = Language.EN) -> str:
         # TODO: should titlecase the keyword ignoring some words. The 'Yuri on Ice' problem
         media_name = self.parser.media_name(item, lang=lang)
         media_name = re.sub(r'[_!]+', '', media_name)

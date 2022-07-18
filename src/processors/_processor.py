@@ -50,18 +50,15 @@ class Processor(ABC, Object):
 
     @abstractmethod
     def process_episode(self, episode: Episode):
-        episode.media_type = self.media_type
-        logger.info(f'{self._class}:: processing episode :: {episode}')
+        pass
 
     @abstractmethod
     def process_season(self, season: Season):
-        season.media_type = self.media_type
-        logger.info(f'{self._class}:: processing season :: {season}')
+        pass
 
     @abstractmethod
     def process_show(self, show: Show):
-        show.media_type = self.media_type
-        logger.info(f'{self._class}:: processing show :: {show}')
+        pass
 
     @abstractmethod
     def rename(self, item: MediaItem):

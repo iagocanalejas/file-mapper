@@ -1,7 +1,11 @@
 import re
 from typing import List
 
-from src.core.models import MediaItem, Episode, Season, Show
+from src.core.models import Episode
+from src.core.models import MediaItem
+from src.core.models import Season
+from src.core.models import Show
+from src.core.types import Language
 from src.formatter._formatter import Formatter
 from src.matchers import MediaType
 from src.parsers import Parser
@@ -31,15 +35,15 @@ class AnimeFormatter(Formatter, media_type=MediaType.ANIME):
         match item:
             case Episode():
                 pattern = '{media_name} {season_name} - {episode:02d}.{episode_part}'
-                title = self.format(item, parser, pattern=pattern, lang='ja')
-                episode = self.format(item, parser, pattern='{episode_name}.{extension}', lang='ja')
+                title = self.format(item, parser, pattern=pattern, lang=Language.JA)
+                episode = self.format(item, parser, pattern='{episode_name}.{extension}', lang=Language.JA)
                 return f'{title} - {episode}'
             case Season():
-                return self.titlecase(self.format(item, parser, pattern='{media_name} {season_name}', lang='ja'))
+                return self.titlecase(self.format(item, parser, pattern='{media_name} {season_name}', lang=Language.JA))
             case Show():
-                return self.titlecase(self.format(item, parser, pattern='{media_name}', lang='ja'))
+                return self.titlecase(self.format(item, parser, pattern='{media_name}', lang=Language.JA))
 
-    def format(self, item: MediaItem, parser: Parser, pattern: str, lang: str = 'en') -> str:
+    def format(self, item: MediaItem, parser: Parser, pattern: str, lang: Language = Language.EN) -> str:
         season_name = parser.season_name(item) if not isinstance(item, Show) else None
 
         pattern = self.__remove_episode_if_required(item, pattern)
@@ -60,7 +64,7 @@ class AnimeFormatter(Formatter, media_type=MediaType.ANIME):
 
         return pattern.format(
             media_name=media_name,
-            media_title=parser.media_title(item, lang=lang),
+            media_title=parser.media_title(item),
             season=season,
             season_name=season_name,
             episode=episode,
@@ -71,7 +75,7 @@ class AnimeFormatter(Formatter, media_type=MediaType.ANIME):
 
     @staticmethod
     def __remove_season_if_required(
-            item: MediaItem, parser: Parser, season_name: str, pattern: str, lang: str = 'en'
+            item: MediaItem, parser: Parser, season_name: str, pattern: str, lang: Language = Language.EN
     ) -> str:
         season = parser.season(item) if not isinstance(item, Show) else None
         should_remove_season = False

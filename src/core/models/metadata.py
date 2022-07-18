@@ -1,7 +1,10 @@
 from dataclasses import dataclass
-from typing import Optional, Dict, List
+from typing import Dict
+from typing import List
+from typing import Optional
 
 from src.core.types import DatasourceName
+from src.core.types import Language
 from src.utils.strings import generic_clean
 
 
@@ -10,7 +13,7 @@ class Metadata:
     title: str
 
     @property
-    def media_name(self) -> str:
+    def media_name(self, *args, **kwargs) -> str:
         return self.title
 
 
@@ -22,10 +25,10 @@ class AnimeMetadata(Metadata):
     season_name: Optional[str] = None
     episode_name: Optional[str] = None
 
-    def media_name(self, lang: str = 'en') -> str:
-        if lang == 'ja':
+    def media_name(self, lang: Language) -> str:
+        if lang == Language.JA:
             return generic_clean(self.title)
         name = self.title
-        if self.alternative_titles and self.alternative_titles[lang]:
-            name = self.alternative_titles[lang]
+        if self.alternative_titles and self.alternative_titles[lang.value]:
+            name = self.alternative_titles[lang.value]
         return generic_clean(name)

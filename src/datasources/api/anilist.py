@@ -11,6 +11,7 @@ from requests import RequestException
 from src import settings
 from src.core.models.metadata import AnimeMetadata
 from src.core.types import DatasourceName
+from src.core.types import Language
 from src.datasources.datasource import AnimeAPI
 from src.datasources.datasource import APIData
 
@@ -47,7 +48,7 @@ class AnilistAPI(AnimeAPI):
             }
         }"""
 
-    def search_anime(self, keyword: str, season: int, season_name: str) -> AnimeMetadata:
+    def search_anime(self, keyword: str, lang: Language, season: int, season_name: str) -> AnimeMetadata:
         variables = {'query': keyword}
         response = requests.post(
             self.BASE_URL,
@@ -64,13 +65,13 @@ class AnilistAPI(AnimeAPI):
 
             # parse data into Python objects
             data: List[_AnilistData] = [_AnilistData(d) for d in content]
-            match = self._best_match(keyword, data, season, season_name)
+            match = self._best_match(keyword, lang, data, season, season_name)
 
             logger.info(f'{self._class}:: matching result :: {match}')
             return AnimeMetadata(
                 datasource_id=match.id,
                 datasource=self.DATASOURCE,
-                title=match.title('ja'),
+                title=match.title(Language.JA),
                 alternative_titles=match.alternative_titles
             )
 

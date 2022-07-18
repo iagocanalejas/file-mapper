@@ -1,5 +1,5 @@
 # General Usage
-
+## Configuration
 - Create a `.env` file with the following format:
     - `MAL_CLIENT_ID` can be created in https://myanimelist.net/apiconfig
 
@@ -7,21 +7,20 @@
 MAL_CLIENT_ID=<>
 ```
 
-- Run
+## Running the file mapper
 
 ```
-python main.py <path> [--type] [--debug]
+python file-mapper.py <path> [--type] [--lang] [--debug]
+
+--type=[anime]
+  Simplify type matching telling the engine what type it should be using.
+
+--lang=[en, ja]
+  Simplify language matching telling the engine what language the 'path' name is writted in.
 ```
 
-- Examples
 
-```
-python main.py tests/_manual/files/ --debug
-python main.py tests/_manual/seasons/\[Judas\]\ Ahiru\ no\ Sora\ \(Season\ 1\)\ \[1080p\]\[HEVC\ x265\ 10bit\]\[Multi-Subs\]/ --debug
-python main.py tests/_manual/shows/\[Anipakku\]\ Overlord\ \(S01\ S02\ S03\ +\ Movies\ +\ OVA\ +\ Specials\)\ \[BD\ 1080p\]\[HEVC\ x265\ 10bit\]\[Multi-Dub\]\[Multi-Subs\]/ --debug
-```
-
-# Running Tests
+## Running Tests
 
 ```
 coverage run -m unittest discover

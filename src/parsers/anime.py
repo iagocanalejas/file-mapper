@@ -2,13 +2,26 @@ import logging
 import re
 from typing import Optional
 
-from src.core.models import MediaItem, Show, Season, Episode
+from src.core.models import Episode
+from src.core.models import MediaItem
+from src.core.models import Season
+from src.core.models import Show
 from src.core.models.metadata import AnimeMetadata
+from src.core.types import Language
 from src.matchers import MediaType
 from src.parsers._parser import Parser
-from src.utils.strings import remove_tracker, remove_parenthesis, RomanNumbers, apply_clean, \
-    generic_clean, remove_extension, apply, remove_episode, remove_season, remove_trailing_hyphen, accepts, \
-    remove_episode_name
+from src.utils.strings import accepts
+from src.utils.strings import apply
+from src.utils.strings import apply_clean
+from src.utils.strings import generic_clean
+from src.utils.strings import remove_episode
+from src.utils.strings import remove_episode_name
+from src.utils.strings import remove_extension
+from src.utils.strings import remove_parenthesis
+from src.utils.strings import remove_season
+from src.utils.strings import remove_tracker
+from src.utils.strings import remove_trailing_hyphen
+from src.utils.strings import RomanNumbers
 
 logger = logging.getLogger()
 
@@ -56,7 +69,7 @@ class AnimeParser(Parser, media_type=MediaType.ANIME):
                 return metadata.season_name
         return self._parse_season_name(item.item_name)
 
-    def media_title(self, item: MediaItem, lang: str = 'en') -> Optional[str]:
+    def media_title(self, item: MediaItem) -> Optional[str]:
         media_title = item.item_name
 
         # Removes some season names
@@ -74,7 +87,7 @@ class AnimeParser(Parser, media_type=MediaType.ANIME):
             arg=media_title
         )
 
-    def media_name(self, item: MediaItem, lang: str = 'en') -> str:
+    def media_name(self, item: MediaItem, lang: Language = Language.EN) -> str:
         assert item.metadata is not None
         metadata = item.metadata
         assert isinstance(metadata, AnimeMetadata)

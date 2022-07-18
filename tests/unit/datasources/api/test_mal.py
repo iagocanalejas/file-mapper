@@ -6,6 +6,7 @@ import responses
 
 from src.core.models.metadata import AnimeMetadata
 from src.core.types import DatasourceName
+from src.core.types import Language
 from src.datasources.api import MalAPI
 from tests import settings
 from tests.utils import load_json
@@ -14,7 +15,7 @@ from tests.utils import load_json
 class TestMalAPI(unittest.TestCase):
 
     def setUp(self) -> None:
-        super(TestMalAPI, self).setUp()
+        super().setUp()
         self.responses = responses.RequestsMock()
         self.responses.start()
 
@@ -39,7 +40,7 @@ class TestMalAPI(unittest.TestCase):
                                        alternative_titles={'en': '', 'ja': 'あひるの空', 'synonyms': []},
                                        season_name=None,
                                        episode_name=None),
-                         MalAPI(mock_parser).search_anime(anime_name, 1, ''))
+                         MalAPI(mock_parser).search_anime(anime_name, Language.JA, 1, ''))
 
 
 if __name__ == '__main__':

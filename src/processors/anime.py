@@ -38,7 +38,7 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
         ]
 
     def process_episode(self, episode: Episode):
-        super().process_episode(episode)
+        logger.info(f'{self._class}:: processing episode :: {episode}')
 
         self.__fill_metadata(episode)
         WikipediaScrapper(parser=self.parser).fill_episode_name(episode)
@@ -46,7 +46,7 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
         self.rename(episode)
 
     def process_season(self, season: Season):
-        super().process_season(season)
+        logger.info(f'{self._class}:: processing season :: {season}')
 
         self.__fill_metadata(season)
         WikipediaScrapper(parser=self.parser).fill_season_names(season)
@@ -54,7 +54,7 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
         self.rename(season)
 
     def process_show(self, show: Show):
-        super().process_show(show)
+        logger.info(f'{self._class}:: processing show :: {show}')
 
         self.__fill_metadata(show)
         WikipediaScrapper(parser=self.parser).fill_show_names(show)
@@ -90,7 +90,7 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
     def __fill_metadata(self, item: MediaItem):
         season = self.parser.season(item) if not isinstance(item, Show) else 0
         season_name = self.parser.season_name(item) if not isinstance(item, Show) else None
-        metadata = [finder.search_anime(fn(item), season, season_name) for finder, fn in self._finders]
+        metadata = [finder.search_anime(fn(item), item.language, season, season_name) for finder, fn in self._finders]
         metadata = self.__aggregate_metadata(item, metadata)
 
         logger.info(f'{self._class}:: aggregated metadata :: {metadata}')

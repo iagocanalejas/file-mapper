@@ -3,6 +3,7 @@ import factory
 from src.core import models
 from src.core.models import metadata
 from src.core.types import DatasourceName
+from src.core.types import Language
 
 
 class AnimeMetadataFactory(factory.Factory):
@@ -11,7 +12,7 @@ class AnimeMetadataFactory(factory.Factory):
 
     datasource_id = factory.Sequence(lambda n: n)
     datasource = DatasourceName.MAL,
-    title = factory.Sequence(lambda n: f"item_{n}")
+    title = factory.Sequence(lambda n: f'item_{n}')
     alternative_titles = {}
 
 
@@ -19,7 +20,14 @@ class MediaItemFactory(factory.Factory):
     class Meta:
         model = models.MediaItem
 
-    base_path = factory.Sequence(lambda n: f"/home/fake/{n}")
+    base_path = factory.Sequence(lambda n: f'/home/fake/{n}')
+
+    @classmethod
+    def create(cls, **kwargs):
+        if 'language' not in kwargs:
+            kwargs['language'] = Language.JA
+        obj = super().create(**kwargs)
+        return obj
 
 
 class EpisodeFactory(MediaItemFactory):

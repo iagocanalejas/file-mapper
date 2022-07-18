@@ -4,6 +4,7 @@ import os
 import sys
 
 from src import settings
+from src.core.types import Language
 from src.engine import Engine
 from src.matchers import MediaType
 
@@ -12,18 +13,20 @@ logger.setLevel(logging.INFO)
 logger.addHandler(logging.StreamHandler(sys.stdout))
 
 
-def main(path: str, media_type: str):
+def main(path: str, media_type: str, lang: str):
     if not os.path.exists(path):
         raise ValueError(f'\'{path}\' does not exist')
 
-    engine = Engine(path=path, media_type=media_type)
+    engine = Engine(path=path, media_type=media_type, lang=lang)
     engine.run()
 
 
 def __parse_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument('path', help='Path to be handled')
-    parser.add_argument('--type', default=None, help=f'Known type for the path {MediaType.__members__.keys()}')
+    parser.add_argument('--type', default=None, help=f'Preset type to be used. Valid: {MediaType.__members__.keys()}')
+    parser.add_argument('--lang', default=None,
+                        help=f'Preset language to be used. Valid: {Language.__members__.values()}')
     parser.add_argument('--debug', action='store_true', default=False)
     return parser.parse_args()
 
@@ -40,10 +43,10 @@ if __name__ == '__main__':
         import pstats
 
         with cProfile.Profile() as pr:
-            main(os.path.abspath(args.path), args.type)
+            main(os.path.abspath(args.path), args.type, args.lang)
 
         stats = pstats.Stats(pr)
         stats.sort_stats(pstats.SortKey.TIME)
         stats.dump_stats(filename='profiling.prof')
     else:
-        main(os.path.abspath(args.path), args.type)
+        main(os.path.abspath(args.path), args.type, args.lang)
