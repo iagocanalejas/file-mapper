@@ -4,6 +4,9 @@ from src.core import models
 from src.core.models import metadata
 from src.core.types import DatasourceName
 from src.core.types import Language
+from src.tbuilder.models import Directory
+from src.tbuilder.models import File
+from src.tbuilder.models import Item
 
 
 class AnimeMetadataFactory(factory.Factory):
@@ -43,3 +46,20 @@ class SeasonFactory(MediaItemFactory):
 class ShowFactory(MediaItemFactory):
     class Meta:
         model = models.Show
+
+
+class ItemFactory(factory.Factory):
+    class Meta:
+        model = Item
+
+    base_path = factory.Sequence(lambda n: f'/home/fake/{n}')
+
+
+class FileFactory(ItemFactory):
+    class Meta:
+        model = File
+
+
+class DirectoryFactory(ItemFactory):
+    class Meta:
+        model = Directory

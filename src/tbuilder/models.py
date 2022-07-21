@@ -13,6 +13,7 @@ from typing import Optional
 from src import settings
 from src.utils.strings import apply_clean
 from src.utils.strings import generic_clean
+from src.utils.strings import remove_episode
 from src.utils.strings import remove_extension
 from src.utils.strings import remove_parenthesis
 from src.utils.strings import remove_tracker
@@ -91,7 +92,7 @@ class Directory(Item):
         return all(isinstance(i, File) for i in self.childs)
 
     @staticmethod
-    @apply_clean(clean_functions=[generic_clean, remove_tracker, remove_parenthesis, remove_extension])
+    @apply_clean(clean_functions=[generic_clean, remove_tracker, remove_parenthesis, remove_episode, remove_extension])
     def __items_can_share_season(items: Iterable[str]) -> bool:
         """
         Check if all files share enough similarity to be considered of the same season or all strings match 'S1E01'
@@ -100,4 +101,4 @@ class Directory(Item):
         """
         ratios = [SequenceMatcher(None, i[0], i[1]).ratio() for i in itertools.permutations(items, 2)]
         se = re.compile(r'^(S\d+E\d+|E\d+).*')  # probably a limit case
-        return all(r > settings.SIMILARITY_THRESHOLD for r in ratios) or all(se.match(s) for s in items)
+        return all(r >= settings.SIMILARITY_THRESHOLD for r in ratios) or all(se.match(s) for s in items)
