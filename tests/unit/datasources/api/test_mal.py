@@ -23,20 +23,13 @@ class TestMalAPI(unittest.TestCase):
     def test_find_anime(self, mock_parser):
         anime_name = 'Ahiru no Sora'
 
-        url = f'{MalAPI.BASE_URL}/anime?q={anime_name}&fields=alternative_titles'
+        url = MalAPI.BASE_URL.format(anime=anime_name)
         data = load_json(os.path.join(settings.MAL_FIXTURES_DIR, 'ahiru_no_sora.json'))
         self.responses.add(responses.GET, url=url, json=data)
 
-        AnimeMetadata(title='Ahiru no Sora',
-                      datasource_id=37403,
-                      datasource=DatasourceName.MAL,
-                      alternative_titles={'en': '', 'ja': 'あひるの空', 'synonyms': []},
-                      season_name=None,
-                      episode_name=None)
-
         self.assertEqual(AnimeMetadata(title='Ahiru no Sora',
-                                       datasource_id=37403,
-                                       datasource=DatasourceName.MAL,
+                                       title_lang=Language.JA,
+                                       datasource_data={DatasourceName.MAL: '37403'},
                                        alternative_titles={'en': '', 'ja': 'あひるの空', 'synonyms': []},
                                        season_name=None,
                                        episode_name=None),

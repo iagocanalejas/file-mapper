@@ -11,6 +11,7 @@ from src.utils.strings import generic_clean
 @dataclass
 class Metadata:
     title: str
+    title_lang: Language
 
     @property
     def media_name(self, *args, **kwargs) -> str:
@@ -19,16 +20,21 @@ class Metadata:
 
 @dataclass
 class AnimeMetadata(Metadata):
-    datasource_id: List[int] | int
-    datasource: List[DatasourceName] | DatasourceName
+    datasource_data: List[Dict[DatasourceName, str]] | Dict[DatasourceName, str]
     alternative_titles: Dict[str, str]
     season_name: Optional[str] = None
     episode_name: Optional[str] = None
 
     def media_name(self, lang: Language) -> str:
-        if lang == Language.JA:
+        if lang == self.title_lang:
             return generic_clean(self.title)
+
         name = self.title
         if self.alternative_titles and self.alternative_titles[lang.value]:
             name = self.alternative_titles[lang.value]
         return generic_clean(name)
+
+
+def as_anime(m: Metadata) -> AnimeMetadata:
+    assert isinstance(m, AnimeMetadata)
+    return m

@@ -5,6 +5,8 @@ class DatasourceName(Enum):
     WIKIPEDIA = 'WIKIPEDIA'
     MAL = 'MAL'
     ANILIST = 'ANILIST'
+    IMDB = 'IMDB'
+    IMDB_SCRAPPER = 'IMDB_SCRAPPER'
 
 
 class Language(Enum):

@@ -7,9 +7,11 @@ from tests.factories import EpisodeFactory
 from tests.factories import SeasonFactory
 from tests.factories import ShowFactory
 from tests.settings import ANILIST_FIXTURES_DIR
+from tests.settings import IMDB_FIXTURES_DIR
 from tests.settings import MAL_FIXTURES_DIR
 from tests.settings import WIKIPEDIA_FIXTURES_DIR
 from tests.utils import TestObject
+
 
 # noinspection LongLine
 TEST_OBJECTS: List[TestObject] = [
@@ -20,6 +22,7 @@ TEST_OBJECTS: List[TestObject] = [
         fixtures=[
             (r're:.*myanimelist.*anime\?q=Ahiru%20no%20Sora', f"json:{os.path.join(MAL_FIXTURES_DIR, 'ahiru_no_sora.json')}"),
             (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'ahiru_no_sora_details.json')}"),
+            (r're:.*imdb-api.com.*Ahiru%20no%20Sora', f"json:{os.path.join(IMDB_FIXTURES_DIR, 'ahiru_no_sora.json')}"),
             (r're:.*wikipedia.*\/List_of_Ahiru_no_Sora_episodes', None),  # Requires an empty response to use main_page load
             (r're:.*wikipedia.*\/Ahiru_no_Sora#Episode_list', f"html:{os.path.join(WIKIPEDIA_FIXTURES_DIR, 'main_page_ahiru_no_sora.html')}"),
         ],
@@ -31,6 +34,7 @@ TEST_OBJECTS: List[TestObject] = [
         fixtures=[
             (r're:.*myanimelist.*anime\?q=Great%20Pretender', f"json:{os.path.join(MAL_FIXTURES_DIR, 'great_pretender.json')}"),
             (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'great_pretender_details.json')}"),
+            (r're:.*imdb-api.com.*Great%20Pretender', f"json:{os.path.join(IMDB_FIXTURES_DIR, 'great_pretender.json')}"),
             (r're:.*wikipedia.*\/List_of_Great_Pretender_episodes', f"html:{os.path.join(WIKIPEDIA_FIXTURES_DIR, 'episode_page_great_pretender.html')}"),
         ],
     ),
@@ -41,6 +45,7 @@ TEST_OBJECTS: List[TestObject] = [
         fixtures=[
             (r're:.*myanimelist.*anime\?q=Tate%20no%20Yuusha%20no%20Nariagari', f"json:{os.path.join(MAL_FIXTURES_DIR, 'tate_no_yuusha.json')}"),
             (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'tate_no_yuusha_details.json')}"),
+            (r're:.*imdb-api.com.*Tate%20no%20Yuusha%20no%20Nariagari', f"json:{os.path.join(IMDB_FIXTURES_DIR, 'tate_no_yuusha.json')}"),
             (r're:.*wikipedia.*\/List_of_The_Rising_of_the_Shield_Hero_episodes', f"html:{os.path.join(WIKIPEDIA_FIXTURES_DIR, 'episode_page_tate_no_yuusha.html')}"),
         ],
     ),
@@ -51,6 +56,7 @@ TEST_OBJECTS: List[TestObject] = [
         fixtures=[
             (r're:.*myanimelist.*anime\?q=Seikon%20no%20Qwaser', f"json:{os.path.join(MAL_FIXTURES_DIR, 'seikon_no_qwaser.json')}"),
             (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'seikon_no_qwaser_details.json')}"),
+            (r're:.*imdb-api.com.*Seikon%20no%20Qwaser', f"json:{os.path.join(IMDB_FIXTURES_DIR, 'seikon_no_qwaser.json')}"),
             (r're:.*wikipedia.*\/List_of_The_Qwaser_of_Stigmata_episodes', f"html:{os.path.join(WIKIPEDIA_FIXTURES_DIR, 'episode_page_seikon_no_qwaser.html')}"),
         ],
     ),
@@ -61,6 +67,7 @@ TEST_OBJECTS: List[TestObject] = [
         fixtures=[
             (r're:.*myanimelist.*anime\?q=The%20Case%20Study%20of%20Vanitas', f"json:{os.path.join(MAL_FIXTURES_DIR, 'vanitas_no_karte.json')}"),
             (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'vanitas_no_karte_details.json')}"),
+            (r're:.*imdb-api.com.*The%20Case%20Study%20of%20Vanitas', f"json:{os.path.join(IMDB_FIXTURES_DIR, 'vanitas_no_karte.json')}"),
             (r're:.*wikipedia.*\/List_of_The_Case_Study_of_Vanitas_episodes', f"html:{os.path.join(WIKIPEDIA_FIXTURES_DIR, 'episode_page_vanitas_no_karte.html')}"),
         ],
     ),
@@ -71,23 +78,21 @@ TEST_OBJECTS: List[TestObject] = [
         fixtures=[
             (r're:.*myanimelist.*anime\?q=Kobayashi-san%20Chi%20no%20Maid%20Dragon', f"json:{os.path.join(MAL_FIXTURES_DIR, 'kobayashi.json')}"),
             (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'kobayashi.json')}"),
+            (r're:.*imdb-api.com.*Kobayashi-san%20Chi%20no%20Maid%20Dragon', f"json:{os.path.join(IMDB_FIXTURES_DIR, 'kobayashi.json')}"),
             (r're:.*wikipedia.*\/List_of_Miss_Kobayashi%27s_Dragon_Maid_episodes', f"html:{os.path.join(WIKIPEDIA_FIXTURES_DIR, 'episode_kobayashi.html')}"),
         ],
     ),
-    # TODO: not working because we need to use 'Ice' instead of 'ICE' for wikipedia. We can't just titlecase the words because it will also break
-    # TestObject(
-    #     item=EpisodeFactory.create(item_name='[Cerberus] Yuri on Ice ...- S01E15-The d'Apchiers' Vampire [0114BB7B].mkv'),
-    #     media_type=MediaType.ANIME,
-    #     expected_name=['Yuri!!! On ICE - 11 - Gotta Super-Supercharge it! Grand Prix Final Short Program.mkv'],
-    #     fixtures=[
-    #         (r're:.*myanimelist.*anime\?q=Yuri!!!%20On%20ICE', f"json:{os.path.join(MAL_FIXTURES_DIR, 'yuri_on_ice.json')}"),
-    #         (r're:.*myanimelist.*anime\/32995', f"json:{os.path.join(MAL_FIXTURES_DIR, 'yuri_on_ice_details.json')}"),
-    #         ('anilist:get_anime', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'yuri_on_ice_details.json')}"),
-    #         ('anilist:get_anime_id', 'int:21709'),
-    #         ('anilist:get_anime_with_id', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'yuri_on_ice_details.json')}"),
-    #         (r're:.*wikipedia.*\/List_of_Yuri_on_Ice_episodes', f"html:{os.path.join(WIKIPEDIA_FIXTURES_DIR, 'episode_page_yuri_on_ice.html')}"),
-    #     ],
-    # ),
+    TestObject(
+        item=EpisodeFactory.create(item_name='[PuyaSubs!] Yuri!!! On ICE - 11 [720p][663F641B].mkv'),
+        media_type=MediaType.ANIME,
+        expected_names=['Yuuri!!! on ICE - 11 - Gotta Super-Supercharge It!! Grand Prix Final Short Program.mkv'],
+        fixtures=[
+            (r're:.*myanimelist.*anime\?q=Yuri!!!%20On%20ICE', f"json:{os.path.join(MAL_FIXTURES_DIR, 'yuri_on_ice.json')}"),
+            (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'yuri_on_ice_details.json')}"),
+            (r're:.*imdb-api.com.*Yuri!!!%20On%20ICE', f"json:{os.path.join(IMDB_FIXTURES_DIR, 'yuri_on_ice.json')}"),
+            (r're:.*imdb.com.*tt6112556\/episodes\?season=1', f"html:{os.path.join(IMDB_FIXTURES_DIR, 'yuri_on_ice.html')}"),
+        ],
+    ),
 
     ########################
     #       Seasons        #
@@ -114,7 +119,7 @@ TEST_OBJECTS: List[TestObject] = [
         fixtures=[
             (r're:.*myanimelist.*anime\?q=Ahiru%20no%20Sora', f"json:{os.path.join(MAL_FIXTURES_DIR, 'ahiru_no_sora.json')}"),
             (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'ahiru_no_sora_details.json')}"),
-            (r're:.*wikipedia.*\/List_of_Ahiru_no_Sora_episodes', None),  # Requires an empty response to use main_page load
+            (r're:.*imdb-api.com.*Ahiru%20no%20Sora', f"json:{os.path.join(IMDB_FIXTURES_DIR, 'ahiru_no_sora.json')}"),
             (r're:.*wikipedia.*\/Ahiru_no_Sora#Episode_list', f"html:{os.path.join(WIKIPEDIA_FIXTURES_DIR, 'main_page_ahiru_no_sora.html')}"),
         ],
     ),
@@ -138,35 +143,37 @@ TEST_OBJECTS: List[TestObject] = [
         fixtures=[
             (r're:.*myanimelist.*anime\?q=The%20Case%20Study%20of%20Vanitas', f"json:{os.path.join(MAL_FIXTURES_DIR, 'vanitas_no_karte.json')}"),
             (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'vanitas_no_karte_details.json')}"),
+            (r're:.*imdb-api.com.*The%20Case%20Study%20of%20Vanitas', f"json:{os.path.join(IMDB_FIXTURES_DIR, 'vanitas_no_karte.json')}"),
             (r're:.*wikipedia.*\/List_of_The_Case_Study_of_Vanitas_episodes', f"html:{os.path.join(WIKIPEDIA_FIXTURES_DIR, 'episode_page_vanitas_no_karte.html')}"),
         ],
     ),
-    # TestObject(
-    #     item=SeasonFactory.create(
-    #         item_name='[Judas] The Last Summoner [1080p][HEVC x265 10bit][Multi-Subs]',
-    #         language=Language.EN,
-    #         episodes=[
-    #             EpisodeFactory.create(item_name='[ASW] The Last Summoner - 01 [1080p HEVC][FA34C77D].mkv'),
-    #             EpisodeFactory.create(item_name='[ASW] The Last Summoner - 02 [1080p HEVC][FA34C77D].mkv'),
-    #             EpisodeFactory.create(item_name='[ASW] The Last Summoner - 03 [1080p HEVC][FA34C77D].mkv'),
-    #             EpisodeFactory.create(item_name='[ASW] The Last Summoner - 04 [1080p HEVC][FA34C77D].mkv'),
-    #         ]
-    #     ),
-    #     media_type=MediaType.ANIME,
-    #     expected_names=[
-    #         'Zuihou de Zhaohuan Shi',
-    #         'Zuihou de Zhaohuan Shi - 01 - Awakening.mkv',
-    #         'Zuihou de Zhaohuan Shi - 02 - Flower.mkv',
-    #         'Zuihou de Zhaohuan Shi - 03 - Miaowu.mkv',
-    #         'Zuihou de Zhaohuan Shi - 04 - The Last Supper.mkv',
-    #     ],
-    #     fixtures=[
-    #         (r're:.*myanimelist.*anime\?q=The%20Last%20Summoner', f"json:{os.path.join(MAL_FIXTURES_DIR, 'the_last_summoner.json')}"),
-    #         (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'the_last_summoner_details.json')}"),
-    #         (r're:.*wikipedia.*\/List_of_The_Last_Summoner_episodes', None),  # Requires an empty response to use main_page load
-    #         # TODO: wikipedia page does not exist for this anime
-    #     ],
-    # ),
+    TestObject(
+        item=SeasonFactory.create(
+            item_name='[Judas] The Last Summoner [1080p][HEVC x265 10bit][Multi-Subs]',
+            language=Language.EN,
+            episodes=[
+                EpisodeFactory.create(item_name='[ASW] The Last Summoner - 01 [1080p HEVC][FA34C77D].mkv'),
+                EpisodeFactory.create(item_name='[ASW] The Last Summoner - 02 [1080p HEVC][FA34C77D].mkv'),
+                EpisodeFactory.create(item_name='[ASW] The Last Summoner - 03 [1080p HEVC][FA34C77D].mkv'),
+                EpisodeFactory.create(item_name='[ASW] The Last Summoner - 04 [1080p HEVC][FA34C77D].mkv'),
+            ]
+        ),
+        media_type=MediaType.ANIME,
+        expected_names=[
+            'Zuihou de Zhaohuan Shi',
+            'Zuihou de Zhaohuan Shi - 01 - Awakening.mkv',
+            'Zuihou de Zhaohuan Shi - 02 - Flower.mkv',
+            'Zuihou de Zhaohuan Shi - 03 - Miaowu.mkv',
+            'Zuihou de Zhaohuan Shi - 04 - The Last Supper.mkv',
+        ],
+        fixtures=[
+            (r're:.*myanimelist.*anime\?q=The%20Last%20Summoner', f"json:{os.path.join(MAL_FIXTURES_DIR, 'the_last_summoner.json')}"),
+            (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'the_last_summoner_details.json')}"),
+            (r're:.*imdb-api.com.*The%20Last%20Summoner', f"json:{os.path.join(IMDB_FIXTURES_DIR, 'the_last_summoner.json')}"),
+            (r're:.*wikipedia.*', None),  # Requires an empty response to use main_page load
+            (r're:.*imdb.com.*tt19893526\/episodes\?season=1', f"html:{os.path.join(IMDB_FIXTURES_DIR, 'the_last_summoner.html')}"),
+        ],
+    ),
 
     ########################
     #        Shows         #
@@ -199,8 +206,7 @@ TEST_OBJECTS: List[TestObject] = [
         fixtures=[
             (r're:.*myanimelist.*anime\?q=Hajime%20no%20Ippo', f"json:{os.path.join(MAL_FIXTURES_DIR, 'hajime_no_ippo.json')}"),
             (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'hajime_no_ippo_details.json')}"),
-            (r're:.*wikipedia.*', None),  # Requires an empty response to use main_page load
-            (r're:.*wikipedia.*', None),  # Requires an empty response to use japanese load
+            (r're:.*imdb-api.com.*Hajime%20no%20Ippo', f"json:{os.path.join(IMDB_FIXTURES_DIR, 'hajime_no_ippo.json')}"),
             (r're:.*wikipedia.*\/List_of_Hajime_no_Ippo_episodes', f"html:{os.path.join(WIKIPEDIA_FIXTURES_DIR, 'episode_page_hajime_no_ippo.html')}"),
         ],
     ),

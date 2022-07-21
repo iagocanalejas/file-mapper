@@ -131,4 +131,4 @@ class Engine(Object):
         lang = lang if lang in Language.__members__.values() else Language.JA.value
 
         logger.info(f'{self._class}:: using language :: {lang}')
-        return Language[lang]
+        return Language[lang.upper()]

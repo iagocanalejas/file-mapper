@@ -1,0 +1,28 @@
+{
+  "errorMessage": "",
+  "expression": "Hajime no ippo",
+  "results": [
+    {
+      "description": "(2000) (TV Series) aka \"Hajime no ippo\"",
+      "id": "tt0481256",
+      "image": "https://imdb-api.com/images/original/MV5BNGUxZDM2YjAtYzk5MC00OWY3LTlmYjEtY2Q5ZTY5MDdjY2RiXkEyXkFqcGdeQXVyNjc2NjA5MTU@._V1_Ratio0.7273_AL_.jpg",
+      "resultType": "Title",
+      "title": "Fighting Spirit"
+    },
+    {
+      "description": "(2009) (TV Series) aka \"Hajime no Ippo: New Challenger\"",
+      "id": "tt1992744",
+      "image": "https://imdb-api.com/images/original/MV5BOGY0NjYyNjEtZmY4ZC00MTI3LTkwZDgtMDViMzhjZmI5ODM0XkEyXkFqcGdeQXVyNjAwNDUxODI@._V1_Ratio0.7273_AL_.jpg",
+      "resultType": "Title",
+      "title": "Fighting Spirit: New Challenger"
+    },
+    {
+      "description": "(2013) (TV Series) aka \"Hajime No Ippo: Rising\"",
+      "id": "tt3514596",
+      "image": "https://imdb-api.com/images/original/MV5BNmFkNWQ2ZGQtNGY2NS00ZWM3LWEwZDEtZDMwODhjODI1ZmUxXkEyXkFqcGdeQXVyNjAwNDUxODI@._V1_Ratio0.7273_AL_.jpg",
+      "resultType": "Title",
+      "title": "Fighting Spirit: Rising"
+    }
+  ],
+  "searchType": "Series"
+}

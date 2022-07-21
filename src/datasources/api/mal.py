@@ -23,8 +23,7 @@ logger = logging.getLogger()
 # https://myanimelist.net/apiconfig/references/api/v2
 class MalAPI(AnimeAPI):
     DATASOURCE = DatasourceName.MAL
-    BASE_URL = 'https://api.myanimelist.net/v2'
-    EXTRA_FIELDS = 'alternative_titles'
+    BASE_URL = 'https://api.myanimelist.net/v2/anime?q={anime}&fields=alternative_titles'
     HEADERS = {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET',
@@ -40,7 +39,7 @@ class MalAPI(AnimeAPI):
             raise InvalidConfiguration('MAL_CLIENT_ID')
 
     def search_anime(self, keyword: str, lang: Language, season: int, season_name: str) -> AnimeMetadata:
-        url = f'{self.BASE_URL}/anime?q={keyword}&fields={self.EXTRA_FIELDS}'
+        url = self.BASE_URL.format(anime=keyword)
         response = requests.get(url, headers=self.HEADERS)
         logger.info(f'{self._class}:: searching for :: {url}')
 
@@ -56,9 +55,9 @@ class MalAPI(AnimeAPI):
 
             logger.info(f'{self._class}:: matching result :: {match}')
             return AnimeMetadata(
-                datasource_id=match.id,
-                datasource=self.DATASOURCE,
+                datasource_data={self.DATASOURCE: match.id},
                 title=match.title(Language.JA),
+                title_lang=match.title_lang,
                 alternative_titles=match.alternative_titles,
             )
 
@@ -67,6 +66,8 @@ class MalAPI(AnimeAPI):
 
 @dataclass
 class _MalData(APIData):
+    title_lang = Language.JA
+
     def __init__(self, d: Dict):
         super().__init__(d)
         self._title = d['title']

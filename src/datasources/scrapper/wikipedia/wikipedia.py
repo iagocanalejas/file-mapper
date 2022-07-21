@@ -11,6 +11,7 @@ from src.core.models import Season
 from src.core.models import Show
 from src.core.types import DatasourceName
 from src.core.types import Language
+from src.datasources.datasource import AnimeDatasource
 from src.datasources.datasource import Scrapper
 from src.datasources.exceptions import NotFound
 from src.datasources.scrapper.wikipedia.pages import WikipediaEpisodePage
@@ -22,7 +23,7 @@ from src.utils.strings import remove_season
 logger = logging.getLogger()
 
 
-class WikipediaScrapper(Scrapper):
+class WikipediaScrapper(Scrapper, AnimeDatasource):
     DATASOURCE = DatasourceName.WIKIPEDIA
 
     def fill_show_names(self, show: Show) -> Show:

@@ -10,4 +10,5 @@ MOCK_RENAME = False
 
 # Application configurations
 MAL_CLIENT_ID = env.str('MAL_CLIENT_ID', '')
+IMDB_API_KEY = env.str('IMDB_API_KEY', '')
 SIMILARITY_THRESHOLD = 0.9

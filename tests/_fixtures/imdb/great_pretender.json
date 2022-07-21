@@ -1,0 +1,28 @@
+{
+  "errorMessage": "",
+  "expression": "Great Pretender",
+  "results": [
+    {
+      "description": "(2020) (TV Series)",
+      "id": "tt11680468",
+      "image": "https://imdb-api.com/images/original/MV5BNjk0MzAxY2YtYzIwNy00NWM4LWI4MDctM2YyYWYzZjJiNDE5XkEyXkFqcGdeQXVyNzQzNDM3NTI@._V1_Ratio0.7273_AL_.jpg",
+      "resultType": "Title",
+      "title": "Great Pretender"
+    },
+    {
+      "description": "(2007) (TV Series)",
+      "id": "tt1164822",
+      "image": "https://imdb-api.com/images/original/nopicture.jpg",
+      "resultType": "Title",
+      "title": "Great Pretender"
+    },
+    {
+      "description": "(1999) (TV Series)",
+      "id": "tt0318891",
+      "image": "https://imdb-api.com/images/original/nopicture.jpg",
+      "resultType": "Title",
+      "title": "Great Pretenders"
+    }
+  ],
+  "searchType": "Series"
+}

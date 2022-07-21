@@ -6,8 +6,12 @@ from dataclasses import dataclass
 from typing import Dict
 from typing import Generic
 from typing import List
+from typing import Protocol
 from typing import TypeVar
 
+from src.core.models import Episode
+from src.core.models import Season
+from src.core.models import Show
 from src.core.models.metadata import AnimeMetadata
 from src.core.models.metadata import Metadata
 from src.core.types import DatasourceName
@@ -22,8 +26,22 @@ logger = logging.getLogger()
 class Datasource(ABC, Object):
     DATASOURCE: DatasourceName
 
-    def __init__(self, parser: Parser):
+    def __init__(self, parser: Parser, **kwargs):
         self.parser = parser
+
+
+class AnimeDatasource(Protocol):
+    @abstractmethod
+    def fill_show_names(self, show: Show) -> Show:
+        raise NotImplemented
+
+    @abstractmethod
+    def fill_season_names(self, season: Season) -> Season:
+        raise NotImplemented
+
+    @abstractmethod
+    def fill_episode_name(self, episode: Episode) -> Episode:
+        raise NotImplemented
 
 
 M = TypeVar('M', bound=Metadata)
@@ -44,6 +62,8 @@ class AnimeAPI(API[AnimeMetadata], ABC):
             self, keyword: str, lang: Language, options: List['APIData'], season: int, season_name: str
     ) -> 'APIData':
         valid_results = [o for o in options if self.__match_season(o.title(lang), season, season_name)]
+        if not valid_results:  # We don't want to discard all the results, just trust levenshtein
+            valid_results = options
         closest_name = closest_result(keyword=keyword, elements=[d.title(lang) for d in valid_results])
         return [d for d in valid_results if d.title(lang) == closest_name][0]
 
@@ -62,17 +82,23 @@ class Scrapper(Datasource, ABC):
 
 @dataclass
 class APIData:
-    id: int
+    id: str
     _title: str
+    title_lang: Language
     alternative_titles: Dict[str, str]
 
     def __str__(self):
         return f'{self.id} -- {self._title}'
 
     def __init__(self, d: Dict):
-        self.id = d['id']
+        self.id = str(d['id'])
 
     def title(self, lang: Language = Language.JA):
-        if lang == Language.JA:
+        if lang == self.title_lang:
             return self._title
-        return self.alternative_titles[lang.value] if self.alternative_titles[lang.value] else self._title
+
+        title = self._title
+        if lang.value in self.alternative_titles and self.alternative_titles[lang.value]:
+            title = self.alternative_titles[lang.value]
+
+        return title

@@ -1,0 +1,21 @@
+{
+  "errorMessage": "",
+  "expression": "Seikon no Qwaser",
+  "results": [
+    {
+      "description": "(2010) (TV Series) aka \"Seikon no Qwaser\"",
+      "id": "tt3443306",
+      "image": "https://imdb-api.com/images/original/MV5BMTY5YzJiMGUtMzNjMi00ZDI4LTg3MjctM2FmODU4N2M5MzA2XkEyXkFqcGdeQXVyMTA3OTEyODI1._V1_Ratio0.7273_AL_.jpg",
+      "resultType": "Title",
+      "title": "The Qwaser of Stigmata"
+    },
+    {
+      "description": "(2011) (TV Series) aka \"Seikon no Qwaser II\"",
+      "id": "tt3444608",
+      "image": "https://imdb-api.com/images/original/MV5BZjI5OWRkYWItZGFkMi00ODFiLWEyNjEtYzA3YmVlZDdjMTZhXkEyXkFqcGdeQXVyMzEzMzczMDg@._V1_Ratio0.7273_AL_.jpg",
+      "resultType": "Title",
+      "title": "The Qwaser of Stigmata II"
+    }
+  ],
+  "searchType": "Series"
+}

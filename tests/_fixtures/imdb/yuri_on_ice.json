@@ -1,0 +1,42 @@
+{
+  "errorMessage": "",
+  "expression": "Yuri!!! on ice",
+  "results": [
+    {
+      "description": "(2016) (TV Mini Series)",
+      "id": "tt6112556",
+      "image": "https://imdb-api.com/images/original/MV5BODBkM2JjNzItNjkxMy00Zjc3LWJjYjgtOWE1ODJiODhmZTQ4XkEyXkFqcGdeQXVyNjAwNDUxODI@._V1_Ratio0.7273_AL_.jpg",
+      "resultType": "Title",
+      "title": "Yuri!!! On Ice"
+    },
+    {
+      "description": "",
+      "id": "tt8646060",
+      "image": "https://imdb-api.com/images/original/MV5BNzVkMjlhMzktMWEwMS00NjczLTk3NWQtNTQ0YmMyOWEzNGYxXkEyXkFqcGdeQXVyODcxNjYzNDI@._V1_Ratio0.7273_AL_.jpg",
+      "resultType": "Title",
+      "title": "Yuri!!! On Ice the Movie: Ice Adolesence"
+    },
+    {
+      "description": "(2020) (Podcast Episode) - Anime Out of Context (2018) (Podcast Series)",
+      "id": "tt16798152",
+      "image": "https://imdb-api.com/images/original/nopicture.jpg",
+      "resultType": "Title",
+      "title": "Episode 108 - Yuri!!! on ICE"
+    },
+    {
+      "description": "(2009) (TV Series)",
+      "id": "tt1670444",
+      "image": "https://imdb-api.com/images/original/MV5BMjIxYTdiOTItMzI1NS00ZjM5LWE1ZTUtZTlkYWFkYzlkY2YwXkEyXkFqcGdeQXVyMTg5NjgwOTM@._V1_Ratio1.7727_AL_.jpg",
+      "resultType": "Title",
+      "title": "Histrionics"
+    },
+    {
+      "description": "(2006) (Music Video)",
+      "id": "tt7481338",
+      "image": "https://imdb-api.com/images/original/MV5BMDI0ODljZWItZTFiZC00ZmY0LTliNjQtNTI0ODk3NjRjNGM0XkEyXkFqcGdeQXVyMjA4OTI5NDQ@._V1_Ratio0.7273_AL_.jpg",
+      "resultType": "Title",
+      "title": "Omarion: Ice Box"
+    }
+  ],
+  "searchType": "Title"
+}

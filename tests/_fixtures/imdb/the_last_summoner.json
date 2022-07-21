@@ -1,0 +1,14 @@
+{
+  "errorMessage": "",
+  "expression": "the last summoner",
+  "results": [
+    {
+      "description": "(2022) (TV Series)",
+      "id": "tt19893526",
+      "image": "https://imdb-api.com/images/original/MV5BNTMxOGM2ZjgtMGI4ZS00ZmQ1LTg0NzYtOTE1OGJiNTc3MjJkXkEyXkFqcGdeQXVyMTMwNTc3Mw@@._V1_Ratio0.7273_AL_.jpg",
+      "resultType": "Title",
+      "title": "The Last Summoner"
+    }
+  ],
+  "searchType": "Series"
+}

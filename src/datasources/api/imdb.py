@@ -18,10 +18,10 @@ from src.datasources.datasource import APIData
 logger = logging.getLogger()
 
 
-# https://anilist.gitbook.io/anilist-apiv2-docs/
-class AnilistAPI(AnimeAPI):
-    DATASOURCE = DatasourceName.ANILIST
-    BASE_URL = 'https://graphql.anilist.co'
+# https://imdb-api.com/
+class ImdbAPI(AnimeAPI):
+    DATASOURCE = DatasourceName.IMDB
+    BASE_URL = 'https://imdb-api.com/{lang}/API/Search/{api_key}/{search_expression}'
     HEADERS = {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'POST',
@@ -29,42 +29,23 @@ class AnilistAPI(AnimeAPI):
         'Access-Control-Max-Age': '3600',
         'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0',
     }
-    ANIME_SEARCH_QUERY = """\
-        query ($query: String) {
-            Page (page: 1, perPage: 10) {
-                pageInfo {
-                    total
-                    currentPage
-                    lastPage
-                    hasNextPage
-                }
-                media (search: $query, type: ANIME) {
-                    id
-                    title {
-                        romaji
-                        english
-                    }
-                }
-            }
-        }"""
 
     def search_anime(self, keyword: str, lang: Language, season: int, season_name: str) -> AnimeMetadata:
-        variables = {'query': keyword}
-        response = requests.post(
-            self.BASE_URL,
-            headers={},
-            json={'query': self.ANIME_SEARCH_QUERY, 'variables': variables}
+        url = self.BASE_URL.format(
+            lang=lang.value,
+            api_key=settings.IMDB_API_KEY,
+            search_expression=keyword,
         )
-        logger.info(f'{self._class}:: searching for :: {keyword}')
+        response = requests.get(url, headers=self.HEADERS)
+        logger.info(f'{self._class}:: searching for :: {url}')
 
         if response.status_code == 200:
-            # data format: [{'id': int, 'title': {'romaji': str, 'english': str}}
-            content = json.loads(response.content)['data']['Page']['media']
+            content = json.loads(response.content)['results']
             if settings.LOG_HTTP:
                 logger.debug(f'{self._class}: {pformat(content)}')
 
             # parse data into Python objects
-            data: List[_AnilistData] = [_AnilistData(d) for d in content]
+            data: List[_ImdbData] = [_ImdbData(d) for d in content]
             match = self._best_match(keyword, lang, data, season, season_name)
 
             logger.info(f'{self._class}:: matching result :: {match}')
@@ -72,17 +53,17 @@ class AnilistAPI(AnimeAPI):
                 datasource_data={self.DATASOURCE: match.id},
                 title=match.title(Language.JA),
                 title_lang=match.title_lang,
-                alternative_titles=match.alternative_titles
+                alternative_titles=match.alternative_titles,
             )
 
         raise RequestException(response=response)
 
 
 @dataclass
-class _AnilistData(APIData):
-    title_lang = Language.JA
+class _ImdbData(APIData):
+    title_lang = Language.EN
 
     def __init__(self, d: Dict):
         super().__init__(d)
-        self._title = d['title']['romaji']
-        self.alternative_titles = {'ja': d['title']['romaji'], 'en': d['title']['english']}
+        self._title = d['title']
+        self.alternative_titles = {Language.EN.value: d['title']}

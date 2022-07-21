@@ -22,7 +22,7 @@ class AnimeFormatter(Formatter, media_type=MediaType.ANIME):
 
     @staticmethod
     def titlecase(word: str, exceptions: List[str] = None, **kwargs) -> str:
-        exceptions = ['no', 'san', 'and', 'to', 'of', 'the', 'in'] \
+        exceptions = ['no', 'san', 'and', 'to', 'of', 'the', 'in', 'de'] \
                      + [el.name for el in RomanNumbers] \
                      + (exceptions or [])
         word_list = re.split(' ', word)

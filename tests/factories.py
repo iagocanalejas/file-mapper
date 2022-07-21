@@ -10,9 +10,9 @@ class AnimeMetadataFactory(factory.Factory):
     class Meta:
         model = metadata.AnimeMetadata
 
-    datasource_id = factory.Sequence(lambda n: n)
-    datasource = DatasourceName.MAL,
+    datasource_data = {DatasourceName.MAL: factory.Sequence(lambda n: n)}
     title = factory.Sequence(lambda n: f'item_{n}')
+    title_lang = Language.JA
     alternative_titles = {}
 
 
