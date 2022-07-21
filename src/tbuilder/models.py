@@ -70,7 +70,7 @@ class Directory(Item):
     def can_be_season(self) -> bool:
         return (
                 self.has_only_files(ignore_invalid=True)
-                and self.__items_can_share_season([i.name for i in self.childs])
+                and self.__items_can_share_season([i.name for i in self.childs if i.is_valid])
         )
 
     @property

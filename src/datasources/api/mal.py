@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from pprint import pformat
 from typing import Dict
 from typing import List
+from typing import Optional
 
 import requests
 from requests import RequestException
@@ -38,7 +39,7 @@ class MalAPI(AnimeAPI):
         if settings.MAL_CLIENT_ID is None:
             raise InvalidConfiguration('MAL_CLIENT_ID')
 
-    def search_anime(self, keyword: str, lang: Language, season: int, season_name: str) -> AnimeMetadata:
+    def search_anime(self, keyword: str, lang: Language, season: int, season_name: str) -> Optional[AnimeMetadata]:
         url = self.BASE_URL.format(anime=keyword)
         response = requests.get(url, headers=self.HEADERS)
         logger.info(f'{self._class}:: searching for :: {url}')
@@ -48,6 +49,9 @@ class MalAPI(AnimeAPI):
             content = json.loads(response.content)['data']
             if settings.LOG_HTTP:
                 logger.debug(f'{self._class}: {pformat(content)}')
+
+            if not content:
+                return None
 
             # parse data into Python objects
             data: List[_MalData] = [_MalData(d['node']) for d in content]

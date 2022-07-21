@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from typing import Dict
 from typing import Generic
 from typing import List
+from typing import Optional
 from typing import Protocol
 from typing import TypeVar
 
@@ -53,9 +54,9 @@ class API(Datasource, ABC, Generic[M]):
         pass
 
 
-class AnimeAPI(API[AnimeMetadata], ABC):
+class AnimeAPI(API[Optional[AnimeMetadata]], ABC):
     @abstractmethod
-    def search_anime(self, keyword: str, lang: Language, season: int, season_name: str) -> AnimeMetadata:
+    def search_anime(self, keyword: str, lang: Language, season: int, season_name: str) -> Optional[AnimeMetadata]:
         pass
 
     def _best_match(

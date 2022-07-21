@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from pprint import pformat
 from typing import Dict
 from typing import List
+from typing import Optional
 
 import requests
 from requests import RequestException
@@ -48,7 +49,7 @@ class AnilistAPI(AnimeAPI):
             }
         }"""
 
-    def search_anime(self, keyword: str, lang: Language, season: int, season_name: str) -> AnimeMetadata:
+    def search_anime(self, keyword: str, lang: Language, season: int, season_name: str) -> Optional[AnimeMetadata]:
         variables = {'query': keyword}
         response = requests.post(
             self.BASE_URL,
@@ -62,6 +63,9 @@ class AnilistAPI(AnimeAPI):
             content = json.loads(response.content)['data']['Page']['media']
             if settings.LOG_HTTP:
                 logger.debug(f'{self._class}: {pformat(content)}')
+
+            if not content:
+                return None
 
             # parse data into Python objects
             data: List[_AnilistData] = [_AnilistData(d) for d in content]

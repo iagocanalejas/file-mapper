@@ -1,6 +1,7 @@
 import logging
 import os
 from typing import List
+from typing import Optional
 from typing import Tuple
 
 from src import settings
@@ -13,6 +14,7 @@ from src.core.types import Language
 from src.datasources.api import AnilistAPI
 from src.datasources.api import ImdbAPI
 from src.datasources.api import MalAPI
+from src.datasources.datasource import AnimeDatasource
 from src.datasources.datasource import API
 from src.datasources.exceptions import NotFound
 from src.datasources.scrapper import ImdbScrapper
@@ -27,6 +29,7 @@ logger = logging.getLogger()
 class AnimeProcessor(Processor, media_type=MediaType.ANIME):
     _instance = None
     _apis: List[API]
+    _scrappers: List[AnimeDatasource]
 
     def __new__(cls, *args, **kwargs):  # pragma: no cover
         if cls._instance is None:
@@ -40,39 +43,67 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
             AnilistAPI(parser=self.parser),
             ImdbAPI(parser=self.parser),
         ]
+        self._scrappers = [
+            WikipediaScrapper(parser=self.parser),
+            ImdbScrapper(parser=self.parser, format_fn=self.__format),
+        ]
 
     def process_episode(self, episode: Episode):
         logger.info(f'{self._class}:: processing episode :: {episode}')
 
         self.__fill_metadata(episode)
-        try:
-            WikipediaScrapper(parser=self.parser).fill_episode_name(episode)
-        except NotFound:
-            ImdbScrapper(parser=self.parser, format_fn=self.__format).fill_episode_name(episode)
 
-        self.rename(episode)
+        exceptions = []
+        for scrapper in self._scrappers:
+            try:
+                scrapper.fill_episode_name(episode)
+            except NotFound as e:
+                exceptions.append(e)
+                continue
+            else:
+                self.rename(episode)
+                return
+
+        logger.error(f'{self._class}:: NOT FOUND')
+        [logger.error(f'\t{e}') for e in exceptions]
 
     def process_season(self, season: Season):
         logger.info(f'{self._class}:: processing season :: {season}')
 
         self.__fill_metadata(season)
-        try:
-            WikipediaScrapper(parser=self.parser).fill_season_names(season)
-        except NotFound:
-            ImdbScrapper(parser=self.parser, format_fn=self.__format).fill_season_names(season)
 
-        self.rename(season)
+        exceptions = []
+        for scrapper in self._scrappers:
+            try:
+                scrapper.fill_season_names(season)
+            except NotFound as e:
+                exceptions.append(e)
+                continue
+            else:
+                self.rename(season)
+                return
+
+        logger.error(f'{self._class}:: NOT FOUND')
+        [logger.error(f'\t{e}') for e in exceptions]
 
     def process_show(self, show: Show):
         logger.info(f'{self._class}:: processing show :: {show}')
 
         self.__fill_metadata(show)
-        try:
-            WikipediaScrapper(parser=self.parser).fill_show_names(show)
-        except NotFound:
-            ImdbScrapper(parser=self.parser, format_fn=self.__format).fill_show_names(show)
 
-        self.rename(show)
+        exceptions = []
+        for scrapper in self._scrappers:
+            try:
+                scrapper.fill_show_names(show)
+            except NotFound as e:
+                exceptions.append(e)
+                continue
+            else:
+                self.rename(show)
+                return
+
+        logger.error(f'{self._class}:: NOT FOUND')
+        [logger.error(f'\t{e}') for e in exceptions]
 
     def rename(self, item: MediaItem):
         if isinstance(item, Season):
@@ -109,7 +140,9 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
         logger.info(f'{self._class}:: aggregated metadata :: {metadata}')
         item.metadata = metadata
 
-    def __aggregate_metadata(self, item: MediaItem, metadata: List[AnimeMetadata]) -> AnimeMetadata:
+    # TODO: Improve data aggregation
+    def __aggregate_metadata(self, item: MediaItem, metadata: List[Optional[AnimeMetadata]]) -> AnimeMetadata:
+        metadata = [m for m in metadata if m is not None]  # filter nulls
         media_name = self.formatter.format(item, self.parser, pattern='{media_title} {season_name}')
         title_lang, title = self.__retrieve_closest_title(media_name, metadata)
 

@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from pprint import pformat
 from typing import Dict
 from typing import List
+from typing import Optional
 
 import requests
 from requests import RequestException
@@ -30,7 +31,7 @@ class ImdbAPI(AnimeAPI):
         'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0',
     }
 
-    def search_anime(self, keyword: str, lang: Language, season: int, season_name: str) -> AnimeMetadata:
+    def search_anime(self, keyword: str, lang: Language, season: int, season_name: str) -> Optional[AnimeMetadata]:
         url = self.BASE_URL.format(
             lang=lang.value,
             api_key=settings.IMDB_API_KEY,
@@ -43,6 +44,9 @@ class ImdbAPI(AnimeAPI):
             content = json.loads(response.content)['results']
             if settings.LOG_HTTP:
                 logger.debug(f'{self._class}: {pformat(content)}')
+
+            if not content:
+                return None
 
             # parse data into Python objects
             data: List[_ImdbData] = [_ImdbData(d) for d in content]

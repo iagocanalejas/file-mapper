@@ -36,6 +36,14 @@ class ImdbScrapper(Scrapper, AnimeDatasource):
         super().__init__(parser, **kwargs)
         self.format_fn = format_fn
 
+    @property
+    def is_valid(self) -> bool:
+        return (
+                self.soup is not None
+                and self.soup.find('div', {'id': 'episodes_content'}) is not None
+                and self.soup.find('div', {'id': 'episodes_content'}).find_all('a', {'itemprop': 'name'})
+        )
+
     def fill_show_names(self, show: Show) -> Show:
         for season in show.seasons:
             self.fill_season_names(season)
@@ -84,7 +92,7 @@ class ImdbScrapper(Scrapper, AnimeDatasource):
         if response.status_code == 200:
             self.soup = BeautifulSoup(response.content, 'html5lib')
 
-        if self.soup is not None:
+        if self.is_valid:
             if settings.LOG_HTTP:
                 logger.debug(f'{self._class}: {self.soup.prettify()}')
             return self.soup
@@ -96,7 +104,12 @@ class ImdbScrapper(Scrapper, AnimeDatasource):
         episode_divs = [i.text for i in page.find_all('a', {'itemprop': 'name'})]
 
         for episode in episodes:
-            episode_name = episode_divs[self.parser.episode(episode) - 1]
+            episode_no = self.parser.episode(episode)
+            if episode_no >= len(episode_divs):
+                not_found.append(episode)
+                continue
+
+            episode_name = episode_divs[episode_no - 1]
             if episode_name is None:
                 not_found.append(episode)
                 continue

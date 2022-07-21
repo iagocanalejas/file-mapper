@@ -12,6 +12,12 @@ class TestModels(unittest.TestCase):
             '[Cleo]Great_Pretender_-_01_(Dual Audio_10bit_1080p_x265).mkv',
             '[Cleo]Great_Pretender_-_02_(Dual Audio_10bit_1080p_x265).mkv',
             '[Cleo]Great_Pretender_-_03_(Dual Audio_10bit_1080p_x265).mkv',
+        ],
+        [
+            'Kaguya-sama wa Kokurasetai Tensai-tachi no Renai Zunousen BD',
+            '[DB]Kaguya-sama wa Kokurasetai Tensai-tachi no Renai Zunousen_-_01_(10bit_BD1080p_x265).mkv',
+            '[DB]Kaguya-sama wa Kokurasetai Tensai-tachi no Renai Zunousen_-_02_(10bit_BD1080p_x265).mkv',
+            '[DB]Kaguya-sama wa Kokurasetai Tensai-tachi no Renai Zunousen_-_03_(10bit_BD1080p_x265).mkv',
         ]
     ]
 
