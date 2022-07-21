@@ -1,7 +1,10 @@
+import os
 import re
 from collections.abc import Iterable
 from enum import Enum
-from typing import Callable, Optional, List
+from typing import Callable
+from typing import List
+from typing import Optional
 
 
 class RomanNumbers(Enum):
@@ -58,6 +61,12 @@ def retrieve_extension(word: str) -> Optional[str]:
     match = re.search(r'\.[\w\d]{3,4}$', word, re.IGNORECASE)
     if match is not None:
         return match.group(0)[1:]
+
+
+def clean_output(out: str) -> str:
+    # TODO: should also remove sys non valid characters
+    no_sep = '\\' if os.path.sep == '/' else '/'
+    return out.replace(os.path.sep, no_sep)
 
 
 def levenshtein_distance(s1, s2):
@@ -120,7 +129,7 @@ def accepts(*types):
         def new_f(*args, **kwds):
             for (a, t) in zip(args[1:], types):
                 assert isinstance(a, t), \
-                    "arg %r does not match %s" % (a, t)
+                    f'arg {a!r} does not match {t}'
             return f(*args, **kwds)
 
         new_f.__name__ = f.__name__

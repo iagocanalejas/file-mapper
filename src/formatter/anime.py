@@ -1,3 +1,4 @@
+import os.path
 import re
 from typing import List
 
@@ -9,6 +10,7 @@ from src.core.types import Language
 from src.formatter._formatter import Formatter
 from src.matchers import MediaType
 from src.parsers import Parser
+from src.utils.strings import clean_output
 from src.utils.strings import RomanNumbers
 
 
@@ -37,11 +39,12 @@ class AnimeFormatter(Formatter, media_type=MediaType.ANIME):
                 pattern = '{media_name} {season_name} - {episode:02d}.{episode_part}'
                 title = self.format(item, parser, pattern=pattern, lang=Language.JA)
                 episode = self.format(item, parser, pattern='{episode_name}.{extension}', lang=Language.JA)
-                return f'{title} - {episode}'
+                return clean_output(f'{title} - {episode}')
             case Season():
-                return self.titlecase(self.format(item, parser, pattern='{media_name} {season_name}', lang=Language.JA))
+                title = self.format(item, parser, pattern='{media_name} {season_name}', lang=Language.JA)
+                return clean_output(self.titlecase(title))
             case Show():
-                return self.titlecase(self.format(item, parser, pattern='{media_name}', lang=Language.JA))
+                return clean_output(self.titlecase(self.format(item, parser, pattern='{media_name}', lang=Language.JA)))
 
     def format(self, item: MediaItem, parser: Parser, pattern: str, lang: Language = Language.EN) -> str:
         season_name = parser.season_name(item) if not isinstance(item, Show) else None
