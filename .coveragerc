@@ -2,6 +2,8 @@
 omit =
     *tests*
     *strings.py
+include =
+    src/*
 
 [report]
 exclude_lines =

@@ -1,8 +1,6 @@
 import json
 import logging
-from dataclasses import dataclass
 from pprint import pformat
-from typing import Dict
 from typing import List
 from typing import Optional
 
@@ -14,8 +12,8 @@ from src.core.models.metadata import AnimeMetadata
 from src.core.types import DatasourceName
 from src.core.types import Language
 from src.datasources.datasource import AnimeAPI
-from src.datasources.datasource import APIData
 from src.datasources.exceptions import InvalidConfiguration
+from src.datasources.models import MalData
 from src.parsers import Parser
 
 logger = logging.getLogger()
@@ -51,28 +49,18 @@ class MalAPI(AnimeAPI):
                 logger.debug(f'{self._class}: {pformat(content)}')
 
             if not content:
+                logger.error(f'{self._class}:: no match')
                 return None
 
             # parse data into Python objects
-            data: List[_MalData] = [_MalData(d['node']) for d in content]
+            data: List[MalData] = [MalData(d['node']) for d in content]
             match = self._best_match(keyword, lang, data, season, season_name)
 
             logger.info(f'{self._class}:: matching result :: {match}')
             return AnimeMetadata(
-                datasource_data={self.DATASOURCE: match.id},
+                datasource_data=(self.DATASOURCE, match),
                 title=match.title(Language.JA),
                 title_lang=match.title_lang,
-                alternative_titles=match.alternative_titles,
             )
 
         raise RequestException(response=response)
-
-
-@dataclass
-class _MalData(APIData):
-    title_lang = Language.JA
-
-    def __init__(self, d: Dict):
-        super().__init__(d)
-        self._title = d['title']
-        self.alternative_titles = d['alternative_titles']

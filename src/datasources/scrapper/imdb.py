@@ -1,6 +1,7 @@
 import logging
 from typing import Callable
 from typing import List
+from typing import Tuple
 
 import requests
 from bs4 import BeautifulSoup
@@ -66,10 +67,12 @@ class ImdbScrapper(Scrapper, AnimeDatasource):
         return episode
 
     def __retrieve_anime_id(self, item: MediaItem) -> str:
-        if ImdbAPI.DATASOURCE in as_anime(item.metadata).datasource_data:
-            return as_anime(item.metadata).datasource_data[ImdbAPI.DATASOURCE]
+        # try to find IMDB anime ID in the existing metadata
+        data = as_anime(item.metadata).datasource_data[ImdbAPI.DATASOURCE]
+        if data is not None:
+            return data.id
 
-        # Use IMDB API to find the IMDB anime ID
+        # use IMDB API to find the IMDB anime ID
         season = self.parser.season(item) if not isinstance(item, Show) else 1
         season_name = self.parser.season_name(item) if not isinstance(item, Show) else None
         return ImdbAPI(parser=self.parser).search_anime(
@@ -77,10 +80,9 @@ class ImdbScrapper(Scrapper, AnimeDatasource):
             lang=item.language,
             season=season,
             season_name=season_name,
-        ).datasource_data[ImdbAPI.DATASOURCE]
+        ).datasource_data[1].id
 
     def __load_page(self, item: MediaItem, season: int) -> BeautifulSoup:
-        logger.info(f'{self._class}:: loading page :: {self}')
         url = self.BASE_URL.format(
             anime_id=self.__retrieve_anime_id(item),
             season=season,

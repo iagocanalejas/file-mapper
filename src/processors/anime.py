@@ -140,17 +140,17 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
         logger.info(f'{self._class}:: aggregated metadata :: {metadata}')
         item.metadata = metadata
 
-    # TODO: Improve data aggregation
     def __aggregate_metadata(self, item: MediaItem, metadata: List[Optional[AnimeMetadata]]) -> AnimeMetadata:
         metadata = [m for m in metadata if m is not None]  # filter nulls
+
         media_name = self.formatter.format(item, self.parser, pattern='{media_title} {season_name}')
         title_lang, title = self.__retrieve_closest_title(media_name, metadata)
+        datasource_data = {m.datasource_data[0]: m.datasource_data[1] for m in metadata}
 
         return AnimeMetadata(
-            datasource_data={k: v for m in metadata for k, v in m.datasource_data.items()},
+            datasource_data=datasource_data,
             title=title,
             title_lang=title_lang,
-            alternative_titles={k: v for m in metadata for k, v in m.alternative_titles.items() if v},
             season_name=next(iter([m.season_name for m in metadata]), None),
             episode_name=next(iter([m.episode_name for m in metadata]), None),
         )

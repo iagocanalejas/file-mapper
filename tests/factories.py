@@ -2,7 +2,6 @@ import factory
 
 from src.core import models
 from src.core.models import metadata
-from src.core.types import DatasourceName
 from src.core.types import Language
 from src.tbuilder.models import Directory
 from src.tbuilder.models import File
@@ -13,10 +12,9 @@ class AnimeMetadataFactory(factory.Factory):
     class Meta:
         model = metadata.AnimeMetadata
 
-    datasource_data = {DatasourceName.MAL: factory.Sequence(lambda n: n)}
+    datasource_data = []
     title = factory.Sequence(lambda n: f'item_{n}')
     title_lang = Language.JA
-    alternative_titles = {}
 
 
 class MediaItemFactory(factory.Factory):

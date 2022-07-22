@@ -2,8 +2,6 @@ import logging
 import re
 from abc import ABC
 from abc import abstractmethod
-from dataclasses import dataclass
-from typing import Dict
 from typing import Generic
 from typing import List
 from typing import Optional
@@ -18,6 +16,7 @@ from src.core.models.metadata import Metadata
 from src.core.types import DatasourceName
 from src.core.types import Language
 from src.core.types import Object
+from src.datasources.models import APIData
 from src.parsers import Parser
 from src.utils.strings import closest_result
 
@@ -60,8 +59,8 @@ class AnimeAPI(API[Optional[AnimeMetadata]], ABC):
         pass
 
     def _best_match(
-            self, keyword: str, lang: Language, options: List['APIData'], season: int, season_name: str
-    ) -> 'APIData':
+            self, keyword: str, lang: Language, options: List[APIData], season: int, season_name: str
+    ) -> APIData:
         valid_results = [o for o in options if self.__match_season(o.title(lang), season, season_name)]
         if not valid_results:  # We don't want to discard all the results, just trust levenshtein
             valid_results = options
@@ -79,27 +78,3 @@ class AnimeAPI(API[Optional[AnimeMetadata]], ABC):
 
 class Scrapper(Datasource, ABC):
     pass
-
-
-@dataclass
-class APIData:
-    id: str
-    _title: str
-    title_lang: Language
-    alternative_titles: Dict[str, str]
-
-    def __str__(self):
-        return f'{self.id} -- {self._title}'
-
-    def __init__(self, d: Dict):
-        self.id = str(d['id'])
-
-    def title(self, lang: Language = Language.JA):
-        if lang == self.title_lang:
-            return self._title
-
-        title = self._title
-        if lang.value in self.alternative_titles and self.alternative_titles[lang.value]:
-            title = self.alternative_titles[lang.value]
-
-        return title
