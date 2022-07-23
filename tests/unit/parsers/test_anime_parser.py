@@ -38,15 +38,6 @@ class TestAnimeEpisodeParser(unittest.TestCase):
                 episode = EpisodeFactory.create(item_name=name)
                 self.assertEqual(expected, self.parser.episode_part(episode))
 
-    def test_episode_name_no_metadata(self):
-        pairs: List[Tuple[str, int]] = [
-            ('[Judas] Ahiru no Sora - S01E01.mkv', 1),
-            ('[Cleo]Great_Pretender_-_02_(Dual Audio_10bit_1080p_x265).mkv', 2),
-            ('[SubsPlease] Tate no Yuusha no Nariagari S2 - 08 (1080p) [1B2526A8].mkv', 8),
-            ('[Anipakku] Overlord E01.mkv', 1),
-        ]
-        # TODO
-
     def test_season(self):
         pairs: List[Tuple[str, int]] = [
             ('[Judas] Ahiru no Sora - S01E01.mkv', 1),

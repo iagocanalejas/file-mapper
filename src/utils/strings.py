@@ -1,5 +1,5 @@
-import os
 import re
+import sys
 from collections.abc import Iterable
 from enum import Enum
 from typing import Callable
@@ -64,9 +64,26 @@ def retrieve_extension(word: str) -> Optional[str]:
 
 
 def clean_output(out: str) -> str:
-    # TODO: should also remove sys non valid characters
-    no_sep = '\\' if os.path.sep == '/' else '/'
-    return out.replace(os.path.sep, no_sep)
+    match sys.platform:
+        case 'linux' | 'linux2':
+            # linux
+            out = out
+        case 'win32':
+            # windows
+            out = out.replace('<', '') \
+                .replace('>', '') \
+                .replace(':', ' -') \
+                .replace('"', '') \
+                .replace('\\', '') \
+                .replace('|', '') \
+                .replace('?', '') \
+                .replace('*', '')
+        case 'darwin':
+            # mac
+            out = out.replace(':', ' -')
+    # common
+    out = out.replace('/', '\\')
+    return re.sub(r' +', ' ', out).strip()
 
 
 def levenshtein_distance(s1, s2):
