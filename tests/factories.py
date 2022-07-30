@@ -12,7 +12,7 @@ class AnimeMetadataFactory(factory.Factory):
     class Meta:
         model = metadata.AnimeMetadata
 
-    datasource_data = []
+    datasource_data = {}
     title = factory.Sequence(lambda n: f'item_{n}')
     title_lang = Language.JA
 
@@ -22,6 +22,7 @@ class MediaItemFactory(factory.Factory):
         model = models.MediaItem
 
     base_path = factory.Sequence(lambda n: f'/home/fake/{n}')
+    parsed = None
 
     @classmethod
     def create(cls, **kwargs):

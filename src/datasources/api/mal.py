@@ -14,7 +14,6 @@ from src.core.types import Language
 from src.datasources.datasource import AnimeAPI
 from src.datasources.exceptions import InvalidConfiguration
 from src.datasources.models import MalData
-from src.parsers import Parser
 
 logger = logging.getLogger()
 
@@ -32,8 +31,8 @@ class MalAPI(AnimeAPI):
         'X-MAL-CLIENT-ID': settings.MAL_CLIENT_ID,
     }
 
-    def __init__(self, parser: Parser):
-        super().__init__(parser)
+    def __init__(self):
+        super().__init__()
         if settings.MAL_CLIENT_ID is None:
             raise InvalidConfiguration('MAL_CLIENT_ID')
 

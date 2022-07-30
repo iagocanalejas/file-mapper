@@ -39,13 +39,13 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
     def __init__(self, **_):
         super().__init__()
         self._apis = [
-            MalAPI(parser=self.parser),
-            AnilistAPI(parser=self.parser),
-            ImdbAPI(parser=self.parser),
+            MalAPI(),
+            AnilistAPI(),
+            ImdbAPI(),
         ]
         self._scrappers = [
-            WikipediaScrapper(parser=self.parser),
-            ImdbScrapper(parser=self.parser, format_fn=self.__format),
+            WikipediaScrapper(),
+            ImdbScrapper(format_fn=self.__format),
         ]
 
     def process_episode(self, episode: Episode):
@@ -116,7 +116,7 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
                 self.rename(f)
 
         if not settings.MOCK_RENAME:
-            os.rename(item.path, os.path.join(item.base_path, self.formatter.new_name(item, self.parser)))
+            os.rename(item.path, os.path.join(item.base_path, self.formatter.new_name(item)))
 
         super().rename(item)
 
@@ -125,15 +125,15 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
     ########################
 
     def __format(self, item: MediaItem):
-        return self.formatter.format(item, self.parser, pattern='{media_title}')
+        return self.formatter.format(item, pattern='{media_title}')
 
     ########################
     #     First Level      #
     ########################
 
     def __fill_metadata(self, item: MediaItem):
-        season = self.parser.season(item) if not isinstance(item, Show) else 1
-        season_name = self.parser.season_name(item) if not isinstance(item, Show) else None
+        season = item.parsed.season if not isinstance(item, Show) else 1
+        season_name = item.parsed.season_name if not isinstance(item, Show) else None
         metadata = [api.search_anime(self.__format(item), item.language, season, season_name) for api in self._apis]
         metadata = self.__aggregate_metadata(item, metadata)
 
@@ -143,7 +143,7 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
     def __aggregate_metadata(self, item: MediaItem, metadata: List[Optional[AnimeMetadata]]) -> AnimeMetadata:
         metadata = [m for m in metadata if m is not None]  # filter nulls
 
-        media_name = self.formatter.format(item, self.parser, pattern='{media_title} {season_name}')
+        media_name = self.formatter.format(item, pattern='{media_title} {season_name}')
         title_lang, title = self.__retrieve_closest_title(media_name, metadata)
         datasource_data = {m.datasource_data[0]: m.datasource_data[1] for m in metadata}
 

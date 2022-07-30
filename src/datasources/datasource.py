@@ -17,7 +17,6 @@ from src.core.types import DatasourceName
 from src.core.types import Language
 from src.core.types import Object
 from src.datasources.models import APIData
-from src.parsers import Parser
 from src.utils.strings import closest_result
 
 logger = logging.getLogger()
@@ -25,9 +24,6 @@ logger = logging.getLogger()
 
 class Datasource(ABC, Object):
     DATASOURCE: DatasourceName
-
-    def __init__(self, parser: Parser, **kwargs):
-        self.parser = parser
 
 
 class AnimeDatasource(Protocol):

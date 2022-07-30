@@ -3,7 +3,6 @@ from abc import abstractmethod
 from typing import Optional
 
 from src.core.models import MediaItem
-from src.core.types import Language
 from src.core.types import Object
 from src.matchers import MediaType
 from src.utils.strings import generic_clean
@@ -53,14 +52,6 @@ class Parser(ABC, Object):
         """
         Will try to return only the name of the media_file, without episode or season present
         :return: Seikon no Qwaser
-        """
-        pass
-
-    @abstractmethod
-    def media_name(self, item: MediaItem, lang: Language = Language.EN) -> str:
-        """
-        Will return the name of the media file
-        :return: Seikon no Qwaser II
         """
         pass
 

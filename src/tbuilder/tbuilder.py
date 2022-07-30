@@ -1,9 +1,12 @@
 import os
-from abc import ABC, abstractmethod
+from abc import ABC
+from abc import abstractmethod
 from typing import List
 
 from src.core.types import Object
-from src.tbuilder.models import Directory, File, Item
+from src.tbuilder.models import Directory
+from src.tbuilder.models import File
+from src.tbuilder.models import Item
 
 
 class Tree(ABC, Object):
@@ -61,7 +64,7 @@ class _Tree(Tree):
 
     def __init__(self, path: str):
         self._item = Directory(base_path=os.path.dirname(path), name=os.path.basename(path), parent=None)
-        self.__fill_items(self._item)
+        self.__build(self._item)
 
     @property
     def root(self) -> Directory:
@@ -71,12 +74,14 @@ class _Tree(Tree):
     def childs(self) -> List[Item]:
         return self._item.childs
 
-    def __fill_items(self, directory: Directory):
+    def __build(self, directory: Directory):
         for item in os.listdir(directory.path):
             full_path = os.path.join(directory.path, item)
+
             if os.path.isfile(full_path):
                 directory.childs.append(File(base_path=directory.path, name=item, parent=directory))
-            else:
-                new_directory = Directory(base_path=directory.path, name=item, parent=directory)
-                self.__fill_items(new_directory)
-                directory.childs.append(new_directory)
+                continue
+
+            new_directory = Directory(base_path=directory.path, name=item, parent=directory)
+            self.__build(new_directory)
+            directory.childs.append(new_directory)

@@ -6,8 +6,6 @@ from src.core.models import Episode
 from src.core.models import MediaItem
 from src.core.models import Season
 from src.core.models import Show
-from src.core.models.metadata import AnimeMetadata
-from src.core.types import Language
 from src.matchers import MediaType
 from src.parsers._parser import Parser
 from src.utils.strings import accepts
@@ -47,12 +45,8 @@ class AnimeParser(Parser, media_type=MediaType.ANIME):
 
     @accepts(Episode, bool)
     def episode_name(self, item: MediaItem, use_metadata: bool = True) -> Optional[str]:
-        if use_metadata and item.metadata is not None:
-            metadata = item.metadata
-            assert isinstance(metadata, AnimeMetadata)
-            if metadata.episode_name is not None:
-                return metadata.episode_name
         # TODO: Try to parse an episode name from the file name
+        return
 
     @accepts((Episode, Season))
     def season(self, item: MediaItem) -> int:
@@ -60,13 +54,6 @@ class AnimeParser(Parser, media_type=MediaType.ANIME):
 
     @accepts((Episode, Season), bool)
     def season_name(self, item: MediaItem, use_metadata: bool = True) -> Optional[str]:
-        if use_metadata and item.metadata is not None:
-            metadata = item.metadata
-            assert isinstance(metadata, AnimeMetadata)
-            if metadata.season_name is None and isinstance(item, Episode) and item.season is not None:
-                metadata = item.season.metadata
-            if metadata.season_name is not None:
-                return metadata.season_name
         return self._parse_season_name(item.item_name)
 
     def media_title(self, item: MediaItem) -> Optional[str]:
@@ -86,12 +73,6 @@ class AnimeParser(Parser, media_type=MediaType.ANIME):
             ],
             arg=media_title
         )
-
-    def media_name(self, item: MediaItem, lang: Language = Language.EN) -> str:
-        assert item.metadata is not None
-        metadata = item.metadata
-        assert isinstance(metadata, AnimeMetadata)
-        return metadata.media_name(lang)
 
     @staticmethod
     @apply_clean(clean_functions=[generic_clean, remove_tracker, remove_parenthesis, remove_extension])

@@ -5,7 +5,6 @@ from src.core.models import MediaItem
 from src.core.types import Language
 from src.core.types import Object
 from src.matchers import MediaType
-from src.parsers import Parser
 
 
 class Formatter(ABC, Object):
@@ -28,9 +27,9 @@ class Formatter(ABC, Object):
         return word.title()
 
     @abstractmethod
-    def new_name(self, item: MediaItem, parser: Parser) -> str:
+    def new_name(self, item: MediaItem) -> str:
         pass
 
     @abstractmethod
-    def format(self, item: MediaItem, parser: Parser, pattern: str, lang: Language = Language.EN) -> str:
+    def format(self, item: MediaItem, pattern: str, lang: Language = Language.EN) -> str:
         pass

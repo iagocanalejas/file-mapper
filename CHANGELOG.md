@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.2.0] - 2022-08-
+- refactor: move engine presets to `GlobalConfig` singleton
+- refactor: items are now only parsed once
+
 ## [0.1.0] - 2022-07-22
 - refactor: datasource metadata management
 - refactor: improve error handling

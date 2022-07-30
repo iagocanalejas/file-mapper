@@ -46,7 +46,7 @@ class AnimeMetadata(Metadata):
         return self.datasource_data[1] if self.datasource_data[0] == name else None
 
     def media_name(self, lang: Language) -> Optional[str]:
-        if lang != self.title_lang and self.alternative_titles[lang.value]:
+        if lang != self.title_lang and lang.value in self.alternative_titles:
             return generic_clean(self.alternative_titles[lang.value])
         return generic_clean(self.title)
 

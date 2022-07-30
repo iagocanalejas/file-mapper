@@ -9,7 +9,6 @@ from src.core.models import Show
 from src.core.types import Object
 from src.formatter import Formatter
 from src.matchers import MediaType
-from src.parsers import Parser
 
 logger = logging.getLogger()
 
@@ -18,16 +17,11 @@ class Processor(ABC, Object):
     _registry = {}
 
     _media_type: MediaType
-    _parser: Parser
     _formatter: Formatter
 
     @property
     def media_type(self) -> MediaType:
         return self._media_type
-
-    @property
-    def parser(self) -> Parser:
-        return self._parser
 
     @property
     def formatter(self) -> Formatter:
@@ -43,7 +37,6 @@ class Processor(ABC, Object):
         subclass = cls._registry[media_type]
         final_obj = object.__new__(subclass)
         final_obj._media_type = media_type
-        final_obj._parser = Parser(media_type=media_type)
         final_obj._formatter = Formatter(media_type=media_type)
 
         return final_obj
@@ -63,5 +56,5 @@ class Processor(ABC, Object):
     @abstractmethod
     def rename(self, item: MediaItem):
         logger.info(f'{self._class}:: renamed from :: \'{item.path}\'')
-        item.item_name = self.formatter.new_name(item, self.parser)
+        item.item_name = self.formatter.new_name(item)
         logger.info(f'{self._class}:: renamed to :: \'{item.path}\'\n')

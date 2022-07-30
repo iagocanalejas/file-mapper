@@ -1,7 +1,6 @@
 import logging
 from typing import Callable
 from typing import List
-from typing import Tuple
 
 import requests
 from bs4 import BeautifulSoup
@@ -17,7 +16,6 @@ from src.datasources.api import ImdbAPI
 from src.datasources.datasource import AnimeDatasource
 from src.datasources.datasource import Scrapper
 from src.datasources.exceptions import NotFound
-from src.parsers import Parser
 
 logger = logging.getLogger()
 
@@ -33,8 +31,8 @@ class ImdbScrapper(Scrapper, AnimeDatasource):
         'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
     }
 
-    def __init__(self, parser: Parser, format_fn: Callable[[MediaItem], str], **kwargs):
-        super().__init__(parser, **kwargs)
+    def __init__(self, format_fn: Callable[[MediaItem], str], **kwargs):
+        super().__init__(**kwargs)
         self.format_fn = format_fn
 
     @property
@@ -54,14 +52,14 @@ class ImdbScrapper(Scrapper, AnimeDatasource):
         return show
 
     def fill_season_names(self, season: Season) -> Season:
-        page = self.__load_page(season, season=self.parser.season(season))
+        page = self.__load_page(season, season=season.parsed.season)
         self.__fill_episodes(page, season.episodes)
         self.__fill_season(page, season)
 
         return season
 
     def fill_episode_name(self, episode: Episode) -> Episode:
-        page = self.__load_page(episode, season=self.parser.season(episode))
+        page = self.__load_page(episode, season=episode.parsed.season)
         self.__fill_episodes(page, [episode])
 
         return episode
@@ -73,9 +71,9 @@ class ImdbScrapper(Scrapper, AnimeDatasource):
             return data.id
 
         # use IMDB API to find the IMDB anime ID
-        season = self.parser.season(item) if not isinstance(item, Show) else 1
-        season_name = self.parser.season_name(item) if not isinstance(item, Show) else None
-        return ImdbAPI(parser=self.parser).search_anime(
+        season = item.parsed.season if not isinstance(item, Show) else 1
+        season_name = item.parsed.season_name if not isinstance(item, Show) else None
+        return ImdbAPI().search_anime(
             keyword=self.format_fn(item),
             lang=item.language,
             season=season,
@@ -106,7 +104,7 @@ class ImdbScrapper(Scrapper, AnimeDatasource):
         episode_divs = [i.text for i in page.find_all('a', {'itemprop': 'name'})]
 
         for episode in episodes:
-            episode_no = self.parser.episode(episode)
+            episode_no = episode.parsed.episode
             if episode_no >= len(episode_divs):
                 not_found.append(episode)
                 continue

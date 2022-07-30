@@ -3,8 +3,12 @@ from unittest import mock
 
 import responses
 
-from src.core.models import Episode, Season, Show
+from src.core.models import Episode
+from src.core.models import Season
+from src.core.models import Show
+from src.engine import parse_input
 from src.matchers import MediaType
+from src.parsers import Parser
 from src.processors import Processor
 from tests.integration.setup import TEST_OBJECTS
 from tests.utils import configure_test
@@ -16,6 +20,7 @@ class TestAnimeProcessor(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.processor = Processor(media_type=MediaType.ANIME)
+        parser = Parser(media_type=MediaType.ANIME)
 
         for to in TEST_OBJECTS:
             if isinstance(to.item, Season) or isinstance(to.item, Show):
@@ -27,6 +32,8 @@ class TestAnimeProcessor(unittest.TestCase):
                     for episode in season.episodes:
                         episode.season = season
                         episode.show = to.item
+            to.item.media_type = MediaType.ANIME
+            parse_input(to.item, parser=parser)
 
     def setUp(self) -> None:
         self.responses = responses.RequestsMock()

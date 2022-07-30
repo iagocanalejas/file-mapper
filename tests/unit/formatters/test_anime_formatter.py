@@ -1,11 +1,16 @@
 import unittest
-from typing import List, Tuple
+from typing import List
+from typing import Tuple
 
-from src.core.models import Episode, Season
+from src.core.models import Episode
+from src.core.models import ParsedInfo
+from src.core.models import Season
 from src.formatter import Formatter
 from src.matchers import MediaType
 from src.parsers import Parser
-from tests.factories import EpisodeFactory, AnimeMetadataFactory, SeasonFactory
+from tests.factories import AnimeMetadataFactory
+from tests.factories import EpisodeFactory
+from tests.factories import SeasonFactory
 
 
 # noinspection LongLine
@@ -24,17 +29,27 @@ class TestAnimeEpisodeFormatter(unittest.TestCase):
         ]
         for episode, expected in pairs:
             with self.subTest(name=f'episode:: {episode.item_name}'):
-                self.assertEqual(self.formatter.new_name(episode, self.parser), expected)
+                self.assertEqual(self.formatter.new_name(episode), expected)
 
-    @staticmethod
-    def __create_factory(item_name: str, title: str, episode_name: str) -> Episode:
-        return EpisodeFactory.create(
+    def __create_factory(self, item_name: str, title: str, episode_name: str) -> Episode:
+        episode = EpisodeFactory.create(
             item_name=item_name,
             _metadata=AnimeMetadataFactory.create(
                 title=title,
                 episode_name=episode_name,
             )
         )
+
+        episode.parsed = ParsedInfo(
+            episode=self.parser.episode(episode),
+            episode_part=self.parser.episode_part(episode),
+            season=self.parser.season(episode),
+            season_name=self.parser.season_name(episode),
+            media_title=self.parser.media_title(episode),
+            extension=self.parser.extension(episode),
+        )
+
+        return episode
 
 
 # noinspection LongLine
@@ -53,16 +68,26 @@ class TestAnimeSeasonFormatter(unittest.TestCase):
         for season, expected in pairs:
             with self.subTest(name=f'season:: {season.item_name}'):
                 assert isinstance(season, Season)
-                self.assertEqual(self.formatter.new_name(season, self.parser), expected)
+                self.assertEqual(self.formatter.new_name(season), expected)
 
-    @staticmethod
-    def __create_factory(item_name: str, title: str) -> Season:
-        return SeasonFactory.create(
+    def __create_factory(self, item_name: str, title: str) -> Season:
+        season = SeasonFactory.create(
             item_name=item_name,
             _metadata=AnimeMetadataFactory.create(
                 title=title,
             )
         )
+
+        season.parsed = ParsedInfo(
+            episode=None,
+            episode_part=None,
+            season=self.parser.season(season),
+            season_name=self.parser.season_name(season),
+            media_title=self.parser.media_title(season),
+            extension=self.parser.extension(season),
+        )
+
+        return season
 
 
 if __name__ == '__main__':

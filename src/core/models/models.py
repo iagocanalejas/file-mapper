@@ -18,10 +18,21 @@ logger = logging.getLogger()
 
 
 @dataclass
+class ParsedInfo:
+    episode: Optional[int]
+    episode_part: Optional[int]
+    season: Optional[int]
+    season_name: Optional[str]
+    media_title: str
+    extension: Optional[str]
+
+
+@dataclass
 class MediaItem(ABC, Object):
     base_path: str
     item_name: str
     language: Language
+    parsed: ParsedInfo
 
     _media_type: MediaType = MediaType.UNKNOWN
     _metadata: Optional[Metadata] = None
@@ -57,11 +68,9 @@ class Episode(MediaItem):
 
     @classmethod
     def from_file(
-            cls, file: File, media_type: MediaType, lang: Language, season: 'Season' = None, show: 'Show' = None
+            cls, file: File, season: 'Season' = None, show: 'Show' = None
     ) -> 'Episode':  # pragma: no cover
         obj = object.__new__(cls)
-        obj._media_type = media_type
-        obj.language = lang
         obj.base_path = file.base_path
         obj.item_name = file.name
         obj.season = season
@@ -76,17 +85,14 @@ class Season(MediaItem):
 
     @classmethod
     def from_directory(
-            cls, directory: Directory, media_type: MediaType, lang: Language, show: 'Show' = None
+            cls, directory: Directory, show: 'Show' = None
     ) -> 'Season':  # pragma: no cover
         obj = object.__new__(cls)
-        obj._media_type = media_type
-        obj.language = lang
         obj.base_path = directory.base_path
         obj.item_name = directory.name
         obj.show = show
         obj.episodes = [
-            Episode.from_file(f, media_type, lang, season=obj, show=show)
-            for f in directory.childs if isinstance(f, File) and f.is_valid
+            Episode.from_file(f, season=obj, show=show) for f in directory.childs if isinstance(f, File) and f.is_valid
         ]
         return obj
 
@@ -109,22 +115,19 @@ class Show(MediaItem):
     episodes: List[Episode] = field(default_factory=list)
 
     @classmethod
-    def from_directory(cls, directory: Directory, media_type: MediaType, lang: Language) -> 'Show':  # pragma: no cover
+    def from_directory(cls, directory: Directory) -> 'Show':  # pragma: no cover
         obj = object.__new__(cls)
-        obj._media_type = media_type
-        obj.language = lang
         obj.base_path = directory.base_path
         obj.item_name = directory.name
         obj.episodes = [
-            Episode.from_file(f, media_type, lang, show=obj)
-            for f in directory.childs if isinstance(f, File) and f.is_valid
+            Episode.from_file(f, show=obj) for f in directory.childs if isinstance(f, File) and f.is_valid
         ]
 
         seasons: List[Season] = []
         for subdirectory in [d for d in directory.childs if isinstance(d, Directory) and d.is_valid]:
             if not subdirectory.has_only_files():
                 raise ValueError(f'{obj}')
-            seasons.append(Season.from_directory(subdirectory, media_type, lang, show=obj))
+            seasons.append(Season.from_directory(subdirectory, show=obj))
 
         obj.seasons = seasons
         return obj

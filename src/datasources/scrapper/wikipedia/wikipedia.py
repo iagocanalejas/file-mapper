@@ -9,6 +9,7 @@ from src.core.models import Episode
 from src.core.models import MediaItem
 from src.core.models import Season
 from src.core.models import Show
+from src.core.models.metadata import as_anime
 from src.core.types import DatasourceName
 from src.core.types import Language
 from src.datasources.datasource import AnimeDatasource
@@ -85,9 +86,9 @@ class WikipediaScrapper(Scrapper, AnimeDatasource):
 
         for episode in episodes:
             episode_name = page.episode_name(
-                self.parser.season(episode),
-                self.parser.episode(episode),
-                self.parser.episode_part(episode),
+                episode.parsed.season,
+                episode.parsed.episode,
+                episode.parsed.episode_part,
             )
             if episode_name is None:
                 not_found.append(episode)
@@ -101,7 +102,7 @@ class WikipediaScrapper(Scrapper, AnimeDatasource):
         not_found = []
 
         for season in seasons:
-            season_name = page.season_name(self.parser.season(season))
+            season_name = page.season_name(season.parsed.season)
             if season_name is None:
                 not_found.append(season)
                 continue
@@ -117,13 +118,14 @@ class WikipediaScrapper(Scrapper, AnimeDatasource):
             return season_name.replace(match.group(0), '').strip()
         return season_name
 
-    def __search_keyword(self, item: MediaItem, lang: Language = Language.EN) -> str:
+    @staticmethod
+    def __search_keyword(item: MediaItem, lang: Language = Language.EN) -> str:
         # TODO: wikipedia URLs are case sensitive
-        media_name = self.parser.media_name(item, lang=lang)
+        media_name = as_anime(item.metadata).media_name(lang=lang)
         media_name = re.sub(r'[_!]+', '', media_name)
         media_name = remove_season(media_name)  # this removes S2, Season 2
         if not isinstance(item, Show):
-            season_name = self.parser.season_name(item)
+            season_name = item.parsed.season_name
             if season_name is not None:
                 media_name = media_name.replace(season_name, '').strip()  # this removes the season name
         return re.sub(r'\s', '_', media_name)

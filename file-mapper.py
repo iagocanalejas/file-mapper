@@ -17,7 +17,7 @@ def main(path: str, media_type: str, lang: str):
     if not os.path.exists(path):
         raise ValueError(f'\'{path}\' does not exist')
 
-    engine = Engine(path=path, media_type=media_type, lang=lang)
+    engine = Engine(path=path, media_type=media_type, language=lang)
     engine.run()
 
 
