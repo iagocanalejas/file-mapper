@@ -1,5 +1,4 @@
 import re
-import sys
 from collections.abc import Iterable
 from enum import Enum
 from typing import Callable
@@ -64,25 +63,15 @@ def retrieve_extension(word: str) -> Optional[str]:
 
 
 def clean_output(out: str) -> str:
-    match sys.platform:
-        case 'linux' | 'linux2':
-            # linux
-            out = out
-        case 'win32':
-            # windows
-            out = out.replace('<', '') \
-                .replace('>', '') \
-                .replace(':', ' -') \
-                .replace('"', '') \
-                .replace('\\', '') \
-                .replace('|', '') \
-                .replace('?', '') \
-                .replace('*', '')
-        case 'darwin':
-            # mac
-            out = out.replace(':', ' -')
-    # common
-    out = out.replace('/', '\\')
+    out = out.replace('<', '') \
+        .replace('>', '') \
+        .replace(':', ' -') \
+        .replace(';', '') \
+        .replace('"', '') \
+        .replace('\\', '') \
+        .replace('|', '') \
+        .replace('?', '') \
+        .replace('*', '')
     return re.sub(r' +', ' ', out).strip()
 
 

@@ -30,7 +30,7 @@ TEST_OBJECTS: List[TestObject] = [
     TestObject(
         item=EpisodeFactory.create(item_name='[Cleo]Great_Pretender_-_02_(Dual Audio_10bit_1080p_x265).mkv', language=Language.EN),
         media_type=MediaType.ANIME,
-        expected_names=['Great Pretender - 02 - CASE1_2: Los Angeles Connection.mkv'],
+        expected_names=['Great Pretender - 02 - CASE1_2 - Los Angeles Connection.mkv'],
         fixtures=[
             (r're:.*myanimelist.*anime\?q=Great%20Pretender', f"json:{os.path.join(MAL_FIXTURES_DIR, 'great_pretender.json')}"),
             (r're:.*graphql\.anilist.*', f"json:{os.path.join(ANILIST_FIXTURES_DIR, 'great_pretender_details.json')}"),
@@ -196,12 +196,12 @@ TEST_OBJECTS: List[TestObject] = [
         media_type=MediaType.ANIME,
         expected_names=[
             'Hajime no Ippo',
-            'Hajime no Ippo Season 1: The Fighting!',
-            'Hajime no Ippo Season 1: The Fighting! - 01 - The First Step.mkv',
-            'Hajime no Ippo Season 1: The Fighting! - 02 - Fruits of Labor.mkv',
-            'Hajime no Ippo Season 2: New Challenger',
-            'Hajime no Ippo Season 2: New Challenger - 01 - The New Step.mkv',
-            'Hajime no Ippo Season 2: New Challenger - 02 - Bloody Cross.mkv',
+            'Hajime no Ippo Season 1 - The Fighting!',
+            'Hajime no Ippo Season 1 - The Fighting! - 01 - The First Step.mkv',
+            'Hajime no Ippo Season 1 - The Fighting! - 02 - Fruits of Labor.mkv',
+            'Hajime no Ippo Season 2 - New Challenger',
+            'Hajime no Ippo Season 2 - New Challenger - 01 - The New Step.mkv',
+            'Hajime no Ippo Season 2 - New Challenger - 02 - Bloody Cross.mkv',
         ],
         fixtures=[
             (r're:.*myanimelist.*anime\?q=Hajime%20no%20Ippo', f"json:{os.path.join(MAL_FIXTURES_DIR, 'hajime_no_ippo.json')}"),

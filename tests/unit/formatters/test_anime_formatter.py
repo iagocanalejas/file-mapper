@@ -23,7 +23,7 @@ class TestAnimeEpisodeFormatter(unittest.TestCase):
     def test_new_name(self):
         pairs: List[Tuple[Episode, str]] = [
             (self.__create_factory('[Judas] Ahiru no Sora - S01E01.mkv', 'Ahiru no Sora', 'Boys Without Talent'), 'Ahiru no Sora - 01 - Boys Without Talent.mkv'),
-            (self.__create_factory('[Cleo]Great_Pretender_-_02_(Dual Audio_10bit_1080p_x265).mkv', 'Great Pretender', 'Case1_2: Los Angeles Connection'), 'Great Pretender - 02 - Case1_2: Los Angeles Connection.mkv'),
+            (self.__create_factory('[Cleo]Great_Pretender_-_02_(Dual Audio_10bit_1080p_x265).mkv', 'Great Pretender', 'Case1_2: Los Angeles Connection'), 'Great Pretender - 02 - Case1_2 - Los Angeles Connection.mkv'),
             (self.__create_factory('[SubsPlease] Tate no Yuusha no Nariagari S2 - 08 (1080p) [1B2526A8].mkv', 'Tate no Yuusha no Nariagari S2', 'A Parting in the Snow'), 'Tate no Yuusha no Nariagari S2 - 08 - A Parting in the Snow.mkv'),
             (self.__create_factory('[Anipakku] Overlord 01.mkv', 'Overlord', 'A Parting in the Snow'), 'Overlord - 01 - A Parting in the Snow.mkv'),
         ]
