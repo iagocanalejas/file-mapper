@@ -4,6 +4,10 @@
 - refactor: move engine presets to `GlobalConfig` singleton
 - refactor: items are now only parsed once
 
+
+- feat: wikipedia input option to prefill the episodes page
+- feat: add `--prefill` option to be asked for valid preset URLs
+
 ## [0.1.0] - 2022-07-22
 - refactor: datasource metadata management
 - refactor: improve error handling
