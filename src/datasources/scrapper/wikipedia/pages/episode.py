@@ -13,21 +13,25 @@ class WikipediaEpisodePage(WikipediaPage):
     BASE_URL = 'https://en.wikipedia.org/wiki/List_of_{}_episodes'
 
     def title(self) -> str:
-        title = self.soup.find('h1', {'id': 'firstHeading'}).text
+        title = self._soup.find('h1', {'id': 'firstHeading'}).text
         return title.replace('List of', '').replace('episodes', '').strip()
+
+    @staticmethod
+    def check_url(url: str) -> bool:
+        return re.match(r'.*List_of.*_episodes', url, re.IGNORECASE) is not None
 
     def season_name(self, season: int) -> Optional[str]:
         if self.__has_toc():
             season_re = re.compile(f'Season {season}.*')
             try:
                 # Try to find TOC as Season X
-                return self.soup.find_all("span", {"class": "toctext"}, text=season_re)[0].string
+                return self._soup.find_all('span', {'class': 'toctext'}, text=season_re)[0].string
             except IndexError:
                 episode_list_re = re.compile('Episode list', re.IGNORECASE)
-                season_li = self.soup.find_all("span", {'class': 'toctext'}, text=episode_list_re)[0].parent.parent
+                season_li = self._soup.find_all('span', {'class': 'toctext'}, text=episode_list_re)[0].parent.parent
                 season_ul = season_li.find('ul')
                 if season_ul is not None:
-                    season_spans = season_ul.find_all("span", {"class": "toctext"})
+                    season_spans = season_ul.find_all('span', {'class': 'toctext'})
                     # Some TOCs have OVA seasons between normal seasons...
                     return [s for s in season_spans if not re.search(r'ova', s.text, re.IGNORECASE)][season - 1].text
         return None
@@ -36,12 +40,12 @@ class WikipediaEpisodePage(WikipediaPage):
         if self.__has_toc():
             season_name = self.season_name(season)
             if season_name is not None:
-                season_header = self.soup.find("span", {"id": season_name.replace(' ', '_')})
+                season_header = self._soup.find('span', {'id': season_name.replace(' ', '_')})
                 return season_header.find_next('table')
-        return self.soup.find_all("table", {"class": "wikitable plainrowheaders wikiepisodetable"})[season - 1]
+        return self._soup.find_all('table', {'class': 'wikitable plainrowheaders wikiepisodetable'})[season - 1]
 
     def __has_toc(self) -> bool:
-        return self.soup.find('div', {'id': 'toc'}) is not None
+        return self._soup.find('div', {'id': 'toc'}) is not None
 
     def __patch_season_name(self, season_name: str) -> str:
         match = re.match(self.title(), season_name, re.IGNORECASE)

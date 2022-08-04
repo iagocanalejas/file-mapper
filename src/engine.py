@@ -36,16 +36,15 @@ class Engine(Object):
             path = os.path.abspath(path)
 
         try:
-            GlobalConfig(
-                media_type=MediaType[media_type.upper()] if media_type else None,
-                language=Language[language.upper()] if language else None,
-            )
+            GlobalConfig().media_type = MediaType[media_type.upper()] if media_type else None
+            GlobalConfig().language = Language[language.upper()] if language else None
         except KeyError as ke:
             raise UnsupportedMediaType(ke)
 
         self._tree = Tree(path=path)
 
     def run(self):
+        logger.info(f'{self._class}:: running with configuration::{GlobalConfig()}')
         if self._tree.is_file:
             self.handle_file()
         if self._tree.is_directory:

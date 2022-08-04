@@ -4,6 +4,7 @@ import os
 import sys
 
 from src import settings
+from src.core.models.config import GlobalConfig
 from src.core.types import Language
 from src.engine import Engine
 from src.matchers import MediaType
@@ -27,8 +28,15 @@ def __parse_arguments():
     parser.add_argument('--type', default=None, help=f'Preset type to be used. Valid: {MediaType.__members__.keys()}')
     parser.add_argument('--lang', default=None,
                         help=f'Preset language to be used. Valid: {Language.__members__.values()}')
+    parser.add_argument('--wikipedia', default=None, type=str,
+                        help=f'Predefined Wikipedia URL')
     parser.add_argument('--debug', action='store_true', default=False)
     return parser.parse_args()
+
+
+def __parse_global_datasource(parsed_args):
+    if parsed_args.wikipedia:
+        GlobalConfig().wikipedia_url = parsed_args.wikipedia
 
 
 if __name__ == '__main__':
@@ -37,6 +45,8 @@ if __name__ == '__main__':
 
     if args.debug:
         settings.MOCK_RENAME = True
+
+    __parse_global_datasource(args)
 
     if settings.ENABLE_PROFILE:
         import cProfile

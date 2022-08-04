@@ -27,25 +27,26 @@ class WikipediaPage(ABC, Object):
         'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
     }
 
-    def __init__(self, keyword: str):
-        self.keyword = keyword
-        self.soup = None
+    def __init__(self, keyword: str = None, url: str = None):
+        self._keyword = keyword
+        self._url = url
+        self._soup = None
 
     def __str__(self):
         return self.url
 
     @property
     def url(self) -> str:
-        return self.BASE_URL.format(self.keyword)
+        return self._url if self._url else self.BASE_URL.format(self._keyword)
 
     @property
     def is_valid(self) -> bool:
         re_el = re.compile('episode.list', re.IGNORECASE)
         return (
-                self.soup is not None
+                self._soup is not None
                 and (
-                        self.soup.find('span', {'id': 'Episode_list'}, recursive=True) is not None
-                        or self.soup.find('span', string=re_el, recursive=True) is not None
+                        self._soup.find('span', {'id': 'Episode_list'}, recursive=True) is not None
+                        or self._soup.find('span', string=re_el, recursive=True) is not None
                 )
         )
 
@@ -58,6 +59,11 @@ class WikipediaPage(ABC, Object):
             return episode_name
 
         logger.info(f'{self._class}:: not found episode name')
+
+    @staticmethod
+    @abstractmethod
+    def check_url(url: str) -> bool:
+        pass
 
     @abstractmethod
     def title(self) -> str:
@@ -107,9 +113,9 @@ class WikipediaPage(ABC, Object):
             return self
 
         content = await response.read()
-        self.soup = BeautifulSoup(content, 'html5lib')
+        self._soup = BeautifulSoup(content, 'html5lib')
 
         if settings.LOG_HTTP:
-            logger.debug(f'{self._class}: {self.soup.prettify()}')
+            logger.debug(f'{self._class}: {self._soup.prettify()}')
 
         return self

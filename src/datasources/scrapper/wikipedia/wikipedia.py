@@ -2,6 +2,7 @@ import asyncio
 import logging
 import re
 from typing import List
+from typing import Tuple
 
 import aiohttp
 
@@ -9,11 +10,13 @@ from src.core.models import Episode
 from src.core.models import MediaItem
 from src.core.models import Season
 from src.core.models import Show
+from src.core.models.config import GlobalConfig
 from src.core.models.metadata import as_anime
 from src.core.types import DatasourceName
 from src.core.types import Language
 from src.datasources.datasource import AnimeDatasource
 from src.datasources.datasource import Scrapper
+from src.datasources.exceptions import InvalidConfiguration
 from src.datasources.exceptions import NotFound
 from src.datasources.scrapper.wikipedia.pages import WikipediaEpisodePage
 from src.datasources.scrapper.wikipedia.pages import WikipediaMainPage
@@ -61,15 +64,9 @@ class WikipediaScrapper(Scrapper, AnimeDatasource):
         return episode
 
     async def __load_page(self, item: MediaItem, languages: List[Language] = None) -> WikipediaPage:
-        if languages is None:
-            languages = [Language.EN, Language.JA]
-
-        keywords = [self.__search_keyword(item, lang) for lang in languages]
-        pages = [
-            [WikipediaEpisodePage(keyword), WikipediaMainPage(keyword)]
-            for keyword in keywords
-        ]
-        pages = [x for xs in pages for x in xs]  # flatten list
+        keywords, pages = self.__get_preconfigured_pages() \
+            if GlobalConfig().wikipedia_url \
+            else self.__get_pages(item, languages)
 
         async with aiohttp.ClientSession() as session:
             pages = await asyncio.gather(*[page.load(session) for page in pages], return_exceptions=True)
@@ -110,6 +107,28 @@ class WikipediaScrapper(Scrapper, AnimeDatasource):
             season.metadata.season_name = self.__patch_season_name(page, remove_parenthesis(season_name))
 
         logger.info(f'{self._class}:: NOT FOUND :: season names :: {[s.item_name for s in not_found]}')
+
+    def __get_pages(self, item: MediaItem, languages: List[Language]) -> Tuple[List[str], List[WikipediaPage]]:
+        if languages is None:
+            languages = [Language.EN, Language.JA]
+
+        keywords = [self.__search_keyword(item, lang) for lang in languages]
+        pages = [
+            [WikipediaEpisodePage(keyword=keyword), WikipediaMainPage(keyword=keyword)]
+            for keyword in keywords
+        ]
+        return keywords, [x for xs in pages for x in xs]  # flatten list
+
+    @staticmethod
+    def __get_preconfigured_pages() -> Tuple[List[str], List[WikipediaPage]]:
+        if WikipediaEpisodePage.check_url(GlobalConfig().wikipedia_url):
+            pages = [WikipediaEpisodePage(url=GlobalConfig().wikipedia_url)]
+        elif WikipediaMainPage.check_url(GlobalConfig().wikipedia_url):
+            pages = [WikipediaMainPage(url=GlobalConfig().wikipedia_url)]
+        else:
+            raise InvalidConfiguration(GlobalConfig().wikipedia_url)
+
+        return [GlobalConfig().wikipedia_url], pages
 
     @staticmethod
     def __patch_season_name(page: WikipediaPage, season_name: str) -> str:
