@@ -29,3 +29,11 @@ class GlobalConfig:
     @wikipedia_url.setter
     def wikipedia_url(self, value: str):
         self.datasource[DatasourceName.WIKIPEDIA] = value
+
+    @property
+    def mal_url(self) -> Optional[str]:
+        return self.datasource[DatasourceName.MAL] if DatasourceName.MAL in self.datasource else None
+
+    @mal_url.setter
+    def mal_url(self, value: str):
+        self.datasource[DatasourceName.MAL] = value

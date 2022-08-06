@@ -30,6 +30,8 @@ def __parse_arguments():
                         help=f'Preset language to be used. Valid: {Language.__members__.values()}')
     parser.add_argument('--wikipedia', default=None, type=str,
                         help=f'Predefined Wikipedia URL')
+    parser.add_argument('--mal', default=None, type=str,
+                        help=f'Predefined MAL URL')
     parser.add_argument('--prefill', action='store_true', default=False)
     parser.add_argument('--debug', action='store_true', default=False)
     return parser.parse_args()
@@ -38,14 +40,15 @@ def __parse_arguments():
 def __parse_global_datasource(parsed_args):
     if parsed_args.wikipedia:
         GlobalConfig().wikipedia_url = parsed_args.wikipedia
+    if parsed_args.mal:
+        GlobalConfig().mal_url = parsed_args.mal
 
 
 def __prefill():
     namespace = argparse.Namespace()
 
-    wikipedia = input('\nPrefill wikipedia URL: ')
-    if wikipedia:
-        setattr(namespace, 'wikipedia', wikipedia)
+    setattr(namespace, 'wikipedia', input('\nPrefill wikipedia URL: '))
+    setattr(namespace, 'mal', input('\nPrefill MAL URL: '))
 
     __parse_global_datasource(namespace)
 

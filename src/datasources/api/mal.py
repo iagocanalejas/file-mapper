@@ -8,6 +8,7 @@ import requests
 from requests import RequestException
 
 from src import settings
+from src.core.models.config import GlobalConfig
 from src.core.models.metadata import AnimeMetadata
 from src.core.types import DatasourceName
 from src.core.types import Language
@@ -37,7 +38,7 @@ class MalAPI(AnimeAPI):
             raise InvalidConfiguration('MAL_CLIENT_ID')
 
     def search_anime(self, keyword: str, lang: Language, season: int, season_name: str) -> Optional[AnimeMetadata]:
-        url = self.BASE_URL.format(anime=keyword)
+        url = self.__get_url(keyword)
         response = requests.get(url, headers=self.HEADERS)
         logger.info(f'{self._class}:: searching for :: {url}')
 
@@ -63,3 +64,6 @@ class MalAPI(AnimeAPI):
             )
 
         raise RequestException(response=response)
+
+    def __get_url(self, keyword: str) -> str:
+        return GlobalConfig().mal_url if GlobalConfig().mal_url else self.BASE_URL.format(anime=keyword)
