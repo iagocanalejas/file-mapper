@@ -10,9 +10,9 @@ from typing import Optional
 from src.core.models.metadata import Metadata
 from src.core.types import Language
 from src.core.types import Object
-from src.matchers import MediaType
-from src.tbuilder.models import Directory
-from src.tbuilder.models import File
+from src.filemapper.matchers import MediaType
+from src.filemapper.tbuilder.models import Directory
+from src.filemapper.tbuilder.models import File
 
 logger = logging.getLogger()
 

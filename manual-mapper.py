@@ -4,10 +4,7 @@ import os
 import sys
 
 from src import settings
-from src.core.models.config import GlobalConfig
-from src.core.types import Language
 from src.filemapper.engine import Engine
-from src.filemapper.matchers import MediaType
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -25,32 +22,8 @@ def main(path: str, media_type: str, lang: str):
 def __parse_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument('path', help='Path to be handled')
-    parser.add_argument('--type', default=None, help=f'Preset type to be used. Valid: {MediaType.__members__.keys()}')
-    parser.add_argument('--lang', default=None,
-                        help=f'Preset language to be used. Valid: {Language.__members__.values()}')
-    parser.add_argument('--wikipedia', default=None, type=str,
-                        help=f'Predefined Wikipedia URL')
-    parser.add_argument('--mal', default=None, type=str,
-                        help=f'Predefined MAL URL')
-    parser.add_argument('--prefill', action='store_true', default=False)
     parser.add_argument('--debug', action='store_true', default=False)
     return parser.parse_args()
-
-
-def __parse_global_datasource(parsed_args):
-    if parsed_args.wikipedia:
-        GlobalConfig().wikipedia_url = parsed_args.wikipedia
-    if parsed_args.mal:
-        GlobalConfig().mal_url = parsed_args.mal
-
-
-def __prefill():
-    namespace = argparse.Namespace()
-
-    setattr(namespace, 'wikipedia', input('\nPrefill wikipedia URL: '))
-    setattr(namespace, 'mal', input('\nPrefill MAL URL: '))
-
-    __parse_global_datasource(namespace)
 
 
 if __name__ == '__main__':
@@ -59,11 +32,6 @@ if __name__ == '__main__':
 
     if args.debug:
         settings.MOCK_RENAME = True
-
-    if args.prefill:
-        __prefill()
-
-    __parse_global_datasource(args)
 
     if settings.ENABLE_PROFILE:
         import cProfile

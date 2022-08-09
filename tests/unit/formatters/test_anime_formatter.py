@@ -5,9 +5,9 @@ from typing import Tuple
 from src.core.models import Episode
 from src.core.models import ParsedInfo
 from src.core.models import Season
-from src.formatter import Formatter
-from src.matchers import MediaType
-from src.parsers import Parser
+from src.filemapper.formatter import Formatter
+from src.filemapper.matchers import MediaType
+from src.filemapper.parsers import Parser
 from tests.factories import AnimeMetadataFactory
 from tests.factories import EpisodeFactory
 from tests.factories import SeasonFactory

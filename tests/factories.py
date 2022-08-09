@@ -3,9 +3,9 @@ import factory
 from src.core import models
 from src.core.models import metadata
 from src.core.types import Language
-from src.tbuilder.models import Directory
-from src.tbuilder.models import File
-from src.tbuilder.models import Item
+from src.filemapper.tbuilder.models import Directory
+from src.filemapper.tbuilder.models import File
+from src.filemapper.tbuilder.models import Item
 
 
 class AnimeMetadataFactory(factory.Factory):

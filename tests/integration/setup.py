@@ -2,7 +2,7 @@ import os
 from typing import List
 
 from src.core.types import Language
-from src.matchers import MediaType
+from src.filemapper.matchers import MediaType
 from tests.factories import EpisodeFactory
 from tests.factories import SeasonFactory
 from tests.factories import ShowFactory

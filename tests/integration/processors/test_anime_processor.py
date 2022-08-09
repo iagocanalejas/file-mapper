@@ -6,10 +6,10 @@ import responses
 from src.core.models import Episode
 from src.core.models import Season
 from src.core.models import Show
-from src.engine import parse_input
-from src.matchers import MediaType
-from src.parsers import Parser
-from src.processors import Processor
+from src.filemapper.engine import parse_input
+from src.filemapper.matchers import MediaType
+from src.filemapper.parsers import Parser
+from src.filemapper.processors import Processor
 from tests.integration.setup import TEST_OBJECTS
 from tests.utils import configure_test
 

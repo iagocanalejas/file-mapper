@@ -7,18 +7,16 @@
 MAL_CLIENT_ID=<>
 ```
 
-## Running the file mapper
-
-[File Mapper README](./src/filemapper/README.md)
-
-
 ## Running the manual mapper
 
-[Manual Mapper README](./src/manualmapper/README.md)
-
+```
+python file-mapper.py <path> [--debug]
+```
 
 ## Running Tests
 
 ```
 coverage run -m unittest discover
 ```
+
+# Known Bugs

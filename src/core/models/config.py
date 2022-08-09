@@ -3,7 +3,7 @@ from typing import Optional
 
 from src.core.types import DatasourceName
 from src.core.types import Language
-from src.matchers import MediaType
+from src.filemapper.matchers import MediaType
 
 
 class GlobalConfig:
