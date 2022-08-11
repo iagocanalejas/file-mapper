@@ -2,8 +2,8 @@ import unittest
 from typing import List
 from typing import Tuple
 
-from src.filemapper.matchers import AnimeTypeMatcher
-from src.filemapper.matchers import FilmTypeMatcher
+from src.core.matchers import AnimeTypeMatcher
+from src.core.matchers import FilmTypeMatcher
 
 
 class TestAnimeMatcher(unittest.TestCase):

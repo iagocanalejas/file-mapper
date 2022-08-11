@@ -2,12 +2,12 @@ import unittest
 from typing import List
 from typing import Tuple
 
+from src.core.formatter import Formatter
 from src.core.models import Episode
 from src.core.models import ParsedInfo
 from src.core.models import Season
-from src.filemapper.formatter import Formatter
-from src.filemapper.matchers import MediaType
-from src.filemapper.parsers import Parser
+from src.core.parsers import Parser
+from src.core.types import MediaType
 from tests.factories import AnimeMetadataFactory
 from tests.factories import EpisodeFactory
 from tests.factories import SeasonFactory

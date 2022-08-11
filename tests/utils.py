@@ -9,7 +9,7 @@ from typing import Tuple
 from responses import RequestsMock
 
 from src.core.models import MediaItem
-from src.filemapper.matchers import MediaType
+from src.core.types import MediaType
 
 
 @dataclass

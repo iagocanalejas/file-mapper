@@ -3,6 +3,7 @@ beautifulsoup4==4.11.1
 Deprecated==1.2.13
 environs==9.5.0
 html5lib==1.1
+inquirer==2.10.0
 Morfessor==2.0.6
 numpy==1.23.1
 polyglot==16.7.4

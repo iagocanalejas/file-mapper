@@ -3,10 +3,10 @@ from abc import abstractmethod
 from typing import Optional
 
 from src.core.models import MediaItem
+from src.core.types import MediaType
 from src.core.types import Object
-from src.filemapper.matchers import MediaType
-from src.utils.strings import generic_clean
-from src.utils.strings import retrieve_extension
+from src.core.utils.strings import generic_clean
+from src.core.utils.strings import retrieve_extension
 
 
 class Parser(ABC, Object):

@@ -6,8 +6,8 @@ import sys
 from src import settings
 from src.core.models.config import GlobalConfig
 from src.core.types import Language
+from src.core.types import MediaType
 from src.filemapper.engine import Engine
-from src.filemapper.matchers import MediaType
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)

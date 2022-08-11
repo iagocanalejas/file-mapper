@@ -1,6 +1,7 @@
 import logging
 import os.path
 from abc import ABC
+from abc import abstractmethod
 from copy import deepcopy
 from dataclasses import dataclass
 from dataclasses import field
@@ -9,8 +10,8 @@ from typing import Optional
 
 from src.core.models.metadata import Metadata
 from src.core.types import Language
+from src.core.types import MediaType
 from src.core.types import Object
-from src.filemapper.matchers import MediaType
 from src.filemapper.tbuilder.models import Directory
 from src.filemapper.tbuilder.models import File
 
@@ -32,7 +33,7 @@ class MediaItem(ABC, Object):
     base_path: str
     item_name: str
     language: Language
-    parsed: ParsedInfo
+    parsed: Optional[ParsedInfo]
 
     _media_type: MediaType = MediaType.UNKNOWN
     _metadata: Optional[Metadata] = None
@@ -60,6 +61,10 @@ class MediaItem(ABC, Object):
     def metadata(self, value: Metadata):
         self._metadata = value
 
+    @abstractmethod
+    def flatten(self) -> List['MediaItem']:
+        pass
+
 
 @dataclass
 class Episode(MediaItem):
@@ -76,6 +81,9 @@ class Episode(MediaItem):
         obj.season = season
         obj.show = show
         return obj
+
+    def flatten(self) -> List[MediaItem]:
+        return [self]
 
 
 @dataclass
@@ -108,11 +116,17 @@ class Season(MediaItem):
         for file in self.episodes:
             file.metadata = deepcopy(value)
 
+    def flatten(self) -> List[MediaItem]:
+        items = [self]
+        for episode in self.episodes:
+            items += episode.flatten()
+        return items
+
 
 @dataclass
 class Show(MediaItem):
     seasons: List[Season] = field(default_factory=list)
-    episodes: List[Episode] = field(default_factory=list)
+    episodes: List[Episode] = field(default_factory=list)  # TODO: remove from here
 
     @classmethod
     def from_directory(cls, directory: Directory) -> 'Show':  # pragma: no cover
@@ -147,3 +161,9 @@ class Show(MediaItem):
             file.metadata = deepcopy(value)
         for season in self.seasons:
             season.metadata = deepcopy(value)
+
+    def flatten(self) -> List[MediaItem]:
+        items = [self]
+        for season in self.seasons:
+            items += season.flatten()
+        return items

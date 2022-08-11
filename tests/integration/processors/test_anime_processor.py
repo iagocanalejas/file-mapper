@@ -6,9 +6,9 @@ import responses
 from src.core.models import Episode
 from src.core.models import Season
 from src.core.models import Show
-from src.filemapper.engine import parse_input
-from src.filemapper.matchers import MediaType
-from src.filemapper.parsers import Parser
+from src.core.parsers import Parser
+from src.core.types import MediaType
+from src.core.utils.parser import parse_media_input
 from src.filemapper.processors import Processor
 from tests.integration.setup import TEST_OBJECTS
 from tests.utils import configure_test
@@ -33,7 +33,7 @@ class TestAnimeProcessor(unittest.TestCase):
                         episode.season = season
                         episode.show = to.item
             to.item.media_type = MediaType.ANIME
-            parse_input(to.item, parser=parser)
+            parse_media_input(to.item, parser=parser)
 
     def setUp(self) -> None:
         self.responses = responses.RequestsMock()

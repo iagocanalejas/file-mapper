@@ -18,3 +18,17 @@ class Object:
     @property
     def _class(self) -> str:
         return self.__class__.__name__
+
+
+class MediaType(Enum):
+    UNKNOWN = 0
+    ANIME = 1
+    FILM = 2
+
+
+class PathType(Enum):
+    SHOW = 0
+    SEASON = 1
+    EPISODE = 2
+    SUBS = 3
+    OVA = 4

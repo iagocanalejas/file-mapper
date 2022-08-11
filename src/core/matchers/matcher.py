@@ -2,19 +2,13 @@ import logging
 import re
 from abc import ABC
 from abc import abstractmethod
-from enum import Enum
 
+from src.core.types import MediaType
 from src.core.types import Object
-from src.utils.strings import apply_clean
-from src.utils.strings import generic_clean
+from src.core.utils.strings import apply_clean
+from src.core.utils.strings import generic_clean
 
 logger = logging.getLogger()
-
-
-class MediaType(Enum):
-    UNKNOWN = 0
-    ANIME = 1
-    FILM = 2
 
 
 class TypeMatcher(ABC, Object):

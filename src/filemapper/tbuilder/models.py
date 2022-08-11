@@ -11,13 +11,13 @@ from typing import List
 from typing import Optional
 
 from src import settings
-from src.utils.strings import apply_clean
-from src.utils.strings import generic_clean
-from src.utils.strings import remove_episode
-from src.utils.strings import remove_extension
-from src.utils.strings import remove_parenthesis
-from src.utils.strings import remove_tracker
-from src.utils.strings import retrieve_extension
+from src.core.utils.strings import apply_clean
+from src.core.utils.strings import generic_clean
+from src.core.utils.strings import remove_episode
+from src.core.utils.strings import remove_extension
+from src.core.utils.strings import remove_parenthesis
+from src.core.utils.strings import remove_tracker
+from src.core.utils.strings import retrieve_extension
 
 
 @dataclass

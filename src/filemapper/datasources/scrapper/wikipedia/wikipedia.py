@@ -14,6 +14,8 @@ from src.core.models.config import GlobalConfig
 from src.core.models.metadata import as_anime
 from src.core.types import DatasourceName
 from src.core.types import Language
+from src.core.utils.strings import remove_parenthesis
+from src.core.utils.strings import remove_season
 from src.filemapper.datasources.datasource import AnimeDatasource
 from src.filemapper.datasources.datasource import Scrapper
 from src.filemapper.datasources.exceptions import InvalidConfiguration
@@ -21,14 +23,17 @@ from src.filemapper.datasources.exceptions import NotFound
 from src.filemapper.datasources.scrapper.wikipedia.pages import WikipediaEpisodePage
 from src.filemapper.datasources.scrapper.wikipedia.pages import WikipediaMainPage
 from src.filemapper.datasources.scrapper.wikipedia.pages import WikipediaPage
-from src.utils.strings import remove_parenthesis
-from src.utils.strings import remove_season
 
 logger = logging.getLogger()
 
 
+# TODO: need to handle multi-episode-name case: https://en.wikipedia.org/wiki/List_of_Kaguya-sama:_Love_Is_War_episodes
 class WikipediaScrapper(Scrapper, AnimeDatasource):
     DATASOURCE = DatasourceName.WIKIPEDIA
+
+    @staticmethod
+    def check_url(url: str) -> bool:
+        return WikipediaEpisodePage.check_url(url) or WikipediaMainPage.check_url(url)
 
     def fill_show_names(self, show: Show) -> Show:
         """

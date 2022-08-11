@@ -3,8 +3,8 @@ from typing import List
 from typing import Optional
 from typing import Tuple
 
-from src.filemapper.matchers import MediaType
-from src.filemapper.parsers import Parser
+from src.core.parsers import Parser
+from src.core.types import MediaType
 from tests.factories import EpisodeFactory
 from tests.factories import SeasonFactory
 

@@ -6,9 +6,9 @@ from aioresponses import aioresponses
 
 from src.core.models import ParsedInfo
 from src.core.models.metadata import AnimeMetadata
+from src.core.parsers import Parser
+from src.core.types import MediaType
 from src.filemapper.datasources.scrapper import WikipediaScrapper
-from src.filemapper.matchers import MediaType
-from src.filemapper.parsers import Parser
 from tests import settings
 from tests.factories import AnimeMetadataFactory
 from tests.factories import EpisodeFactory

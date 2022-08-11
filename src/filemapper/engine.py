@@ -6,19 +6,18 @@ from typing import Optional
 from polyglot.text import Text
 
 from src.core.exceptions import UnsupportedMediaType
+from src.core.matchers import AnimeTypeMatcher
+from src.core.matchers import FilmTypeMatcher
+from src.core.matchers import TypeMatcher
 from src.core.models import Episode
 from src.core.models import MediaItem
-from src.core.models import ParsedInfo
 from src.core.models import Season
 from src.core.models import Show
 from src.core.models.config import GlobalConfig
 from src.core.types import Language
+from src.core.types import MediaType
 from src.core.types import Object
-from src.filemapper.matchers import AnimeTypeMatcher
-from src.filemapper.matchers import FilmTypeMatcher
-from src.filemapper.matchers import MediaType
-from src.filemapper.matchers import TypeMatcher
-from src.filemapper.parsers import Parser
+from src.core.utils.parser import parse_media_input
 from src.filemapper.processors import Processor
 from src.filemapper.tbuilder import Tree
 from src.filemapper.tbuilder.models import Directory
@@ -61,7 +60,7 @@ class Engine(Object):
         episode = Episode.from_file(file=file)
         episode.media_type = self.__categorize(episode)
         episode.language = self.__language(episode)
-        parse_input(episode)
+        parse_media_input(episode)
 
         processor = Processor(media_type=episode.media_type)
         processor.process_episode(episode)
@@ -88,7 +87,7 @@ class Engine(Object):
             show = Show.from_directory(directory=directory)
             show.media_type = self.__categorize(show)
             show.language = self.__language(show)
-            parse_input(show)
+            parse_media_input(show)
 
             processor = Processor(media_type=show.media_type)
             processor.process_show(show)
@@ -100,7 +99,7 @@ class Engine(Object):
             season = Season.from_directory(directory=directory)
             season.media_type = self.__categorize(season)
             season.language = self.__language(season)
-            parse_input(season)
+            parse_media_input(season)
 
             processor = Processor(media_type=season.media_type)
             processor.process_season(season)
@@ -128,35 +127,3 @@ class Engine(Object):
 
         logger.info(f'{self._class}:: {item.item_name} :: using language :: {lang}')
         return Language[lang.upper()]
-
-
-def parse_input(item: MediaItem, parser: Parser = None):
-    parser = Parser(media_type=item.media_type) if parser is None else parser
-    media_title = parser.media_title(item)
-    episode = episode_part = season = season_name = extension = None
-    match item:
-        case Episode():
-            episode = parser.episode(item)
-            episode_part = parser.episode_part(item)
-            season = parser.season(item)
-            season_name = parser.season_name(item)
-            extension = parser.extension(item)
-        case Season():
-            assert isinstance(item, Season)
-            [parse_input(e, parser=parser) for e in item.episodes]
-
-            season = parser.season(item)
-            season_name = parser.season_name(item)
-        case Show():
-            assert isinstance(item, Show)
-            [parse_input(e, parser=parser) for e in item.episodes]
-            [parse_input(s, parser=parser) for s in item.seasons]
-
-    item.parsed = ParsedInfo(
-        episode=episode,
-        episode_part=episode_part,
-        season=season,
-        season_name=season_name,
-        media_title=media_title,
-        extension=extension,
-    )

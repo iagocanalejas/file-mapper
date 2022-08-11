@@ -11,6 +11,8 @@ from src.core.models import Season
 from src.core.models import Show
 from src.core.models.metadata import AnimeMetadata
 from src.core.types import Language
+from src.core.types import MediaType
+from src.core.utils.strings import closest_result
 from src.filemapper.datasources.api import AnilistAPI
 from src.filemapper.datasources.api import ImdbAPI
 from src.filemapper.datasources.api import MalAPI
@@ -19,9 +21,7 @@ from src.filemapper.datasources.datasource import API
 from src.filemapper.datasources.exceptions import NotFound
 from src.filemapper.datasources.scrapper import ImdbScrapper
 from src.filemapper.datasources.scrapper import WikipediaScrapper
-from src.filemapper.matchers import MediaType
 from src.filemapper.processors import Processor
-from src.utils.strings import closest_result
 
 logger = logging.getLogger()
 

@@ -3,7 +3,7 @@ from src.core.models import Episode
 from src.core.models import MediaItem
 from src.core.models import Season
 from src.core.models import Show
-from src.filemapper.matchers import MediaType
+from src.core.types import MediaType
 from src.filemapper.processors import Processor
 
 

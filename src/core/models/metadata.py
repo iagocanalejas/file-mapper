@@ -6,8 +6,8 @@ from typing import Tuple
 from src import settings
 from src.core.types import DatasourceName
 from src.core.types import Language
+from src.core.utils.strings import generic_clean
 from src.filemapper.datasources.models import APIData
-from src.utils.strings import generic_clean
 
 
 @dataclass

@@ -3,8 +3,8 @@ from abc import abstractmethod
 
 from src.core.models import MediaItem
 from src.core.types import Language
+from src.core.types import MediaType
 from src.core.types import Object
-from src.filemapper.matchers import MediaType
 
 
 class Formatter(ABC, Object):

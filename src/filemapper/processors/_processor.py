@@ -2,13 +2,13 @@ import logging
 from abc import ABC
 from abc import abstractmethod
 
+from src.core.formatter import Formatter
 from src.core.models import Episode
 from src.core.models import MediaItem
 from src.core.models import Season
 from src.core.models import Show
+from src.core.types import MediaType
 from src.core.types import Object
-from src.filemapper.formatter import Formatter
-from src.filemapper.matchers import MediaType
 
 logger = logging.getLogger()
 

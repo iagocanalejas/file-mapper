@@ -4,18 +4,18 @@ import os
 import sys
 
 from src import settings
-from src.filemapper.engine import Engine
+from src.manualmapper.engine import Engine
 
 logger = logging.getLogger()
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.ERROR)
 logger.addHandler(logging.StreamHandler(sys.stdout))
 
 
-def main(path: str, media_type: str, lang: str):
+def main(path: str):
     if not os.path.exists(path):
         raise ValueError(f'\'{path}\' does not exist')
 
-    engine = Engine(path=path, media_type=media_type, language=lang)
+    engine = Engine(path)
     engine.run()
 
 
@@ -38,10 +38,10 @@ if __name__ == '__main__':
         import pstats
 
         with cProfile.Profile() as pr:
-            main(os.path.abspath(args.path), args.type, args.lang)
+            main(os.path.abspath(args.path))
 
         stats = pstats.Stats(pr)
         stats.sort_stats(pstats.SortKey.TIME)
         stats.dump_stats(filename='profiling.prof')
     else:
-        main(os.path.abspath(args.path), args.type, args.lang)
+        main(os.path.abspath(args.path))
