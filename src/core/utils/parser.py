@@ -25,7 +25,6 @@ def parse_media_input(item: MediaItem, parser: Parser = None) -> MediaItem:
             season_name = parser.season_name(item)
         case Show():
             assert isinstance(item, Show)
-            [parse_media_input(e, parser=parser) for e in item.episodes]
             [parse_media_input(s, parser=parser) for s in item.seasons]
 
     item.parsed = ParsedInfo(

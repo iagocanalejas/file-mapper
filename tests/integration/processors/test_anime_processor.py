@@ -23,7 +23,7 @@ class TestAnimeProcessor(unittest.TestCase):
         parser = Parser(media_type=MediaType.ANIME)
 
         for to in TEST_OBJECTS:
-            if isinstance(to.item, Season) or isinstance(to.item, Show):
+            if isinstance(to.item, Season):
                 for episode in to.item.episodes:
                     episode.season = to.item
             if isinstance(to.item, Show):

@@ -41,8 +41,7 @@ class WikipediaScrapper(Scrapper, AnimeDatasource):
         """
 
         page = asyncio.run(self.__load_page(show))
-        season_files = [f for s in [s.episodes for s in show.seasons] for f in s]
-        self.__fill_episodes(page, show.episodes + season_files)
+        self.__fill_episodes(page, [f for s in [s.episodes for s in show.seasons] for f in s])
         self.__fill_seasons(page, show.seasons)
 
         return show

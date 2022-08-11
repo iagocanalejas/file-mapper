@@ -7,6 +7,7 @@ from typing import Optional
 import inquirer
 from polyglot.text import Text
 
+from src import settings
 from src.core import GlobalConfig
 from src.core.formatter import Formatter
 from src.core.matchers import AnimeTypeMatcher
@@ -163,6 +164,43 @@ class Engine(Object):
                 assert isinstance(self.__item, Episode)
                 wikipedia.fill_episode_name(self.__item)
 
+        self.__show_renaming_menu()
+
+    ########################
+    #    Default Config    #
+    ########################
+
+    def __language(self, item_name: str) -> Language:
+        lang = Text(item_name).language.code
+        lang = lang if lang in Language.__members__.values() else DEFAULT_LANGUAGE.value
+
+        logger.info(f'{self._class}:: {item_name} :: using language :: {lang}')
+        return Language[lang.upper()]
+
+    def __media_type(self, item_name: str) -> MediaType:
+        try:
+            match = next(tm for tm in self.__TYPE_MATCHERS if tm.matches(item_name))
+        except StopIteration:
+            return DEFAULT_MEDIA_TYPE
+        else:
+            return match.media_type if match else DEFAULT_MEDIA_TYPE
+
+    ########################
+    #    Anime Utils       #
+    ########################
+
+    @staticmethod
+    def __manual_anime_input(mal: MalAPI) -> AnimeMetadata:
+        answers = inquirer.prompt([
+            inquirer.Text(
+                name='mal_id',
+                message='MyAnimeList Anime Id',
+                validate=lambda _, x: re.match(r'\d+', x)
+            ),
+        ])
+        return mal.anime_by_id(mal_id=answers['mal_id'])
+
+    def __show_renaming_menu(self):
         while True:
             menu = inquirer.prompt([
                 inquirer.List(
@@ -197,40 +235,7 @@ class Engine(Object):
                 case 'cancel':
                     break
 
-    ########################
-    #    Default Config    #
-    ########################
-
-    def __language(self, item_name: str) -> Language:
-        lang = Text(item_name).language.code
-        lang = lang if lang in Language.__members__.values() else DEFAULT_LANGUAGE.value
-
-        logger.info(f'{self._class}:: {item_name} :: using language :: {lang}')
-        return Language[lang.upper()]
-
-    def __media_type(self, item_name: str) -> MediaType:
-        try:
-            match = next(tm for tm in self.__TYPE_MATCHERS if tm.matches(item_name))
-        except StopIteration:
-            return DEFAULT_MEDIA_TYPE
-        else:
-            return match.media_type if match else DEFAULT_MEDIA_TYPE
-
-    ########################
-    #         Utils        #
-    ########################
-
-    @staticmethod
-    def __manual_anime_input(mal: MalAPI) -> AnimeMetadata:
-        answers = inquirer.prompt([
-            inquirer.Text(
-                name='mal_id',
-                message='MyAnimeList Anime Id',
-                validate=lambda _, x: re.match(r'\d+', x)
-            ),
-        ])
-        return mal.anime_by_id(mal_id=answers['mal_id'])
-
     def __rename(self, item: MediaItem):
         item.item_name = self.__formatter.new_name(item)
-        os.rename(item.path, os.path.join(item.base_path, item.item_name))
+        if not settings.MOCK_RENAME:
+            os.rename(item.path, os.path.join(item.base_path, item.item_name))

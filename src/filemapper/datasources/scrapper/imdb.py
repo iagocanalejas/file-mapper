@@ -46,8 +46,6 @@ class ImdbScrapper(Scrapper, AnimeDatasource):
     def fill_show_names(self, show: Show) -> Show:
         for season in show.seasons:
             self.fill_season_names(season)
-        for episode in show.episodes:
-            self.fill_episode_name(episode)
 
         return show
 

@@ -126,16 +126,12 @@ class Season(MediaItem):
 @dataclass
 class Show(MediaItem):
     seasons: List[Season] = field(default_factory=list)
-    episodes: List[Episode] = field(default_factory=list)  # TODO: remove from here
 
     @classmethod
     def from_directory(cls, directory: Directory) -> 'Show':  # pragma: no cover
         obj = object.__new__(cls)
         obj.base_path = directory.base_path
         obj.item_name = directory.name
-        obj.episodes = [
-            Episode.from_file(f, show=obj) for f in directory.childs if isinstance(f, File) and f.is_valid
-        ]
 
         seasons: List[Season] = []
         for subdirectory in [d for d in directory.childs if isinstance(d, Directory) and d.is_valid]:
@@ -151,14 +147,10 @@ class Show(MediaItem):
         MediaItem.media_type.fset(self, value)  # Call to the super method
         for season in self.seasons:
             season.media_type = value
-        for file in self.episodes:
-            file.media_type = value
 
     @MediaItem.metadata.setter
     def metadata(self, value: Metadata):
         MediaItem.metadata.fset(self, value)  # Call to the super method
-        for file in self.episodes:
-            file.metadata = deepcopy(value)
         for season in self.seasons:
             season.metadata = deepcopy(value)
 
