@@ -14,10 +14,8 @@ class Language(Enum):
     JA = 'ja'
 
 
-class Object:
-    @property
-    def _class(self) -> str:
-        return self.__class__.__name__
+class SupportedSubs(Enum):
+    ASS = 'ass'
 
 
 class MediaType(Enum):
@@ -32,3 +30,9 @@ class PathType(Enum):
     EPISODE = 2
     SUBS = 3
     OVA = 4
+
+
+class Object:
+    @property
+    def _class(self) -> str:
+        return self.__class__.__name__

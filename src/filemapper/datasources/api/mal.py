@@ -42,7 +42,7 @@ class MalAPI(AnimeAPI):
     def search_anime(self, keyword: str, lang: Language, season: int, season_name: str) -> Optional[AnimeMetadata]:
         url = self.__get_url(keyword)
         response = requests.get(url, headers=self.HEADERS)
-        logger.info(f'{self._class}:: searching for :: {url}')
+        logger.debug(f'{self._class}:: searching for :: {url}')
 
         if response.status_code == 200:
             # data format: [{'node': {'id': int, 'alternative_titles': {'en': '', 'ja': ''}, 'title': 'str'}}]
@@ -58,7 +58,7 @@ class MalAPI(AnimeAPI):
             data: List[MalData] = [MalData(d['node']) for d in content]
             match = self._best_match(keyword, lang, data, season, season_name)
 
-            logger.info(f'{self._class}:: matching result :: {match}')
+            logger.debug(f'{self._class}:: matching result :: {match}')
             return AnimeMetadata(
                 datasource_data=(self.DATASOURCE, match),
                 title=match.title(Language.JA),
@@ -69,7 +69,7 @@ class MalAPI(AnimeAPI):
 
     def options(self, url: str) -> List[AnimeMetadata]:
         response = requests.get(url, headers=self.HEADERS)
-        logger.info(f'{self._class}:: searching for :: {url}')
+        logger.debug(f'{self._class}:: searching for :: {url}')
 
         if response.status_code == 200:
             # data format: [{'node': {'id': int, 'alternative_titles': {'en': '', 'ja': ''}, 'title': 'str'}}]
@@ -83,7 +83,7 @@ class MalAPI(AnimeAPI):
 
             # parse data into Python objects
             data: List[MalData] = [MalData(d['node']) for d in content]
-            logger.info(f'{self._class}:: options found :: {data}')
+            logger.debug(f'{self._class}:: options found :: {data}')
             return [
                 AnimeMetadata(
                     datasource_data=(self.DATASOURCE, option),
@@ -97,7 +97,7 @@ class MalAPI(AnimeAPI):
     def anime_by_id(self, mal_id: str) -> AnimeMetadata:
         url = self.BY_ID_URL.format(anime_id=mal_id)
         response = requests.get(url, headers=self.HEADERS)
-        logger.info(f'{self._class}:: searching for :: {url}')
+        logger.debug(f'{self._class}:: searching for :: {url}')
 
         if response.status_code == 200:
             # data format: {'id': int, 'alternative_titles': {'en': '', 'ja': ''}, 'title': 'str'}
@@ -111,7 +111,7 @@ class MalAPI(AnimeAPI):
 
             # parse data into Python objects
             data: MalData = MalData(content)
-            logger.info(f'{self._class}:: anime found :: {data}')
+            logger.debug(f'{self._class}:: anime found :: {data}')
             return AnimeMetadata(
                 datasource_data=(self.DATASOURCE, data),
                 title=data.title(Language.JA),

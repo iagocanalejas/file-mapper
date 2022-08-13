@@ -65,6 +65,10 @@ class MediaItem(ABC, Object):
     def flatten(self) -> List['MediaItem']:
         pass
 
+    @abstractmethod
+    def update(self, name, value):
+        pass
+
 
 @dataclass
 class Episode(MediaItem):
@@ -81,6 +85,9 @@ class Episode(MediaItem):
         obj.season = season
         obj.show = show
         return obj
+
+    def update(self, name, value):
+        setattr(self.metadata, name, value)
 
     def flatten(self) -> List[MediaItem]:
         return [self]
@@ -115,6 +122,10 @@ class Season(MediaItem):
         MediaItem.metadata.fset(self, value)  # Call to the super method
         for file in self.episodes:
             file.metadata = deepcopy(value)
+
+    def update(self, name, value):
+        setattr(self.metadata, name, value)
+        [e.update(name, value) for e in self.episodes]
 
     def flatten(self) -> List[MediaItem]:
         items = [self]
@@ -153,6 +164,10 @@ class Show(MediaItem):
         MediaItem.metadata.fset(self, value)  # Call to the super method
         for season in self.seasons:
             season.metadata = deepcopy(value)
+
+    def update(self, name, value):
+        setattr(self.metadata, name, value)
+        [s.update(name, value) for s in self.seasons]
 
     def flatten(self) -> List[MediaItem]:
         items = [self]

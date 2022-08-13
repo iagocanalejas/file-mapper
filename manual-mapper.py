@@ -7,7 +7,7 @@ from src import settings
 from src.manualmapper.engine import Engine
 
 logger = logging.getLogger()
-logger.setLevel(logging.ERROR)
+logger.setLevel(logging.INFO)
 logger.addHandler(logging.StreamHandler(sys.stdout))
 
 

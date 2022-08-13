@@ -1,4 +1,5 @@
 import os
+import re
 
 from src.core import GlobalConfig
 from src.core.models import Episode
@@ -6,6 +7,9 @@ from src.core.models import MediaItem
 from src.core.models import Season
 from src.core.models import Show
 from src.core.types import PathType
+
+__IGNORED = ['ova', 'special', 'subs', 'movie']
+__IGNORED_RE = re.compile('|'.join([f'^.* {e}.*$' for e in __IGNORED]), re.IGNORECASE)
 
 
 def load_media_item(path: str, path_type: PathType) -> MediaItem:
@@ -26,8 +30,15 @@ def __build_show(path: str) -> Show:
         parsed=None,
     )
 
-    # assume all sub_folders are seasons
-    sub_folders = [os.path.join(path, sp) for sp in os.listdir(path) if os.path.isdir(os.path.join(path, sp))]
+    # assume all sub_folders are seasons except OVA, Special and Movie
+    sub_folders = [
+        os.path.join(path, sp)
+        for sp in os.listdir(path)
+        if (
+                os.path.isdir(os.path.join(path, sp))
+                and not __IGNORED_RE.match(sp)
+        )
+    ]
 
     # TODO: handle files
     files = [os.path.join(path, sp) for sp in os.listdir(path) if os.path.isfile(os.path.join(path, sp))]
@@ -51,8 +62,15 @@ def __build_season(path: str, show: Show = None) -> Season:
     # TODO: handle sub_folders (subs)
     sub_folders = [os.path.join(path, sp) for sp in os.listdir(path) if os.path.isdir(os.path.join(path, sp))]
 
-    # assume all files are episodes
-    episodes = [os.path.join(path, sp) for sp in os.listdir(path) if os.path.isfile(os.path.join(path, sp))]
+    # assume all files are episodes except OVA, Special and Movie
+    episodes = [
+        os.path.join(path, sp)
+        for sp in os.listdir(path)
+        if (
+                os.path.isfile(os.path.join(path, sp))
+                and not __IGNORED_RE.match(sp)
+        )
+    ]
 
     season.episodes = [
         __build_episode(p, season=season, show=show) for p in episodes

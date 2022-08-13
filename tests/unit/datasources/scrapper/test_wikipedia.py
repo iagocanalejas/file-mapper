@@ -106,7 +106,7 @@ class TestWikipediaScrapper(unittest.TestCase):
 
         metadata = self.season.metadata
         assert isinstance(metadata, AnimeMetadata)
-        self.assertEqual(metadata.season_name, 'Season 1: The Fighting!')
+        self.assertEqual(metadata.season_name, 'S1: The Fighting!')
 
     @aioresponses()
     def test_load_season_from_episode_page_as_name(self, mocked_response):

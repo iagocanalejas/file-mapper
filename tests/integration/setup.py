@@ -196,12 +196,12 @@ TEST_OBJECTS: List[TestObject] = [
         media_type=MediaType.ANIME,
         expected_names=[
             'Hajime no Ippo',
-            'Hajime no Ippo Season 1 - The Fighting!',
-            'Hajime no Ippo Season 1 - The Fighting! - 01 - The First Step.mkv',
-            'Hajime no Ippo Season 1 - The Fighting! - 02 - Fruits of Labor.mkv',
-            'Hajime no Ippo Season 2 - New Challenger',
-            'Hajime no Ippo Season 2 - New Challenger - 01 - The New Step.mkv',
-            'Hajime no Ippo Season 2 - New Challenger - 02 - Bloody Cross.mkv',
+            'Hajime no Ippo S1 - The Fighting!',
+            'Hajime no Ippo S1 - The Fighting! - 01 - The First Step.mkv',
+            'Hajime no Ippo S1 - The Fighting! - 02 - Fruits of Labor.mkv',
+            'Hajime no Ippo S2 - New Challenger',
+            'Hajime no Ippo S2 - New Challenger - 01 - The New Step.mkv',
+            'Hajime no Ippo S2 - New Challenger - 02 - Bloody Cross.mkv',
         ],
         fixtures=[
             (r're:.*myanimelist.*anime\?q=Hajime%20no%20Ippo', f"json:{os.path.join(MAL_FIXTURES_DIR, 'hajime_no_ippo.json')}"),

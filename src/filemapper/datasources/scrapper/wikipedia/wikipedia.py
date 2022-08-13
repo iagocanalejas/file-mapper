@@ -14,8 +14,10 @@ from src.core.models.config import GlobalConfig
 from src.core.models.metadata import as_anime
 from src.core.types import DatasourceName
 from src.core.types import Language
+from src.core.utils.strings import remove_brackets
 from src.core.utils.strings import remove_parenthesis
 from src.core.utils.strings import remove_season
+from src.core.utils.strings import whitespaces_clean
 from src.filemapper.datasources.datasource import AnimeDatasource
 from src.filemapper.datasources.datasource import Scrapper
 from src.filemapper.datasources.exceptions import InvalidConfiguration
@@ -77,7 +79,7 @@ class WikipediaScrapper(Scrapper, AnimeDatasource):
 
         try:
             page = next(p for p in pages if p.is_valid)
-            logger.info(f'{self._class}:: valid page :: {page}')
+            logger.debug(f'{self._class}:: valid page :: {page}')
             return page
         except StopIteration:
             raise NotFound(f'{self._class}:: matching page for :: {keywords}')
@@ -95,9 +97,9 @@ class WikipediaScrapper(Scrapper, AnimeDatasource):
                 not_found.append(episode)
                 continue
 
-            episode.metadata.episode_name = episode_name
+            episode.metadata.episode_name = remove_brackets(episode_name)
 
-        logger.info(f'{self._class}:: NOT FOUND :: episode names :: {[s.item_name for s in not_found]}')
+        logger.debug(f'{self._class}:: NOT FOUND :: episode names :: {[s.item_name for s in not_found]}')
 
     def __fill_seasons(self, page: WikipediaPage, seasons: List[Season]):
         not_found = []
@@ -110,7 +112,7 @@ class WikipediaScrapper(Scrapper, AnimeDatasource):
 
             season.metadata.season_name = self.__patch_season_name(page, remove_parenthesis(season_name))
 
-        logger.info(f'{self._class}:: NOT FOUND :: season names :: {[s.item_name for s in not_found]}')
+        logger.debug(f'{self._class}:: NOT FOUND :: season names :: {[s.item_name for s in not_found]}')
 
     def __get_pages(self, item: MediaItem, languages: List[Language]) -> Tuple[List[str], List[WikipediaPage]]:
         if languages is None:
@@ -136,6 +138,7 @@ class WikipediaScrapper(Scrapper, AnimeDatasource):
 
     @staticmethod
     def __patch_season_name(page: WikipediaPage, season_name: str) -> str:
+        season_name = whitespaces_clean(season_name.replace('Season ', 'S'))
         match = re.match(page.title(), season_name, re.IGNORECASE)
         if match is not None:
             return season_name.replace(match.group(0), '').strip()

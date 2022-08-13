@@ -13,6 +13,7 @@ from src.core.types import MediaType
 from src.core.utils.strings import accepts
 from src.core.utils.strings import clean_output
 from src.core.utils.strings import RomanNumbers
+from src.core.utils.strings import whitespaces_clean
 
 
 class AnimeFormatter(Formatter, media_type=MediaType.ANIME):
@@ -96,15 +97,13 @@ class AnimeFormatter(Formatter, media_type=MediaType.ANIME):
                 should_remove_season = True
 
         if should_remove_season:
-            pattern = re.sub(r'( S(eason)?)? ?{season(_name)?}', '', pattern).strip()
-            pattern = re.sub(r' +', ' ', pattern).strip()
+            pattern = whitespaces_clean(re.sub(r'( S(eason)?)? ?{season(_name)?}', '', pattern).strip())
         return pattern
 
     @staticmethod
     def __remove_episode_if_required(item: MediaItem, pattern: str) -> str:
         if isinstance(item, Show) or isinstance(item, Season):
-            pattern = re.sub(r'( E(pisode)?)? ?{episode(_name)?(:\d+d)?}', '', pattern).strip()
-            pattern = re.sub(r' +', ' ', pattern).strip()
+            pattern = whitespaces_clean(re.sub(r'( E(pisode)?)? ?{episode(_name)?(:\d+d)?}', '', pattern).strip())
         return pattern
 
     @staticmethod
