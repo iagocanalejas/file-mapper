@@ -1,6 +1,5 @@
 import json
 import logging
-from pprint import pformat
 from typing import List
 from typing import Optional
 
@@ -40,8 +39,6 @@ class ImdbAPI(AnimeAPI):
 
         if response.status_code == 200:
             content = json.loads(response.content)['results']
-            if settings.LOG_HTTP:
-                logger.debug(f'{self._class}: {pformat(content)}')
 
             if not content:
                 logger.error(f'{self._class}:: no match')

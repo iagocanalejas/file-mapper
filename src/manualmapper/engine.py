@@ -5,7 +5,8 @@ import re
 import inquirer
 from polyglot.text import Text
 
-from src.core import GlobalConfig
+from src import runner
+from src import settings
 from src.core.matchers import AnimeTypeMatcher
 from src.core.matchers import FilmTypeMatcher
 from src.core.models import MediaItem
@@ -19,7 +20,6 @@ from src.core.utils.parser import parse_media_input
 from src.core.utils.strings import retrieve_extension
 from src.manualmapper.loader import load_media_item
 from src.manualmapper.processors import Processor
-from src.manualmapper.processors import ProcessorConfig
 
 logger = logging.getLogger()
 
@@ -38,19 +38,18 @@ class Engine(Object):
         assert os.path.isabs(path)
 
         self.__path = path
-        self.__config = ProcessorConfig()
         self.__TYPE_MATCHERS = [AnimeTypeMatcher(), FilmTypeMatcher()]
 
     def run(self):
         self.__common_configuration()
 
         self.__item = parse_media_input(
-            load_media_item(self.__path, path_type=self.__config.path_type),
-            parser=Parser(media_type=GlobalConfig().media_type)
+            load_media_item(self.__path, path_type=runner.path_type),
+            parser=Parser(media_type=runner.media_type)
         )
-        self.__item.media_type = GlobalConfig().media_type
+        self.__item.media_type = runner.media_type
 
-        processor: Processor = Processor(media_type=GlobalConfig().media_type, config=self.__config)
+        processor: Processor = Processor(media_type=runner.media_type)
         processor.process(self.__item)
         processor.post_process(self.__item)
 
@@ -88,13 +87,11 @@ class Engine(Object):
             ),
         ])
 
-        GlobalConfig().media_type = MediaType[answers['media_type']]
-        GlobalConfig().language = Language[answers['language']]
+        runner.media_type = MediaType[answers['media_type']]
+        runner.path_type = PathType[answers['path_type']]
+        runner.language = Language[answers['language']]
 
-        self.__config.path_type = PathType[answers['path_type']]
-
-        logger.debug(f'{self._class}:: running with configuration::{GlobalConfig()}')
-        logger.debug(f'{self._class}:: running with local configuration::{self.__config}')
+        logger.debug(f'{self._class}:: running with configuration::{settings}')
 
     ########################
     #    Default Config    #

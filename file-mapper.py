@@ -3,8 +3,8 @@ import logging
 import os
 import sys
 
+from src import runner
 from src import settings
-from src.core.models.config import GlobalConfig
 from src.core.types import Language
 from src.core.types import MediaType
 from src.filemapper.engine import Engine
@@ -39,9 +39,9 @@ def __parse_arguments():
 
 def __parse_global_datasource(parsed_args):
     if parsed_args.wikipedia:
-        GlobalConfig().wikipedia_url = parsed_args.wikipedia
+        runner.wikipedia_url = parsed_args.wikipedia
     if parsed_args.mal:
-        GlobalConfig().mal_url = parsed_args.mal
+        runner.mal_url = parsed_args.mal
 
 
 def __prefill():
@@ -58,7 +58,8 @@ if __name__ == '__main__':
     logger.info(f'{os.path.basename(__file__)}:: args -> {args.__dict__}')
 
     if args.debug:
-        settings.MOCK_RENAME = True
+        settings.DEBUG = True
+        settings.ENABLE_PROFILE = True
 
     if args.prefill:
         __prefill()

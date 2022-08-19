@@ -113,7 +113,7 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
             for s in item.seasons:
                 self.rename(s)
 
-        if not settings.MOCK_RENAME:
+        if not settings.DEBUG:
             os.rename(item.path, os.path.join(item.base_path, self.formatter.new_name(item)))
 
         super().rename(item)

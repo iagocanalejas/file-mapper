@@ -31,7 +31,8 @@ if __name__ == '__main__':
     logger.info(f'{os.path.basename(__file__)}:: args -> {args.__dict__}')
 
     if args.debug:
-        settings.MOCK_RENAME = True
+        settings.DEBUG = True
+        settings.ENABLE_PROFILE = True
 
     if settings.ENABLE_PROFILE:
         import cProfile

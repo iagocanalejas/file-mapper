@@ -1,14 +1,13 @@
 import json
 import logging
-from pprint import pformat
 from typing import List
 from typing import Optional
 
 import requests
 from requests import RequestException
 
+from src import runner
 from src import settings
-from src.core.models.config import GlobalConfig
 from src.core.models.metadata import AnimeMetadata
 from src.core.types import DatasourceName
 from src.core.types import Language
@@ -47,8 +46,6 @@ class MalAPI(AnimeAPI):
         if response.status_code == 200:
             # data format: [{'node': {'id': int, 'alternative_titles': {'en': '', 'ja': ''}, 'title': 'str'}}]
             content = json.loads(response.content)['data']
-            if settings.LOG_HTTP:
-                logger.debug(f'{self._class}: {pformat(content)}')
 
             if not content:
                 logger.error(f'{self._class}:: no match')
@@ -74,8 +71,6 @@ class MalAPI(AnimeAPI):
         if response.status_code == 200:
             # data format: [{'node': {'id': int, 'alternative_titles': {'en': '', 'ja': ''}, 'title': 'str'}}]
             content = json.loads(response.content)['data']
-            if settings.LOG_HTTP:
-                logger.debug(f'{self._class}: {pformat(content)}')
 
             if not content:
                 logger.error(f'{self._class}:: no options found')
@@ -102,8 +97,6 @@ class MalAPI(AnimeAPI):
         if response.status_code == 200:
             # data format: {'id': int, 'alternative_titles': {'en': '', 'ja': ''}, 'title': 'str'}
             content = json.loads(response.content)
-            if settings.LOG_HTTP:
-                logger.debug(f'{self._class}: {pformat(content)}')
 
             if not content:
                 logger.error(f'{self._class}:: no anime found {mal_id}')
@@ -121,4 +114,4 @@ class MalAPI(AnimeAPI):
         raise RequestException(response=response)
 
     def __get_url(self, keyword: str) -> str:
-        return GlobalConfig().mal_url if GlobalConfig().mal_url else self.BASE_URL.format(anime=keyword)
+        return runner.mal_url if runner.mal_url else self.BASE_URL.format(anime=keyword)

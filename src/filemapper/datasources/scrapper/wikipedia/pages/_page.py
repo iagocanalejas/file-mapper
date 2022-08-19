@@ -11,7 +11,6 @@ from aiohttp import ClientSession
 from bs4 import BeautifulSoup
 from bs4 import Tag
 
-from src import settings
 from src.core.types import Object
 
 logger = logging.getLogger()
@@ -114,8 +113,5 @@ class WikipediaPage(ABC, Object):
 
         content = await response.read()
         self._soup = BeautifulSoup(content, 'html5lib')
-
-        if settings.LOG_HTTP:
-            logger.debug(f'{self._class}: {self._soup.prettify()}')
 
         return self

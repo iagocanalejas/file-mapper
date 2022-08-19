@@ -4,8 +4,8 @@ import re
 
 import inquirer
 
+from src import runner
 from src import settings
-from src.core import GlobalConfig
 from src.core.models import Episode
 from src.core.models import MediaItem
 from src.core.models import Season
@@ -34,13 +34,13 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
 
     def process(self, item: MediaItem):
         mal_name = inquirer.text(message='MyAnimeList Name', default=item.parsed.media_title)
-        GlobalConfig().mal_url = f'https://api.myanimelist.net/v2/anime?q={mal_name}&fields=alternative_titles'
+        runner.mal_url = f'https://api.myanimelist.net/v2/anime?q={mal_name}&fields=alternative_titles'
 
         item.metadata = self.__retrieve_mal_metadata()
         logger.info(f'Selected anime {item.metadata.title}')
 
         wikipedia = inquirer.text('Wikipedia URL', validate=lambda _, x: WikipediaScrapper.check_url(x))
-        GlobalConfig().wikipedia_url = wikipedia
+        runner.wikipedia_url = wikipedia
         self.__fill_wikipedia_metadata(item)
 
     def post_process(self, item: MediaItem):
@@ -93,7 +93,7 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
                     break
 
     def __retrieve_mal_metadata(self):
-        matched_options = self.__mal_api.options(GlobalConfig().mal_url)
+        matched_options = self.__mal_api.options(runner.mal_url)
         choices = [o.title for o in matched_options] + ['None']
         chosen_name = inquirer.list_input('Choose the correct option', choices=choices)
 
@@ -104,7 +104,7 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
             return next(m for m in matched_options if m.title == chosen_name)
 
     def __fill_wikipedia_metadata(self, item: MediaItem):
-        match self._config.path_type:
+        match runner.path_type:
             case PathType.SHOW:
                 assert isinstance(item, Show)
                 self.__wikipedia_scrapper.fill_show_names(item)
@@ -144,5 +144,5 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
 
     def __rename(self, item: MediaItem):
         item.item_name = self.formatter.new_name(item)
-        if not settings.MOCK_RENAME:
+        if not settings.DEBUG:
             os.rename(item.path, os.path.join(item.base_path, item.item_name))

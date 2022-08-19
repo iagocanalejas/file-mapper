@@ -1,13 +1,11 @@
 import json
 import logging
-from pprint import pformat
 from typing import List
 from typing import Optional
 
 import requests
 from requests import RequestException
 
-from src import settings
 from src.core.models.metadata import AnimeMetadata
 from src.core.types import DatasourceName
 from src.core.types import Language
@@ -59,8 +57,6 @@ class AnilistAPI(AnimeAPI):
         if response.status_code == 200:
             # data format: [{'id': int, 'title': {'romaji': str, 'english': str}}
             content = json.loads(response.content)['data']['Page']['media']
-            if settings.LOG_HTTP:
-                logger.debug(f'{self._class}: {pformat(content)}')
 
             if not content:
                 logger.error(f'{self._class}:: no match')

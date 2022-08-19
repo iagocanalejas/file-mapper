@@ -6,11 +6,12 @@ from typing import Tuple
 
 import aiohttp
 
+from src import runner
+from src import settings
 from src.core.models import Episode
 from src.core.models import MediaItem
 from src.core.models import Season
 from src.core.models import Show
-from src.core.models.config import GlobalConfig
 from src.core.models.metadata import as_anime
 from src.core.types import DatasourceName
 from src.core.types import Language
@@ -71,7 +72,7 @@ class WikipediaScrapper(Scrapper, AnimeDatasource):
 
     async def __load_page(self, item: MediaItem, languages: List[Language] = None) -> WikipediaPage:
         keywords, pages = self.__get_preconfigured_pages() \
-            if GlobalConfig().wikipedia_url \
+            if runner.wikipedia_url \
             else self.__get_pages(item, languages)
 
         async with aiohttp.ClientSession() as session:
@@ -127,14 +128,15 @@ class WikipediaScrapper(Scrapper, AnimeDatasource):
 
     @staticmethod
     def __get_preconfigured_pages() -> Tuple[List[str], List[WikipediaPage]]:
-        if WikipediaEpisodePage.check_url(GlobalConfig().wikipedia_url):
-            pages = [WikipediaEpisodePage(url=GlobalConfig().wikipedia_url)]
-        elif WikipediaMainPage.check_url(GlobalConfig().wikipedia_url):
-            pages = [WikipediaMainPage(url=GlobalConfig().wikipedia_url)]
+        wikipedia_url = runner.wikipedia_url
+        if WikipediaEpisodePage.check_url(wikipedia_url):
+            pages = [WikipediaEpisodePage(url=wikipedia_url)]
+        elif WikipediaMainPage.check_url(wikipedia_url):
+            pages = [WikipediaMainPage(url=wikipedia_url)]
         else:
-            raise InvalidConfiguration(GlobalConfig().wikipedia_url)
+            raise InvalidConfiguration(wikipedia_url)
 
-        return [GlobalConfig().wikipedia_url], pages
+        return [wikipedia_url], pages
 
     @staticmethod
     def __patch_season_name(page: WikipediaPage, season_name: str) -> str:

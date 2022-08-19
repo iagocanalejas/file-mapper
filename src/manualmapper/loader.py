@@ -1,7 +1,7 @@
 import os
 import re
 
-from src.core import GlobalConfig
+from src import runner
 from src.core.models import Episode
 from src.core.models import MediaItem
 from src.core.models import Season
@@ -26,7 +26,7 @@ def __build_show(path: str) -> Show:
     show = Show(
         base_path=os.path.dirname(path),
         item_name=os.path.basename(path),
-        language=GlobalConfig().language,
+        language=runner.language,
         parsed=None,
     )
 
@@ -55,7 +55,7 @@ def __build_season(path: str, show: Show = None) -> Season:
         base_path=os.path.dirname(path),
         item_name=os.path.basename(path),
         show=show,
-        language=GlobalConfig().language,
+        language=runner.language,
         parsed=None,
     )
 
@@ -85,6 +85,6 @@ def __build_episode(path: str, season: Season = None, show: Show = None) -> Epis
         item_name=os.path.basename(path),
         season=season,
         show=show,
-        language=GlobalConfig().language,
+        language=runner.language,
         parsed=None,
     )

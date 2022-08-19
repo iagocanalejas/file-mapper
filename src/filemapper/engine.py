@@ -5,6 +5,8 @@ from typing import Optional
 
 from polyglot.text import Text
 
+from src import runner
+from src import settings
 from src.core.exceptions import UnsupportedMediaType
 from src.core.matchers import AnimeTypeMatcher
 from src.core.matchers import FilmTypeMatcher
@@ -13,7 +15,6 @@ from src.core.models import Episode
 from src.core.models import MediaItem
 from src.core.models import Season
 from src.core.models import Show
-from src.core.models.config import GlobalConfig
 from src.core.types import Language
 from src.core.types import MediaType
 from src.core.types import Object
@@ -35,15 +36,15 @@ class Engine(Object):
             path = os.path.abspath(path)
 
         try:
-            GlobalConfig().media_type = MediaType[media_type.upper()] if media_type else None
-            GlobalConfig().language = Language[language.upper()] if language else None
+            runner.media_type = MediaType[media_type.upper()] if media_type else None
+            runner.language = Language[language.upper()] if language else None
         except KeyError as ke:
             raise UnsupportedMediaType(ke)
 
         self._tree = Tree(path=path)
 
     def run(self):
-        logger.info(f'{self._class}:: running with configuration::{GlobalConfig()}')
+        logger.info(f'{self._class}:: running with configuration::{settings}')
         if self._tree.is_file:
             self.handle_file()
         if self._tree.is_directory:
@@ -111,16 +112,16 @@ class Engine(Object):
         [self.handle_directory(item) for item in directory.childs if isinstance(item, Directory) and item.is_valid]
 
     def __categorize(self, item: MediaItem) -> MediaType:
-        if GlobalConfig().media_type is not None:
-            return GlobalConfig().media_type
+        if runner.media_type is not None:
+            return runner.media_type
 
         match = next(tm for tm in self.__TYPE_MATCHERS if tm.matches(item.item_name))
         return match.media_type if match else MediaType.UNKNOWN
 
     def __language(self, item: MediaItem) -> Language:
-        if GlobalConfig().language is not None:
-            logger.info(f'{self._class}:: {item.item_name} :: using language :: {GlobalConfig().language}')
-            return GlobalConfig().language
+        if runner.language is not None:
+            logger.info(f'{self._class}:: {item.item_name} :: using language :: {runner.language}')
+            return runner.language
 
         lang = Text(item.item_name).language.code
         lang = lang if lang in Language.__members__.values() else Language.JA.value

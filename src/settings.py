@@ -6,9 +6,8 @@ env = Env()
 env.read_env()
 
 # Testing flags
-ENABLE_PROFILE = True
-LOG_HTTP = True
-MOCK_RENAME = False
+DEBUG = False
+ENABLE_PROFILE = False
 
 # Application configurations
 MAL_CLIENT_ID = env.str('MAL_CLIENT_ID', '')

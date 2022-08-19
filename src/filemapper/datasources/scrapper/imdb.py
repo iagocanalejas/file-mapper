@@ -5,7 +5,6 @@ from typing import List
 import requests
 from bs4 import BeautifulSoup
 
-from src import settings
 from src.core.models import Episode
 from src.core.models import MediaItem
 from src.core.models import Season
@@ -91,8 +90,6 @@ class ImdbScrapper(Scrapper, AnimeDatasource):
             self.soup = BeautifulSoup(response.content, 'html5lib')
 
         if self.is_valid:
-            if settings.LOG_HTTP:
-                logger.debug(f'{self._class}: {self.soup.prettify()}')
             return self.soup
 
         raise NotFound(f'{self._class}:: matching page for :: {item}')
