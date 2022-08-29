@@ -8,10 +8,16 @@ from dataclasses import field
 from typing import List
 from typing import Optional
 
+from polyglot.text import Text
+
+from src import settings
 from src.core.models.metadata import Metadata
 from src.core.types import Language
 from src.core.types import MediaType
 from src.core.types import Object
+from src.core.utils.strings import generic_clean
+from src.core.utils.strings import remove_brackets
+from src.core.utils.strings import retrieve_extension
 from src.filemapper.tbuilder.models import Directory
 from src.filemapper.tbuilder.models import File
 
@@ -32,9 +38,9 @@ class ParsedInfo:
 class MediaItem(ABC, Object):
     base_path: str
     item_name: str
-    language: Language
     parsed: Optional[ParsedInfo]
 
+    _language: Optional[Language] = None
     _media_type: MediaType = MediaType.UNKNOWN
     _metadata: Optional[Metadata] = None
 
@@ -61,12 +67,24 @@ class MediaItem(ABC, Object):
     def metadata(self, value: Metadata):
         self._metadata = value
 
+    @property
+    def language(self):
+        return self._language
+
+    @language.setter
+    def language(self, value):
+        self._language = value
+
     @abstractmethod
     def flatten(self) -> List['MediaItem']:
         pass
 
     @abstractmethod
     def update(self, name, value):
+        pass
+
+    @abstractmethod
+    def rename(self, new_name):
         pass
 
 
@@ -87,10 +105,20 @@ class Episode(MediaItem):
         return obj
 
     def update(self, name, value):
-        setattr(self.metadata, name, value)
+        match name:
+            case 'base_path':
+                self.base_path = value
+            case _:
+                setattr(self.metadata, name, value)
 
     def flatten(self) -> List[MediaItem]:
         return [self]
+
+    def rename(self, new_name):
+        logger.debug(f'{self._class}:: {self.path} :: {new_name}')
+        if not settings.DEBUG:
+            os.renames(self.path, os.path.join(self.base_path, new_name))
+        self.item_name = new_name
 
 
 @dataclass
@@ -124,14 +152,26 @@ class Season(MediaItem):
             file.metadata = deepcopy(value)
 
     def update(self, name, value):
-        setattr(self.metadata, name, value)
-        [e.update(name, value) for e in self.episodes]
+        match name:
+            case 'base_path':
+                self.base_path = value
+                [e.update(name, self.path) for e in self.episodes]
+            case _:
+                setattr(self.metadata, name, value)
+                [e.update(name, value) for e in self.episodes]
 
     def flatten(self) -> List[MediaItem]:
         items = [self]
         for episode in self.episodes:
             items += episode.flatten()
         return items
+
+    def rename(self, new_name):
+        if not settings.DEBUG:
+            new_path = os.path.join(self.base_path, new_name)
+            os.renames(self.path, new_path)
+            [e.update('base_path', new_path) for e in self.episodes]
+        self.item_name = new_name
 
 
 @dataclass
@@ -166,11 +206,95 @@ class Show(MediaItem):
             season.metadata = deepcopy(value)
 
     def update(self, name, value):
-        setattr(self.metadata, name, value)
-        [s.update(name, value) for s in self.seasons]
+        match name:
+            case 'base_path':
+                self.base_path = value
+                [s.update(name, self.path) for s in self.seasons]
+            case _:
+                setattr(self.metadata, name, value)
+                [s.update(name, value) for s in self.seasons]
 
     def flatten(self) -> List[MediaItem]:
         items = [self]
         for season in self.seasons:
             items += season.flatten()
         return items
+
+    def rename(self, new_name):
+        if not settings.DEBUG:
+            new_path = os.path.join(self.base_path, new_name)
+            os.renames(self.path, new_path)
+            [s.update('base_path', new_path) for s in self.seasons]
+        self.item_name = new_name
+
+
+@dataclass
+class SubsFile(MediaItem):
+    parent: Optional[Episode] = None
+
+    _media_type = MediaType.SUBS
+
+    def __str__(self):  # pragma: no cover
+        return f'{self.media_type.name}: subs : {self.path}'
+
+    @property
+    def media_type(self) -> MediaType:
+        return self._media_type
+
+    @property
+    def metadata(self) -> Optional[Metadata]:
+        return self.parent.metadata if self.parent else None
+
+    @property
+    def language(self) -> Language:
+        if self._language is None:
+            match retrieve_extension(generic_clean(self.item_name)):
+                case 'ass':
+                    self._language = self.__ass_language()
+        return self._language
+
+    def update(self, name, value):
+        match name:
+            case 'parent':
+                self.parent = value
+            case _:
+                pass
+
+    def flatten(self) -> List['MediaItem']:
+        return [self]
+
+    def rename(self, new_name):
+        if not settings.DEBUG:
+            subs_folder = os.path.join(self.parent.base_path, os.path.basename(self.base_path))
+            os.rename(os.path.join(subs_folder, self.item_name), os.path.join(subs_folder, new_name))
+        self.item_name = new_name
+
+    def __ass_language(self) -> Language:
+        with open(self.path) as subs_file:
+            text = subs_file.read()
+            assert '[Events]' in text
+
+            events = text.split('[Events]')[1].split('\n')
+            events = [remove_brackets(e.split(',')[-1]).strip() for e in events if ',' in e]
+            languages = [Text(e).language.code for e in events]
+            language = max(languages, key=languages.count)
+
+            if language and language.upper() in Language.__members__.values():
+                return Language[language.upper()]
+        logger.error(f'{self}:: no language match')
+
+    ########################
+    #       Forbidden      #
+    ########################
+
+    @language.setter
+    def language(self, value):
+        raise NotImplementedError
+
+    @metadata.setter
+    def metadata(self, value: Metadata):
+        raise NotImplementedError
+
+    @media_type.setter
+    def media_type(self, value: MediaType):
+        raise NotImplementedError

@@ -1,6 +1,8 @@
 import logging
 import os
 import re
+from typing import List
+from typing import Optional
 
 import inquirer
 from polyglot.text import Text
@@ -9,17 +11,20 @@ from src import runner
 from src import settings
 from src.core.matchers import AnimeTypeMatcher
 from src.core.matchers import FilmTypeMatcher
+from src.core.models import Episode
 from src.core.models import MediaItem
+from src.core.models import SubsFile
 from src.core.parsers import Parser
 from src.core.types import Language
 from src.core.types import MediaType
 from src.core.types import Object
 from src.core.types import PathType
-from src.core.types import SupportedSubs
+from src.core.types import SubtitleAction
 from src.core.utils.parser import parse_media_input
-from src.core.utils.strings import retrieve_extension
 from src.manualmapper.loader import load_media_item
+from src.manualmapper.loader import load_subtitle_files
 from src.manualmapper.processors import Processor
+from src.manualmapper.processors import SubsProcessor
 
 logger = logging.getLogger()
 
@@ -28,6 +33,7 @@ DEFAULT_PATH_TYPE = PathType.SHOW
 DEFAULT_LANGUAGE = Language.JA
 
 
+# TODO: we should save a .log/.csv of renamed elements. This will allow a revert option in the future.
 class Engine(Object):
     __item: MediaItem
 
@@ -42,16 +48,24 @@ class Engine(Object):
 
     def run(self):
         self.__common_configuration()
+        parser = Parser(media_type=runner.media_type)
+        processor: Processor = Processor(media_type=runner.media_type)
+        subtitles: Optional[SubsProcessor] = None
 
-        self.__item = parse_media_input(
-            load_media_item(self.__path, path_type=runner.path_type),
-            parser=Parser(media_type=runner.media_type)
-        )
+        self.__item = parse_media_input(load_media_item(self.__path, path_type=runner.path_type), parser)
         self.__item.media_type = runner.media_type
 
-        processor: Processor = Processor(media_type=runner.media_type)
-        processor.process(self.__item)
-        processor.post_process(self.__item)
+        # load and parse subtitle files if required
+        subs: List[SubsFile] = []
+        if runner.subs_acton:
+            subtitles = SubsProcessor(media_type=MediaType.SUBS)
+            subs = [parse_media_input(s, parser) for s in load_subtitle_files(self.__path)]
+            subtitles.process(subs=subs, episodes=[e for e in self.__item.flatten() if isinstance(e, Episode)])
+
+        processor.process(item=self.__item)
+        processor.post_process(item=self.__item)
+        if runner.subs_acton and subtitles is not None:
+            subtitles.post_process(subs=subs, action=runner.subs_acton)
 
     ########################
     #    Configuration     #
@@ -82,14 +96,15 @@ class Engine(Object):
             inquirer.List(
                 name='subs',
                 message='How to handle subs files',
-                choices=['Rename', 'Merge', 'None'],
-                default='None'
+                choices=list(SubtitleAction.__members__.keys()) + ['NONE'],
+                default='NONE'
             ),
         ])
 
         runner.media_type = MediaType[answers['media_type']]
         runner.path_type = PathType[answers['path_type']]
         runner.language = Language[answers['language']]
+        runner.subs_acton = SubtitleAction[answers['subs']] if answers['subs'] != 'NONE' else None
 
         logger.debug(f'{self._class}:: running with configuration::{settings}')
 
@@ -120,8 +135,6 @@ class Engine(Object):
             return PathType.EPISODE
 
         if all(os.path.isfile(os.path.join(path, n)) for n in os.listdir(path)):
-            if all(retrieve_extension(e).upper() in SupportedSubs.__members__.keys() for e in os.listdir(path)):
-                return PathType.SUBS
             return PathType.SEASON
 
         return DEFAULT_PATH_TYPE

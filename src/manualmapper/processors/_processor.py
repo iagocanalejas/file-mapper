@@ -3,7 +3,6 @@ from abc import ABC
 from abc import abstractmethod
 
 from src.core.formatter import Formatter
-from src.core.models import MediaItem
 from src.core.types import MediaType
 from src.core.types import Object
 
@@ -39,9 +38,9 @@ class Processor(ABC, Object):
         return final_obj
 
     @abstractmethod
-    def process(self, item: MediaItem):
+    def process(self, **kwargs):
         pass
 
     @abstractmethod
-    def post_process(self, item: MediaItem):
+    def post_process(self, **kwargs):
         pass

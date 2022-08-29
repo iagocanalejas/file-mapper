@@ -1,12 +1,16 @@
 import os
 import re
+from typing import List
 
 from src import runner
 from src.core.models import Episode
 from src.core.models import MediaItem
 from src.core.models import Season
 from src.core.models import Show
+from src.core.models import SubsFile
 from src.core.types import PathType
+from src.core.types import SupportedSubs
+from src.core.utils.strings import retrieve_extension
 
 __IGNORED = ['ova', 'special', 'subs', 'movie']
 __IGNORED_RE = re.compile('|'.join([f'^.* {e}.*$' for e in __IGNORED]), re.IGNORECASE)
@@ -15,19 +19,40 @@ __IGNORED_RE = re.compile('|'.join([f'^.* {e}.*$' for e in __IGNORED]), re.IGNOR
 def load_media_item(path: str, path_type: PathType) -> MediaItem:
     match path_type:
         case PathType.SHOW:
+            assert os.path.isdir(path)
             return __build_show(path)
         case PathType.SEASON:
+            assert os.path.isdir(path)
             return __build_season(path)
         case PathType.EPISODE:
+            assert os.path.isfile(path)
             return __build_episode(path)
+
+
+def load_subtitle_files(path: str) -> List[SubsFile]:
+    assert os.path.isdir(path)
+    subs: List[SubsFile] = []
+    for item in os.listdir(path):
+        item_path = os.path.join(path, item)
+        if os.path.isfile(item_path) and retrieve_extension(item) in SupportedSubs.list():
+            subs.append(
+                SubsFile(
+                    base_path=path,
+                    item_name=os.path.basename(item_path),
+                    parsed=None,
+                )
+            )
+        elif os.path.isdir(item_path):
+            subs.extend(load_subtitle_files(item_path))
+    return subs
 
 
 def __build_show(path: str) -> Show:
     show = Show(
         base_path=os.path.dirname(path),
         item_name=os.path.basename(path),
-        language=runner.language,
         parsed=None,
+        _language=runner.language,
     )
 
     # assume all sub_folders are seasons except OVA, Special and Movie
@@ -55,8 +80,8 @@ def __build_season(path: str, show: Show = None) -> Season:
         base_path=os.path.dirname(path),
         item_name=os.path.basename(path),
         show=show,
-        language=runner.language,
         parsed=None,
+        _language=runner.language,
     )
 
     # TODO: handle sub_folders (subs)
@@ -85,6 +110,6 @@ def __build_episode(path: str, season: Season = None, show: Show = None) -> Epis
         item_name=os.path.basename(path),
         season=season,
         show=show,
-        language=runner.language,
         parsed=None,
+        _language=runner.language,
     )

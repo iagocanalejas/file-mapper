@@ -1,17 +1,22 @@
+from typing import TypeVar
+
 from src.core.models import Episode
 from src.core.models import MediaItem
 from src.core.models import ParsedInfo
 from src.core.models import Season
 from src.core.models import Show
+from src.core.models import SubsFile
 from src.core.parsers import Parser
 
+T = TypeVar('T', bound=MediaItem)
 
-def parse_media_input(item: MediaItem, parser: Parser = None) -> MediaItem:
+
+def parse_media_input(item: T, parser: Parser = None) -> T:
     parser = parser if parser is not None else Parser(media_type=item.media_type)
     media_title = parser.media_title(item)
     episode = episode_part = season = season_name = extension = None
     match item:
-        case Episode():
+        case Episode() | SubsFile():
             episode = parser.episode(item)
             episode_part = parser.episode_part(item)
             season = parser.season(item)

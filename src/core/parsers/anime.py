@@ -6,6 +6,7 @@ from src.core.models import Episode
 from src.core.models import MediaItem
 from src.core.models import Season
 from src.core.models import Show
+from src.core.models import SubsFile
 from src.core.parsers._parser import Parser
 from src.core.types import MediaType
 from src.core.utils.strings import accepts
@@ -32,27 +33,27 @@ class AnimeParser(Parser, media_type=MediaType.ANIME):
             cls._instance = super().__new__(cls, *args, media_type=MediaType.ANIME, **kwargs)
         return cls._instance
 
-    @accepts(Episode)
+    @accepts((SubsFile, Episode))
     def episode(self, item: MediaItem) -> int:
         return self._parse_episode(item.item_name)
 
-    @accepts(Episode)
+    @accepts((SubsFile, Episode))
     def episode_part(self, item: MediaItem) -> Optional[int]:
         episode = self.episode(item)
         match = re.search(rf'{episode}\.\d+', item.item_name)
         if match is not None:
             return int(match.group(0).split('.')[1])
 
-    @accepts(Episode, bool)
+    @accepts((SubsFile, Episode), bool)
     def episode_name(self, item: MediaItem, use_metadata: bool = True) -> Optional[str]:
         # TODO: Try to parse an episode name from the file name
         return
 
-    @accepts((Episode, Season))
+    @accepts((SubsFile, Episode, Season))
     def season(self, item: MediaItem) -> int:
         return self._parse_season(item.item_name)
 
-    @accepts((Episode, Season), bool)
+    @accepts((SubsFile, Episode, Season), bool)
     def season_name(self, item: MediaItem, use_metadata: bool = True) -> Optional[str]:
         return self._parse_season_name(item.item_name)
 

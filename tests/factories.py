@@ -26,8 +26,8 @@ class MediaItemFactory(factory.Factory):
 
     @classmethod
     def create(cls, **kwargs):
-        if 'language' not in kwargs:
-            kwargs['language'] = Language.JA
+        if '_language' not in kwargs:
+            kwargs['_language'] = Language.JA
         obj = super().create(**kwargs)
         return obj
 

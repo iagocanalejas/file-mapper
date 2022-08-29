@@ -102,7 +102,10 @@ class WikipediaPage(ABC, Object):
     @staticmethod
     def __has_season_episode_no(header: Tag) -> bool:
         columns = header.find_all('th') + header.find_all('td')
-        return any(re.match(r'No.*season', column.text, re.IGNORECASE) for column in columns)
+        return (
+                any(re.match(r'No.*season', column.text, re.IGNORECASE) for column in columns) or
+                any(re.match(r'No.*part', column.text, re.IGNORECASE) for column in columns)
+        )
 
     async def load(self, session: ClientSession) -> 'WikipediaPage':
         logger.info(f'{self._class}:: loading page :: {self}')

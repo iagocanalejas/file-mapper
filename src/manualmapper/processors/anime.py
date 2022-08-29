@@ -1,11 +1,9 @@
 import logging
-import os
 import re
 
 import inquirer
 
 from src import runner
-from src import settings
 from src.core.models import Episode
 from src.core.models import MediaItem
 from src.core.models import Season
@@ -32,7 +30,7 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
         self.__mal_api = MalAPI()
         self.__wikipedia_scrapper = WikipediaScrapper()
 
-    def process(self, item: MediaItem):
+    def process(self, item: MediaItem, **kwargs):
         mal_name = inquirer.text(message='MyAnimeList Name', default=item.parsed.media_title)
         runner.mal_url = f'https://api.myanimelist.net/v2/anime?q={mal_name}&fields=alternative_titles'
 
@@ -45,49 +43,40 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
 
     def post_process(self, item: MediaItem):
         while True:
-            menu = inquirer.prompt([
-                inquirer.List(
-                    name='chosen_menu',
-                    message='What to do',
-                    choices=['Preview', 'Manual Edit', 'Rename Selection', 'Rename All', 'Cancel'],
-                ),
-            ])
-            match menu['chosen_menu'].lower():
+            menu = inquirer.list_input(
+                message='What to do',
+                choices=['Preview', 'Manual Edit', 'Rename Selection', 'Rename All', 'Cancel'],
+            )
+            match menu.lower():
                 case 'preview':
                     [
                         logger.info(f'{i._class}:: {i.item_name} -> {self.formatter.new_name(i)}')
                         for i in item.flatten()
                     ]
                 case 'manual edit':
-                    answers = inquirer.prompt([
-                        inquirer.List(
-                            name='renaming_element',
-                            message='Element to edit',
-                            choices=[
-                                f'{i._class}:: {i.item_name} -> {self.formatter.new_name(i)}'
-                                for i in item.flatten()
-                            ],
-                        ),
-                    ])
-                    selected_item = answers['renaming_element'].split(':: ')[1].split(' -> ')[0]
+                    renaming_element = inquirer.list_input(
+                        message='Element to edit',
+                        choices=[
+                            f'{i._class}:: {i.item_name} -> {self.formatter.new_name(i)}'
+                            for i in item.flatten()
+                        ],
+                    )
+                    selected_item = renaming_element.split(':: ')[1].split(' -> ')[0]
                     selected_item = next(i for i in item.flatten() if i.item_name == selected_item)
                     self.__edit(selected_item)
                 case 'rename selection':
-                    answers = inquirer.prompt([
-                        inquirer.Checkbox(
-                            name='renaming_list',
-                            message='Files to rename',
-                            choices=[
-                                f'{i._class}:: {i.item_name} -> {self.formatter.new_name(i)}'
-                                for i in item.flatten()
-                            ]
-                        ),
-                    ])
-                    selected_titles = [i.split(':: ')[1].split(' -> ')[0] for i in answers['renaming_list']]
-                    [self.__rename(i) for i in item.flatten() if i.item_name in selected_titles]
+                    renaming_list = inquirer.checkbox(
+                        message='Files to rename',
+                        choices=[
+                            f'{i._class}:: {i.item_name} -> {self.formatter.new_name(i)}'
+                            for i in item.flatten()
+                        ]
+                    )
+                    selected = [i.split(':: ')[1].split(' -> ')[0] for i in renaming_list]
+                    [i.rename(self.formatter.new_name(i)) for i in item.flatten()[::-1] if i.item_name in selected]
                     break
                 case 'rename all':
-                    [self.__rename(i) for i in item.flatten()]
+                    [i.rename(self.formatter.new_name(i)) for i in item.flatten()[::-1]]
                     break
                 case 'cancel':
                     break
@@ -141,8 +130,3 @@ class AnimeProcessor(Processor, media_type=MediaType.ANIME):
                 episode_name = inquirer.text(f'Rename episode {as_anime(item.metadata).episode_name} to:')
                 if episode_name:
                     item.update('episode_name', episode_name)
-
-    def __rename(self, item: MediaItem):
-        item.item_name = self.formatter.new_name(item)
-        if not settings.DEBUG:
-            os.rename(item.path, os.path.join(item.base_path, item.item_name))
