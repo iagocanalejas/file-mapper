@@ -4,6 +4,8 @@ import re
 import inquirer
 
 from src import runner
+from src.core.datasources.api import MalAPI
+from src.core.datasources.scrapper import WikipediaScrapper
 from src.core.models import Episode
 from src.core.models import MediaItem
 from src.core.models import Season
@@ -11,8 +13,6 @@ from src.core.models import Show
 from src.core.models.metadata import as_anime
 from src.core.types import MediaType
 from src.core.types import PathType
-from src.filemapper.datasources.api import MalAPI
-from src.filemapper.datasources.scrapper import WikipediaScrapper
 from src.manualmapper.processors import Processor
 
 logger = logging.getLogger()

@@ -5,16 +5,16 @@ from typing import List
 import requests
 from bs4 import BeautifulSoup
 
+from src.core.datasources.api import ImdbAPI
+from src.core.datasources.datasource import AnimeDatasource
+from src.core.datasources.datasource import Scrapper
+from src.core.datasources.exceptions import NotFound
 from src.core.models import Episode
 from src.core.models import MediaItem
 from src.core.models import Season
 from src.core.models import Show
 from src.core.models.metadata import as_anime
 from src.core.types import DatasourceName
-from src.filemapper.datasources.api import ImdbAPI
-from src.filemapper.datasources.datasource import AnimeDatasource
-from src.filemapper.datasources.datasource import Scrapper
-from src.filemapper.datasources.exceptions import NotFound
 
 logger = logging.getLogger()
 

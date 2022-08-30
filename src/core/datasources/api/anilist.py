@@ -6,11 +6,11 @@ from typing import Optional
 import requests
 from requests import RequestException
 
+from src.core.datasources.datasource import AnimeAPI
+from src.core.datasources.models import AnilistData
 from src.core.models.metadata import AnimeMetadata
 from src.core.types import DatasourceName
 from src.core.types import Language
-from src.filemapper.datasources.datasource import AnimeAPI
-from src.filemapper.datasources.models import AnilistData
 
 logger = logging.getLogger()
 

@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from dataclasses import field
 from typing import List
 from typing import Optional
+from typing import TypeVar
 
 from polyglot.text import Text
 
@@ -23,6 +24,8 @@ from src.filemapper.tbuilder.models import File
 
 logger = logging.getLogger()
 
+T = TypeVar('T', bound='MediaItem')
+
 
 @dataclass
 class ParsedInfo:
@@ -32,6 +35,46 @@ class ParsedInfo:
     season_name: Optional[str]
     media_title: str
     extension: Optional[str]
+
+    @classmethod
+    def parse(cls, item: T, parser=None) -> T:
+        """
+        Parse the input #MediaItem to extract all the data found in the name.
+        :return: #MediaItem with filled `parsed` field.
+        """
+        from src.core.parsers import Parser
+
+        parser = parser if parser is not None else Parser(media_type=item.media_type)
+        assert isinstance(parser, Parser)
+
+        media_title = parser.media_title(item)
+        episode = episode_part = season = season_name = extension = None
+        match item:
+            case Episode() | SubsFile():
+                episode = parser.episode(item)
+                episode_part = parser.episode_part(item)
+                season = parser.season(item)
+                season_name = parser.season_name(item)
+                extension = parser.extension(item)
+            case Season():
+                assert isinstance(item, Season)
+                [cls.parse(e, parser=parser) for e in item.episodes]
+
+                season = parser.season(item)
+                season_name = parser.season_name(item)
+            case Show():
+                assert isinstance(item, Show)
+                [cls.parse(s, parser=parser) for s in item.seasons]
+
+        item.parsed = ParsedInfo(
+            episode=episode,
+            episode_part=episode_part,
+            season=season,
+            season_name=season_name,
+            media_title=media_title,
+            extension=extension,
+        )
+        return item
 
 
 @dataclass
@@ -77,14 +120,25 @@ class MediaItem(ABC, Object):
 
     @abstractmethod
     def flatten(self) -> List['MediaItem']:
+        """
+        Retrieve all the childs for the current #MediaItem and returns them as a list.
+        :return: List of items being 'self' the first one.
+        """
         pass
 
     @abstractmethod
-    def update(self, name, value):
+    def update(self: T, name: str, value) -> T:
+        """
+        Updates the object #name field with the provided #value.
+        :return: #MediaItem with the updated field or no changes
+        """
         pass
 
     @abstractmethod
     def rename(self, new_name):
+        """
+        Renames the #MediaItem with the provided #new_name.
+        """
         pass
 
 
@@ -104,12 +158,13 @@ class Episode(MediaItem):
         obj.show = show
         return obj
 
-    def update(self, name, value):
+    def update(self, name: str, value) -> 'Episode':
         match name:
             case 'base_path':
                 self.base_path = value
             case _:
                 setattr(self.metadata, name, value)
+        return self
 
     def flatten(self) -> List[MediaItem]:
         return [self]
@@ -151,7 +206,7 @@ class Season(MediaItem):
         for file in self.episodes:
             file.metadata = deepcopy(value)
 
-    def update(self, name, value):
+    def update(self, name: str, value) -> 'Season':
         match name:
             case 'base_path':
                 self.base_path = value
@@ -159,11 +214,12 @@ class Season(MediaItem):
             case _:
                 setattr(self.metadata, name, value)
                 [e.update(name, value) for e in self.episodes]
+        return self
 
     def flatten(self) -> List[MediaItem]:
         items = [self]
         for episode in self.episodes:
-            items += episode.flatten()
+            items.extend(episode.flatten())
         return items
 
     def rename(self, new_name):
@@ -205,7 +261,7 @@ class Show(MediaItem):
         for season in self.seasons:
             season.metadata = deepcopy(value)
 
-    def update(self, name, value):
+    def update(self, name: str, value) -> 'Show':
         match name:
             case 'base_path':
                 self.base_path = value
@@ -213,11 +269,12 @@ class Show(MediaItem):
             case _:
                 setattr(self.metadata, name, value)
                 [s.update(name, value) for s in self.seasons]
+        return self
 
     def flatten(self) -> List[MediaItem]:
         items = [self]
         for season in self.seasons:
-            items += season.flatten()
+            items.extend(season.flatten())
         return items
 
     def rename(self, new_name):
@@ -247,18 +304,23 @@ class SubsFile(MediaItem):
 
     @property
     def language(self) -> Language:
+        """
+        Parse and localize the subtitles string to find the language.
+        :return: The #Language of the file content.
+        """
         if self._language is None:
             match retrieve_extension(generic_clean(self.item_name)):
                 case 'ass':
                     self._language = self.__ass_language()
         return self._language
 
-    def update(self, name, value):
+    def update(self, name: str, value) -> 'SubsFile':
         match name:
             case 'parent':
                 self.parent = value
             case _:
                 pass
+        return self
 
     def flatten(self) -> List['MediaItem']:
         return [self]

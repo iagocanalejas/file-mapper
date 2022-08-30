@@ -57,7 +57,7 @@ class WikipediaPage(ABC, Object):
             logger.debug(f'{self._class}:: found :: {episode_name}')
             return episode_name
 
-        logger.info(f'{self._class}:: not found episode name')
+        logger.debug(f'{self._class}:: not found episode name')
 
     @staticmethod
     @abstractmethod
@@ -108,7 +108,7 @@ class WikipediaPage(ABC, Object):
         )
 
     async def load(self, session: ClientSession) -> 'WikipediaPage':
-        logger.info(f'{self._class}:: loading page :: {self}')
+        logger.debug(f'{self._class}:: loading page :: {self}')
 
         response = await session.get(self.url, headers=self.HEADERS)
         if response.status == NOT_FOUND:

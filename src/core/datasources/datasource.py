@@ -8,6 +8,7 @@ from typing import Optional
 from typing import Protocol
 from typing import TypeVar
 
+from src.core.datasources.models import APIData
 from src.core.models import Episode
 from src.core.models import Season
 from src.core.models import Show
@@ -17,7 +18,6 @@ from src.core.types import DatasourceName
 from src.core.types import Language
 from src.core.types import Object
 from src.core.utils.strings import closest_result
-from src.filemapper.datasources.models import APIData
 
 logger = logging.getLogger()
 

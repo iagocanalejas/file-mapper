@@ -13,6 +13,7 @@ from src.core.matchers import AnimeTypeMatcher
 from src.core.matchers import FilmTypeMatcher
 from src.core.models import Episode
 from src.core.models import MediaItem
+from src.core.models import ParsedInfo
 from src.core.models import SubsFile
 from src.core.parsers import Parser
 from src.core.types import Language
@@ -20,7 +21,6 @@ from src.core.types import MediaType
 from src.core.types import Object
 from src.core.types import PathType
 from src.core.types import SubtitleAction
-from src.core.utils.parser import parse_media_input
 from src.manualmapper.loader import load_media_item
 from src.manualmapper.loader import load_subtitle_files
 from src.manualmapper.processors import Processor
@@ -52,14 +52,14 @@ class Engine(Object):
         processor: Processor = Processor(media_type=runner.media_type)
         subtitles: Optional[SubsProcessor] = None
 
-        self.__item = parse_media_input(load_media_item(self.__path, path_type=runner.path_type), parser)
+        self.__item = ParsedInfo.parse(load_media_item(self.__path, path_type=runner.path_type), parser)
         self.__item.media_type = runner.media_type
 
         # load and parse subtitle files if required
         subs: List[SubsFile] = []
         if runner.subs_acton:
             subtitles = SubsProcessor(media_type=MediaType.SUBS)
-            subs = [parse_media_input(s, parser) for s in load_subtitle_files(self.__path)]
+            subs = [ParsedInfo.parse(s, parser) for s in load_subtitle_files(self.__path)]
             subtitles.process(subs=subs, episodes=[e for e in self.__item.flatten() if isinstance(e, Episode)])
 
         processor.process(item=self.__item)

@@ -76,7 +76,8 @@ def clean_output(out: str) -> str:
         .replace(':', ' -') \
         .replace(';', '') \
         .replace('"', '') \
-        .replace('\\', '') \
+        .replace('\\', '-') \
+        .replace('/', '-') \
         .replace('|', '') \
         .replace('?', '') \
         .replace('*', '')

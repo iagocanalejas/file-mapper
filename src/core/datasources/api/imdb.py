@@ -7,11 +7,11 @@ import requests
 from requests import RequestException
 
 from src import settings
+from src.core.datasources.datasource import AnimeAPI
+from src.core.datasources.models import ImdbData
 from src.core.models.metadata import AnimeMetadata
 from src.core.types import DatasourceName
 from src.core.types import Language
-from src.filemapper.datasources.datasource import AnimeAPI
-from src.filemapper.datasources.models import ImdbData
 
 logger = logging.getLogger()
 

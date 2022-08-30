@@ -8,13 +8,13 @@ from requests import RequestException
 
 from src import runner
 from src import settings
+from src.core.datasources.datasource import AnimeAPI
+from src.core.datasources.exceptions import InvalidConfiguration
+from src.core.datasources.exceptions import NotFound
+from src.core.datasources.models import MalData
 from src.core.models.metadata import AnimeMetadata
 from src.core.types import DatasourceName
 from src.core.types import Language
-from src.filemapper.datasources.datasource import AnimeAPI
-from src.filemapper.datasources.exceptions import InvalidConfiguration
-from src.filemapper.datasources.exceptions import NotFound
-from src.filemapper.datasources.models import MalData
 
 logger = logging.getLogger()
 

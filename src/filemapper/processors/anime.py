@@ -5,6 +5,14 @@ from typing import Optional
 from typing import Tuple
 
 from src import settings
+from src.core.datasources.api import AnilistAPI
+from src.core.datasources.api import ImdbAPI
+from src.core.datasources.api import MalAPI
+from src.core.datasources.datasource import AnimeDatasource
+from src.core.datasources.datasource import API
+from src.core.datasources.exceptions import NotFound
+from src.core.datasources.scrapper import ImdbScrapper
+from src.core.datasources.scrapper import WikipediaScrapper
 from src.core.models import Episode
 from src.core.models import MediaItem
 from src.core.models import Season
@@ -13,14 +21,6 @@ from src.core.models.metadata import AnimeMetadata
 from src.core.types import Language
 from src.core.types import MediaType
 from src.core.utils.strings import closest_result
-from src.filemapper.datasources.api import AnilistAPI
-from src.filemapper.datasources.api import ImdbAPI
-from src.filemapper.datasources.api import MalAPI
-from src.filemapper.datasources.datasource import AnimeDatasource
-from src.filemapper.datasources.datasource import API
-from src.filemapper.datasources.exceptions import NotFound
-from src.filemapper.datasources.scrapper import ImdbScrapper
-from src.filemapper.datasources.scrapper import WikipediaScrapper
 from src.filemapper.processors import Processor
 
 logger = logging.getLogger()

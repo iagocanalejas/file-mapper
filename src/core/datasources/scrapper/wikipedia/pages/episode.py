@@ -4,7 +4,7 @@ from typing import Optional
 
 from bs4 import Tag
 
-from src.filemapper.datasources.scrapper.wikipedia.pages._page import WikipediaPage
+from src.core.datasources.scrapper.wikipedia.pages._page import WikipediaPage
 
 logger = logging.getLogger()
 

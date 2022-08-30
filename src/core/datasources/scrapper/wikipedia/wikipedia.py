@@ -7,7 +7,13 @@ from typing import Tuple
 import aiohttp
 
 from src import runner
-from src import settings
+from src.core.datasources.datasource import AnimeDatasource
+from src.core.datasources.datasource import Scrapper
+from src.core.datasources.exceptions import InvalidConfiguration
+from src.core.datasources.exceptions import NotFound
+from src.core.datasources.scrapper.wikipedia.pages import WikipediaEpisodePage
+from src.core.datasources.scrapper.wikipedia.pages import WikipediaMainPage
+from src.core.datasources.scrapper.wikipedia.pages import WikipediaPage
 from src.core.models import Episode
 from src.core.models import MediaItem
 from src.core.models import Season
@@ -19,13 +25,6 @@ from src.core.utils.strings import remove_brackets
 from src.core.utils.strings import remove_parenthesis
 from src.core.utils.strings import remove_season
 from src.core.utils.strings import whitespaces_clean
-from src.filemapper.datasources.datasource import AnimeDatasource
-from src.filemapper.datasources.datasource import Scrapper
-from src.filemapper.datasources.exceptions import InvalidConfiguration
-from src.filemapper.datasources.exceptions import NotFound
-from src.filemapper.datasources.scrapper.wikipedia.pages import WikipediaEpisodePage
-from src.filemapper.datasources.scrapper.wikipedia.pages import WikipediaMainPage
-from src.filemapper.datasources.scrapper.wikipedia.pages import WikipediaPage
 
 logger = logging.getLogger()
 

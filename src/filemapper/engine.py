@@ -13,12 +13,12 @@ from src.core.matchers import FilmTypeMatcher
 from src.core.matchers import TypeMatcher
 from src.core.models import Episode
 from src.core.models import MediaItem
+from src.core.models import ParsedInfo
 from src.core.models import Season
 from src.core.models import Show
 from src.core.types import Language
 from src.core.types import MediaType
 from src.core.types import Object
-from src.core.utils.parser import parse_media_input
 from src.filemapper.processors import Processor
 from src.filemapper.tbuilder import Tree
 from src.filemapper.tbuilder.models import Directory
@@ -61,7 +61,7 @@ class Engine(Object):
         episode = Episode.from_file(file=file)
         episode.media_type = self.__categorize(episode)
         episode.language = self.__language(episode)
-        parse_media_input(episode)
+        ParsedInfo.parse(episode)
 
         processor = Processor(media_type=episode.media_type)
         processor.process_episode(episode)
@@ -88,7 +88,7 @@ class Engine(Object):
             show = Show.from_directory(directory=directory)
             show.media_type = self.__categorize(show)
             show.language = self.__language(show)
-            parse_media_input(show)
+            ParsedInfo.parse(show)
 
             processor = Processor(media_type=show.media_type)
             processor.process_show(show)
@@ -100,7 +100,7 @@ class Engine(Object):
             season = Season.from_directory(directory=directory)
             season.media_type = self.__categorize(season)
             season.language = self.__language(season)
-            parse_media_input(season)
+            ParsedInfo.parse(season)
 
             processor = Processor(media_type=season.media_type)
             processor.process_season(season)
