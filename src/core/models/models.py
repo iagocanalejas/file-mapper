@@ -21,6 +21,7 @@ from src.core.utils.strings import remove_brackets
 from src.core.utils.strings import retrieve_extension
 from src.filemapper.tbuilder.models import Directory
 from src.filemapper.tbuilder.models import File
+from src.manualmapper.logger import OutputLog
 
 logger = logging.getLogger()
 
@@ -174,6 +175,7 @@ class Episode(MediaItem):
         if not settings.DEBUG:
             os.renames(self.path, os.path.join(self.base_path, new_name))
         self.item_name = new_name
+        OutputLog().update(id(self), self.path)
 
 
 @dataclass
@@ -228,6 +230,7 @@ class Season(MediaItem):
             os.renames(self.path, new_path)
             [e.update('base_path', new_path) for e in self.episodes]
         self.item_name = new_name
+        OutputLog().update(id(self), self.path)
 
 
 @dataclass
@@ -283,6 +286,7 @@ class Show(MediaItem):
             os.renames(self.path, new_path)
             [s.update('base_path', new_path) for s in self.seasons]
         self.item_name = new_name
+        OutputLog().update(id(self), self.path)
 
 
 @dataclass
@@ -330,6 +334,7 @@ class SubsFile(MediaItem):
             subs_folder = os.path.join(self.parent.base_path, os.path.basename(self.base_path))
             os.rename(os.path.join(subs_folder, self.item_name), os.path.join(subs_folder, new_name))
         self.item_name = new_name
+        OutputLog().update(id(self), self.path)
 
     def __ass_language(self) -> Language:
         with open(self.path) as subs_file:

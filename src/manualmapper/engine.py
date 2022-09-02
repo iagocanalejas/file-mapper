@@ -1,3 +1,4 @@
+import csv
 import logging
 import os
 import re
@@ -23,6 +24,7 @@ from src.core.types import PathType
 from src.core.types import SubtitleAction
 from src.manualmapper.loader import load_media_item
 from src.manualmapper.loader import load_subtitle_files
+from src.manualmapper.logger import OutputLog
 from src.manualmapper.processors import Processor
 from src.manualmapper.processors import SubsProcessor
 
@@ -33,7 +35,6 @@ DEFAULT_PATH_TYPE = PathType.SHOW
 DEFAULT_LANGUAGE = Language.JA
 
 
-# TODO: we should save a .log/.csv of renamed elements. This will allow a revert option in the future.
 class Engine(Object):
     __item: MediaItem
 
@@ -62,10 +63,25 @@ class Engine(Object):
             subs = [ParsedInfo.parse(s, parser) for s in load_subtitle_files(self.__path)]
             subtitles.process(subs=subs, episodes=[e for e in self.__item.flatten() if isinstance(e, Episode)])
 
+        # init the logger with the items we will be mapping
+        [OutputLog().insert(id(i), i.path) for i in self.__item.flatten()]
+        [OutputLog().insert(id(s), s.path) for s in subs]
+
         processor.process(item=self.__item)
         processor.post_process(item=self.__item)
         if runner.subs_acton and subtitles is not None:
             subtitles.post_process(subs=subs, action=runner.subs_acton)
+
+        # log to file
+        OutputLog().log(self.__item, to='output.csv')
+
+    def undo(self, forced=False):
+        path = self.__path if 'output.csv' in self.__path else os.path.join(self.__path, 'output.csv')
+        with open(path) as file:
+            reader = csv.reader(file, delimiter=',')
+            for (original_name, new_name) in reader[1:]:
+                if forced or inquirer.confirm(f'{new_name} -> {original_name}'):
+                    os.rename(new_name, original_name)
 
     ########################
     #    Configuration     #

@@ -11,17 +11,20 @@ logger.setLevel(logging.INFO)
 logger.addHandler(logging.StreamHandler(sys.stdout))
 
 
-def main(path: str):
+def main(path: str, undo: bool, forced: bool):
     if not os.path.exists(path):
         raise ValueError(f'\'{path}\' does not exist')
 
     engine = Engine(path)
-    engine.run()
+
+    engine.run() if not undo else engine.undo(forced=forced)
 
 
 def __parse_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument('path', help='Path to be handled')
+    parser.add_argument('--undo', action='store_true', default=False)
+    parser.add_argument('--forced', action='store_true', default=False)
     parser.add_argument('--debug', action='store_true', default=False)
     return parser.parse_args()
 
@@ -39,10 +42,10 @@ if __name__ == '__main__':
         import pstats
 
         with cProfile.Profile() as pr:
-            main(os.path.abspath(args.path))
+            main(os.path.abspath(args.path), args.undo, args.forced)
 
         stats = pstats.Stats(pr)
         stats.sort_stats(pstats.SortKey.TIME)
         stats.dump_stats(filename='profiling.prof')
     else:
-        main(os.path.abspath(args.path))
+        main(os.path.abspath(args.path), args.undo, args.forced)
